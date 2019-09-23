@@ -1,0 +1,5 @@
+D:\GIT\LifeOfGame-prot\LoG\Intermediate\Build\Win64\UE4Editor\Development\LoG\Definitions.LoG.h
+C:\Games\UE_4.23\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
+C:\Games\UE_4.23\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h
+D:\GIT\LifeOfGame-prot\LoG\Source\LoG/MyActor.h
+D:\GIT\LifeOfGame-prot\LoG\Intermediate\Build\Win64\UE4Editor\Inc\LoG\MyActor.generated.h

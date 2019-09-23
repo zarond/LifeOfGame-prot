@@ -1,0 +1,3 @@
+D:\GIT\LifeOfGame-prot\LoG\Source\LoG\LoG.Build.cs
+D:\GIT\LifeOfGame-prot\LoG\Source\LoG.Target.cs
+D:\GIT\LifeOfGame-prot\LoG\Source\LoGEditor.Target.cs
