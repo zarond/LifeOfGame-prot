@@ -1,16 +1,19 @@
 #pragma once
+#include "Pattern.h"
 class GameOfLife
 {
 private:
 	bool** field;
 	int fHeight;
 	int fWidth;
-	bool isAlive(int row, int column);
+	bool isAlive(int, int);
 public:
-	void InitField(int width, int height);
-	bool CellStatusNextLoop(int row, int column);
+	void InitField(int, int);
+	
+	bool CellStatusNextLoop(int, int);
 	void Loop();
 	void Show();
-	void Summon(int row, int column);
+	void Summon(int, int);
+	void InsertPattern(int, int, const Pattern&);
 };
 

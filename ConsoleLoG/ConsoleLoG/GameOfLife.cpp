@@ -60,7 +60,7 @@ void GameOfLife::Show()
 				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
 			else
 				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
-				std::cout << '  ';
+				std::cout << ' ';
 		}
 		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
 		std::cout << std::endl;
@@ -70,5 +70,26 @@ void GameOfLife::Show()
 
 void GameOfLife::Summon(int row, int column)
 {
+	if (row < 0) row += fHeight;
+	if (row >= fHeight) row -= fHeight;
+	if (column < 0) column += fWidth;
+	if (column >= fWidth) column -= fWidth;
 	field[row][column] = true;
+}
+
+void GameOfLife::InsertPattern(int x, int y, const Pattern& pattern)
+{
+	auto figure = pattern.GetPattern();
+	size_t hei = pattern.X();
+	size_t wid = pattern.Y();
+	for (size_t i = 0; i < hei; i++)
+	{
+		for (size_t j = 0; j < wid; j++)
+		{
+			if (figure[i][j])
+			{
+				Summon(x + i, y + j);
+			}
+		}
+	}
 }
