@@ -1,19 +1,30 @@
 #pragma once
 #include "Pattern.h"
+
+#define countGenes 9
+
 class GameOfLife
 {
 private:
+	bool** fieldCopy;
 	bool** field;
+	bool* birth;
+	bool* survive;
 	int fHeight;
 	int fWidth;
-	bool isAlive(int, int);
+	bool isAlive(int, int) const;
 public:
-	void InitField(int, int);
+	void InitField(const int, const int);
 	
-	bool CellStatusNextLoop(int, int);
+	bool CellStatusNextLoop(const int, const int) const;
+	const bool* const* const GetField() const;
+	const boolXbool GetFieldVectors() const;
 	void Loop();
-	void Show();
+	void Loop(const int);
+	void Show() const;
 	void Summon(int, int);
-	void InsertPattern(int, int, const Pattern&);
+	void InsertPattern(const int, const int, const Pattern&);
+	void SetBirthGene(const std::vector<bool>&);
+	void SetSurviveGene(const std::vector<bool>&);
 };
 

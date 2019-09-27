@@ -117,9 +117,9 @@ Pattern::Pattern(std::string& _name)
 		{
 			id = std::atoi(vectorOfWord[0].c_str());
 			name = _name;
-			x = std::atoi(vectorOfWord[3].c_str());
-			y = std::atoi(vectorOfWord[2].c_str());
-			pattern = PreparePatrernArr(vectorOfWord[4], x, y);
+			height = std::atoi(vectorOfWord[3].c_str());
+			width = std::atoi(vectorOfWord[2].c_str());
+			pattern = PreparePatrernArr(vectorOfWord[4], height, width);
 			break;
 		}
 	}
@@ -153,23 +153,23 @@ Pattern::Pattern(int _id)
 		{
 			id = _id;
 			name = vectorOfWord[1];;
-			x = std::atoi(vectorOfWord[3].c_str());
-			y = std::atoi(vectorOfWord[2].c_str());
-			pattern =  PreparePatrernArr(vectorOfWord[4], x, y);
+			height = std::atoi(vectorOfWord[3].c_str());
+			width = std::atoi(vectorOfWord[2].c_str());
+			pattern =  PreparePatrernArr(vectorOfWord[4], height, width);
 			break;
 		}
 	}
 	file.close();
 }
 
-size_t Pattern::X() const
+size_t Pattern::Height() const
 {
-	return x;
+	return height;
 }
 
-size_t Pattern::Y() const
+size_t Pattern::Width() const
 {
-	return y;
+	return width;
 }
 
 size_t Pattern::ID() const
@@ -189,16 +189,16 @@ std::string Pattern::Name() const
 
 void Pattern::Rotate()
 {
-	auto newPattern = boolXbool(y);
+	auto newPattern = boolXbool(width);
 	size_t str_iter = 0; // string iterator
-	for (size_t i = 0; i < y; i++)
+	for (size_t i = 0; i < width; i++)
 	{
-		newPattern[i] = std::vector<bool>(x, false);
-		for (size_t j = 0; j < x; j++)
+		newPattern[i] = std::vector<bool>(height, false);
+		for (size_t j = 0; j < height; j++)
 		{
 			newPattern[i][j] = pattern[j][i];
 		}
 	}
 	std::swap(newPattern, pattern);
-	std::swap(x, y);
+	std::swap(height, width);
 }

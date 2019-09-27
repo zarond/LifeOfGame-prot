@@ -28,3 +28,6 @@
 28 pi-heptomino 3 3 3o$obo$obo$
 29 r-pentomino 3 3 b2o$2ob$bo$
 30 ship 3 3 2ob$obo$b2o$
+50 Unidimensional-six-gliders 15 1 4o2b3ob5o$
+51 2x12-infinite-growth 12 2 o2b2ob4obo$6ob2o2bo$
+52 Maze-wickstretcher 6 8 2o4b$b3o2b$bob2ob$3b3o$3b2ob$bobo2b$b3o2b$2o$
