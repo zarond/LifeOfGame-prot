@@ -32,16 +32,36 @@ bool GameOfLife::isAlive(int row, int column) const
 	return field[row][column];
 }
 
-bool GameOfLife::CellStatusNextLoop(const int row, const int column) const
+bool GameOfLife::CellStatusNextLoop(int row, int column) const
 {
 	int aliveNeighbors = 0;
+	bool itIsAlive;
 	for (int i = -1; i < 2; ++i)
+	{
+		int x;
+		int y;
 		for (int j = -1; j < 2; ++j)
 		{
-			if ((i != 0 || j != 0) && isAlive(row + i, column + j))
+			//
+			x = row + i;
+			y = column + j;
+			if (x < 0) x += fHeight;
+			if (x >= fHeight) x -= fHeight;
+			if (y < 0) y += fWidth;
+			if (y >= fWidth) y -= fWidth;
+			itIsAlive = field[x][y];
+			//
+			if ((i != 0 || j != 0) && itIsAlive)
 				aliveNeighbors++;
 		}
-	bool itIsAlive = isAlive(row, column);
+	}
+	//
+	if (row < 0) row += fHeight;
+	if (row >= fHeight) row -= fHeight;
+	if (column < 0) column += fWidth;
+	if (column >= fWidth) column -= fWidth;
+	itIsAlive = field[row][column];
+	//
 	return (birth[aliveNeighbors] && ~itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
 }
 
@@ -50,11 +70,44 @@ void GameOfLife::Loop()
 	// writing to field copy new state
 	for (int i = 0; i < fHeight; ++i)
 		for (int j = 0; j < fWidth; ++j)
-			fieldCopy[i][j] = CellStatusNextLoop(i, j);
+		{
+			// CellStatusNextLoop
+			int aliveNeighbors = 0;
+			bool itIsAlive;
+			for (int k = -1; k < 2; ++k)
+			{
+				int x;
+				int y;
+				for (int t = -1; t < 2; ++t)
+				{
+					// isAlive
+					x = i + k;
+					y = j + t;
+					if (x < 0) x += fHeight;
+					if (x >= fHeight) x -= fHeight;
+					if (y < 0) y += fWidth;
+					if (y >= fWidth) y -= fWidth;
+					itIsAlive = field[x][y];
+					//
+					if ((i != 0 || j != 0) && itIsAlive)
+						aliveNeighbors++;
+				}
+			}
+			// isAlive
+			if (i < 0) i += fHeight;
+			if (i >= fHeight) i -= fHeight;
+			if (j < 0) j += fWidth;
+			if (j >= fWidth) j -= fWidth;
+			itIsAlive = field[i][j];
+			//
+			bool cellStatusNextLoop = (birth[aliveNeighbors] && ~itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
+			fieldCopy[i][j] = cellStatusNextLoop;
+			//
+		}
 	// writing to field from field copy
-	for (int i = 0; i < fHeight; ++i)
-		for (int j = 0; j < fWidth; ++j)
-			field[i][j] = fieldCopy[i][j];
+	bool** temp = fieldCopy;
+	fieldCopy = field;
+	field = temp;
 }
 
 void GameOfLife::Loop(const int count)

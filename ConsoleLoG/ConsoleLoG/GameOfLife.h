@@ -16,7 +16,7 @@ private:
 public:
 	void InitField(const int, const int);
 	
-	bool CellStatusNextLoop(const int, const int) const;
+	bool CellStatusNextLoop(int, int) const;
 	const bool* const* const GetField() const;
 	const boolXbool GetFieldVectors() const;
 	void Loop();

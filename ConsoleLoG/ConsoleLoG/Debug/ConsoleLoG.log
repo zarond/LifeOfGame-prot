@@ -1,8 +1,2 @@
-﻿  GameOfLife.cpp
-c:\users\евгений\desktop\программы\lifeofgame-prot\consolelog\consolelog\gameoflife.cpp(13): warning C4018: <: несоответствие типов со знаком и без знака
-c:\users\евгений\desktop\программы\lifeofgame-prot\consolelog\consolelog\gameoflife.cpp(45): warning C4804: ~: небезопасное использование типа "bool" в операции
-c:\users\евгений\desktop\программы\lifeofgame-prot\consolelog\consolelog\gameoflife.cpp(71): warning C4018: <: несоответствие типов со знаком и без знака
-c:\users\евгений\desktop\программы\lifeofgame-prot\consolelog\consolelog\gameoflife.cpp(73): warning C4018: <: несоответствие типов со знаком и без знака
-  main.cpp
-  Создание кода...
+﻿  main.cpp
   ConsoleLoG.vcxproj -> C:\Users\Евгений\Desktop\Программы\LifeOfGame-prot\ConsoleLoG\Debug\ConsoleLoG.exe

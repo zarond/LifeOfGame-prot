@@ -32,11 +32,9 @@ int main()
 
 	clock_t time;
 	time = clock();
-	gol.Loop(1);
+	gol.Loop();
 	std::cout << (static_cast<float>(clock() - time)) / 1000 << "  sec\n";
 
-	auto g = gol.GetField();
-	bool l = g[5][5];
 
 	while (false)
 	{
