@@ -2441,5 +2441,4 @@
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include/malloc/malloc.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/initializer_list \
   /Users/alan/Documents/GitHub/LifeOfGame-prot-master/LifeOfGame-prot/Prototype/Source/Prototype/Private/GenerateWorld.cpp \
-  /Users/alan/Documents/GitHub/LifeOfGame-prot-master/LifeOfGame-prot/Prototype/Intermediate/Build/Mac/UE4Editor/Development/Prototype/Definitions.Prototype.h \
-  /Users/alan/Documents/GitHub/LifeOfGame-prot-master/LifeOfGame-prot/Prototype/Source/Prototype/Public/GenerateWorld.h
+  /Users/alan/Documents/GitHub/LifeOfGame-prot-master/LifeOfGame-prot/Prototype/Intermediate/Build/Mac/UE4Editor/Development/Prototype/Definitions.Prototype.h
