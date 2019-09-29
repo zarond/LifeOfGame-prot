@@ -28,7 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -123,11 +123,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CellularAutomata.cpp" />
     <ClCompile Include="GameOfLife.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pattern.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CellularAutomata.h" />
     <ClInclude Include="GameOfLife.h" />
     <ClInclude Include="Pattern.h" />
   </ItemGroup>

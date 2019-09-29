@@ -2,7 +2,8 @@
 #include <windows.h>
 #include <iostream>
 
-void GameOfLife::InitField(const int width, const int height)
+
+GameOfLife::GameOfLife(const int width, const int height)
 {
 	fWidth = width;
 	fHeight = height;
@@ -32,10 +33,17 @@ bool GameOfLife::isAlive(int row, int column) const
 	return field[row][column];
 }
 
+bool GameOfLife::isWall(int row, int column) const
+{
+	if (row == 0 || column == 0 || row == fHeight - 1 || column == fWidth - 1) return true;
+	else return false;
+}
+
 bool GameOfLife::CellStatusNextLoop(int row, int column) const
 {
 	int aliveNeighbors = 0;
 	bool itIsAlive;
+	// calculating alive neighbors
 	for (int i = -1; i < 2; ++i)
 	{
 		int x;
@@ -55,13 +63,13 @@ bool GameOfLife::CellStatusNextLoop(int row, int column) const
 				aliveNeighbors++;
 		}
 	}
-	//
+	// checking if cell is already alive
 	if (row < 0) row += fHeight;
 	if (row >= fHeight) row -= fHeight;
 	if (column < 0) column += fWidth;
 	if (column >= fWidth) column -= fWidth;
 	itIsAlive = field[row][column];
-	//
+	// approving with rules
 	return (birth[aliveNeighbors] && ~itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
 }
 
@@ -101,6 +109,7 @@ void GameOfLife::Loop()
 			itIsAlive = field[i][j];
 			//
 			bool cellStatusNextLoop = (birth[aliveNeighbors] && ~itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
+			if (immortalWalls) cellStatusNextLoop = cellStatusNextLoop || isWall(i, j);
 			fieldCopy[i][j] = cellStatusNextLoop;
 			//
 		}
@@ -196,4 +205,9 @@ void GameOfLife::SetSurviveGene(const std::vector<bool>& gene)
 	{
 		survive[i] = gene[i];
 	}
+}
+
+void GameOfLife::SetImmortalWalls(bool areImmortal)
+{
+	immortalWalls = areImmortal;
 }

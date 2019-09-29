@@ -24,12 +24,18 @@
     <ClCompile Include="Pattern.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="CellularAutomata.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameOfLife.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Pattern.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="CellularAutomata.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

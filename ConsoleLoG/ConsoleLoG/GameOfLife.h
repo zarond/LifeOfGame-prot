@@ -12,9 +12,11 @@ private:
 	bool* survive;
 	int fHeight;
 	int fWidth;
+	bool immortalWalls = false;
 	bool isAlive(int, int) const;
+	bool isWall(int, int) const;
 public:
-	void InitField(const int, const int);
+	GameOfLife(const int, const int);
 	
 	bool CellStatusNextLoop(int, int) const;
 	const bool* const* const GetField() const;
@@ -26,5 +28,6 @@ public:
 	void InsertPattern(const int, const int, const Pattern&);
 	void SetBirthGene(const std::vector<bool>&);
 	void SetSurviveGene(const std::vector<bool>&);
+	void SetImmortalWalls(bool);
 };
 
