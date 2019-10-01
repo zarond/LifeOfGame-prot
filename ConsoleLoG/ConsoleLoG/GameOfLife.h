@@ -25,6 +25,7 @@ public:
 	void Loop(const int);
 	void Show() const;
 	void Summon(int, int);
+	void Kill(int, int);
 	void InsertPattern(const int, const int, const Pattern&);
 	void SetBirthGene(const std::vector<bool>&);
 	void SetSurviveGene(const std::vector<bool>&);

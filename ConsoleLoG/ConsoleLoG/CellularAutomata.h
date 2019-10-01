@@ -6,7 +6,7 @@ class CellularAutomata
 {
 private:
 	GameOfLife* gol;
-	double birthChance = 0.55;
+	double birthChance = 0.47;
 	int floorSize;
 public:
 	CellularAutomata(int size);
@@ -15,3 +15,24 @@ public:
 	void Show();
 };
 
+/* 
+struct cell
+{
+	floor id
+	object/enemy
+	wallidright
+	walliddown
+
+
+
+
+}
+
+
+
+
+
+
+
+
+*/

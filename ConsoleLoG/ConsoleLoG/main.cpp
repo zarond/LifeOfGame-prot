@@ -2,7 +2,7 @@
 #include "CellularAutomata.h"
 #include <iostream>
 #include <ctime>
-#define TIME 300
+#define TIME 500
 
 
 int main()
@@ -40,7 +40,7 @@ int main()
 	std::cout << (static_cast<float>(clock() - time)) / 1000 << "  sec\n";
 
 
-	CellularAutomata gen = CellularAutomata(40);
+	CellularAutomata gen = CellularAutomata(30);
 	gen.Generate();
 
 
@@ -51,13 +51,13 @@ int main()
 		}
 		system("cls");
 		//gol.Show();
-		gen.Show();
+		gen.Generate();
 		
 
 		//gol.Loop();
-		gen.Step();
+		
 		time = clock();
-		//system("pause");
+		system("pause");
 	}
 	system("pause");
 	return 0;

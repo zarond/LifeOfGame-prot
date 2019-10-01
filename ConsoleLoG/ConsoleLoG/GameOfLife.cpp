@@ -88,17 +88,19 @@ void GameOfLife::Loop()
 				int y;
 				for (int t = -1; t < 2; ++t)
 				{
-					// isAlive
-					x = i + k;
-					y = j + t;
-					if (x < 0) x += fHeight;
-					if (x >= fHeight) x -= fHeight;
-					if (y < 0) y += fWidth;
-					if (y >= fWidth) y -= fWidth;
-					itIsAlive = field[x][y];
-					//
-					if ((i != 0 || j != 0) && itIsAlive)
-						aliveNeighbors++;
+					if (t != 0 || k != 0)
+					{
+						// isAlive
+						x = i + k;
+						y = j + t;
+						if (x < 0) x += fHeight;
+						if (x >= fHeight) x -= fHeight;
+						if (y < 0) y += fWidth;
+						if (y >= fWidth) y -= fWidth;
+						//
+						if  (field[x][y])
+							aliveNeighbors++;
+					}
 				}
 			}
 			// isAlive
@@ -172,6 +174,15 @@ void GameOfLife::Summon(int row, int column)
 	if (column < 0) column += fWidth;
 	if (column >= fWidth) column -= fWidth;
 	field[row][column] = true;
+}
+
+void GameOfLife::Kill(int row, int column)
+{
+	if (row < 0) row += fHeight;
+	if (row >= fHeight) row -= fHeight;
+	if (column < 0) column += fWidth;
+	if (column >= fWidth) column -= fWidth;
+	field[row][column] = false;
 }
 
 void GameOfLife::InsertPattern(const int x, const int y, const Pattern& pattern)
