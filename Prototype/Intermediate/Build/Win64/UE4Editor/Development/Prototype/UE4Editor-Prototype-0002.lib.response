@@ -1,0 +1,20 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-Prototype-0002.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\PrototypeEditor\Development\Engine\SharedPCH.Engine.h.obj"
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\GenerateWorld.cpp.obj"
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\HelloWorld.cpp.obj"
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\MyActor.cpp.obj"
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\TestBpFunction.cpp.obj"
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\Prototype.cpp.obj"
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\HelloWorld.gen.cpp.obj"
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\MyActor.gen.cpp.obj"
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\Prototype.init.gen.cpp.obj"
+"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\Default.rc2.res"
+/OUT:"C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\UE4Editor-Prototype-0002.lib"
+/INCLUDE:IMPLEMENT_MODULE_Prototype

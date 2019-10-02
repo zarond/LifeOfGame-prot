@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\Prototype.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{D2E348C4-07D1-49AB-9717-5FF4B3440159}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Prototype.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\PrototypeEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{73119209-24CC-4D11-95CD-C37F7617ADEF}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Config\Android">
+      <UniqueIdentifier>{CD9160F3-A35B-476D-A42D-753296328569}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\Android\AndroidEngine.ini">
+      <Filter>Config\Android</Filter>
+    </None>
+    <Filter Include="Config\IOS">
+      <UniqueIdentifier>{D20327DD-1BEA-444B-BD1B-4F090433B4E1}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\IOS\IOSEngine.ini">
+      <Filter>Config\IOS</Filter>
+    </None>
+    <Filter Include="Config\Linux">
+      <UniqueIdentifier>{364BE4A4-3925-42A4-8829-AE1F41CF5C99}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\Linux\LinuxEngine.ini">
+      <Filter>Config\Linux</Filter>
+    </None>
+    <Filter Include="Config\Mac">
+      <UniqueIdentifier>{4C2937A8-278D-4A57-AB83-74EE250A4D95}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\Mac\MacEngine.ini">
+      <Filter>Config\Mac</Filter>
+    </None>
+    <Filter Include="Config\PS4">
+      <UniqueIdentifier>{11AAE959-0EA7-461E-B5D1-36DD62169E87}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\PS4\PS4Engine.ini">
+      <Filter>Config\PS4</Filter>
+    </None>
+    <Filter Include="Config\Switch">
+      <UniqueIdentifier>{DBCA5BCB-3806-4E63-B572-F3B723515029}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\Switch\SwitchEngine.ini">
+      <Filter>Config\Switch</Filter>
+    </None>
+    <Filter Include="Config\Windows">
+      <UniqueIdentifier>{FF24FE49-D160-4E61-AB0A-006243414976}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\Windows\WindowsEngine.ini">
+      <Filter>Config\Windows</Filter>
+    </None>
+    <Filter Include="Config\XboxOne">
+      <UniqueIdentifier>{1F19B9A2-5DE0-4480-A90D-B646F06D38B4}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\XboxOne\XboxOneEngine.ini">
+      <Filter>Config\XboxOne</Filter>
+    </None>
+    <Filter Include="Source\Prototype">
+      <UniqueIdentifier>{46E8769A-6556-4009-891F-88688209C1DC}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Prototype\Prototype.Build.cs">
+      <Filter>Source\Prototype</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\Prototype\Prototype.cpp">
+      <Filter>Source\Prototype</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Prototype\Prototype.h">
+      <Filter>Source\Prototype</Filter>
+    </ClInclude>
+    <Filter Include="Source\Prototype\Private">
+      <UniqueIdentifier>{54A9160F-B3CA-4769-9A3A-E6AD5352FF79}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Prototype\Private\HelloWorld.cpp">
+      <Filter>Source\Prototype\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Prototype\Private\MyActor.cpp">
+      <Filter>Source\Prototype\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\Prototype\Public">
+      <UniqueIdentifier>{AD3A8A5A-0320-4F55-97DE-BC7C1D27BEC3}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\Prototype\Public\HelloWorld.h">
+      <Filter>Source\Prototype\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Prototype\Public\MyActor.h">
+      <Filter>Source\Prototype\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
