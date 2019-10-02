@@ -1,5 +1,0 @@
-C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Intermediate\Build\Win64\UE4Editor\Development\Prototype\Definitions.Prototype.h
-D:\UE_4.23\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
-D:\UE_4.23\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h
-C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Source\Prototype/Public/HelloWorld.h
-c:\users\alan makoev\documents\github\lifeofgame-prot\prototype\intermediate\build\win64\ue4editor\inc\prototype\HelloWorld.generated.h

@@ -1,3 +1,0 @@
-C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Source\Prototype\Prototype.Build.cs
-C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Source\Prototype.Target.cs
-C:\Users\Alan Makoev\Documents\GitHub\LifeOfGame-prot\Prototype\Source\PrototypeEditor.Target.cs
