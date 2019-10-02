@@ -1,3 +1,7 @@
-﻿  main.cpp
-C:\Users\Евгений\Desktop\Программы\LifeOfGame-prot\ConsoleLoG\ConsoleLoG\main.cpp(9,22): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+﻿  CellularAutomata.cpp
+C:\Users\Евгений\Desktop\Программы\LifeOfGame-prot\ConsoleLoG\ConsoleLoG\CellularAutomata.cpp(28,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Евгений\Desktop\Программы\LifeOfGame-prot\ConsoleLoG\ConsoleLoG\CellularAutomata.cpp(30,24): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Евгений\Desktop\Программы\LifeOfGame-prot\ConsoleLoG\ConsoleLoG\CellularAutomata.cpp(164,23): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Евгений\Desktop\Программы\LifeOfGame-prot\ConsoleLoG\ConsoleLoG\CellularAutomata.cpp(166,24): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\Евгений\Desktop\Программы\LifeOfGame-prot\ConsoleLoG\ConsoleLoG\CellularAutomata.cpp(199,22): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   ConsoleLoG.vcxproj -> C:\Users\Евгений\Desktop\Программы\LifeOfGame-prot\ConsoleLoG\Debug\ConsoleLoG.exe

@@ -3,6 +3,7 @@
 #include <list>
 #include <math.h>
 #include <windows.h>
+#include <ctime>
 
 CellularAutomata::CellularAutomata(int size)
 {
@@ -186,6 +187,39 @@ void CellularAutomata::ConnectRooms()
 	{
 		ConnectNearestRoom(room, rooms);
 	}
+	CreateStartFinish(room);
+}
+
+void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
+{
+	// divide field on 9 equal parts 
+	int centerLeft = floorSize / 3 - 1;
+	int centerRight = floorSize - centerLeft;
+
+	std::srand(std::time(0));
+	int x = centerLeft + 1;
+	int y = centerLeft + 1;
+	// finding (x,y) out center part
+	while (x > centerLeft && x < centerRight && y > centerLeft&& y < centerRight)
+	{
+		auto coordinate = room[rand() % room.size()];
+		x = coordinate.first;
+		y = coordinate.second;
+	}
+	start_finish.first.first = x;
+	start_finish.first.second = y;
+	x = centerLeft + 1;
+	y = centerLeft + 1;
+	while ((x > centerLeft&& x < centerRight && y > centerLeft&& y < centerRight)
+		|| (abs(x - start_finish.first.first) + abs(y - start_finish.first.second)) < 4 * floorSize / 5)
+	// length of way have to be more floorSize * 4 / 5
+	{
+		auto coordinate = room[rand() % room.size()];
+		x = coordinate.first;
+		y = coordinate.second;
+	}
+	start_finish.second.first = x;
+	start_finish.second.second = y;
 }
 
 void CellularAutomata::Step()
@@ -200,8 +234,12 @@ void CellularAutomata::Show()
 	{
 		for (int j = 0; j < floorSize; ++j)
 		{
-
-			if (field[i][j])
+			if ((i == start_finish.first.first && 
+				j == start_finish.first.second)
+				|| (i == start_finish.second.first &&
+					j == start_finish.second.second))
+				SetConsoleTextAttribute(hConsole, (WORD)((2 << 4 | 2)));
+			else if (field[i][j])
 				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
 			else
 				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
