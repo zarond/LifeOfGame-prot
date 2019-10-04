@@ -7,7 +7,6 @@ class GameOfLife
 {
 private:
 	bool** fieldCopy;
-	bool** field;
 	bool* birth;
 	bool* survive;
 	int fHeight;
@@ -16,6 +15,7 @@ private:
 	bool isAlive(int, int) const;
 	bool isWall(int, int) const;
 public:
+	bool** field;
 	GameOfLife(const int, const int);
 	
 	bool CellStatusNextLoop(int, int) const;
@@ -30,5 +30,6 @@ public:
 	void SetBirthGene(const std::vector<bool>&);
 	void SetSurviveGene(const std::vector<bool>&);
 	void SetImmortalWalls(bool);
+	int SumAlive();
 };
 

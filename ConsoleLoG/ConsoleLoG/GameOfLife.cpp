@@ -8,7 +8,6 @@ GameOfLife::GameOfLife(const int width, const int height)
 	fWidth = width;
 	fHeight = height;
 	// initialization vectors and copy vectors
-
 	field = new bool* [fHeight];
 	fieldCopy = new bool* [fHeight];
 	for (size_t i = 0; i < fHeight; i++)
@@ -112,6 +111,7 @@ void GameOfLife::Loop()
 			//
 			bool cellStatusNextLoop = (birth[aliveNeighbors] && ~itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
 			if (immortalWalls) cellStatusNextLoop = cellStatusNextLoop || isWall(i, j);
+			
 			fieldCopy[i][j] = cellStatusNextLoop;
 			//
 		}
@@ -221,4 +221,17 @@ void GameOfLife::SetSurviveGene(const std::vector<bool>& gene)
 void GameOfLife::SetImmortalWalls(bool areImmortal)
 {
 	immortalWalls = areImmortal;
+}
+
+int GameOfLife::SumAlive()
+{
+	int sum = 0;
+	for (int i = 0; i < fHeight; ++i)
+	{
+		for (int j = 0; j < fWidth; ++j)
+		{
+			if (field[i][j]) sum++;
+		}
+	}
+	return sum;
 }
