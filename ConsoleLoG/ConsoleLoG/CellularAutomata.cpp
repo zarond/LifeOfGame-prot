@@ -4,6 +4,7 @@
 #include <math.h>
 #include <windows.h>
 #include <ctime>
+#include <algorithm>
 
 CellularAutomata::CellularAutomata(int size)
 {
@@ -192,34 +193,60 @@ void CellularAutomata::ConnectRooms()
 
 void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 {
-	// divide field on 9 equal parts 
+
+	// divide field on 9 equal parts for finding (x,y) out center part
 	int centerLeft = floorSize / 3 - 1;
 	int centerRight = floorSize - centerLeft;
+	double percentLength = 1.4;
+	// finding broad cells
+	auto broadcells = vectorOfIndex();
+	for (size_t i = 0; i < room.size(); i++)
+	{
+		auto cell = room[i];
+		int x = cell.first;
+		int y = cell.second;
+		if ((field[x + 1][y] || field[x - 1][y]
+			|| field[x][y + 1] || field[x][y - 1])
+			 && (x < centerLeft || x > centerRight || y < centerLeft || y > centerRight))
+			broadcells.push_back(cell);
+	}
 
 	std::srand(std::time(0));
-	int x = centerLeft + 1;
-	int y = centerLeft + 1;
-	// finding (x,y) out center part
-	while (x > centerLeft && x < centerRight && y > centerLeft&& y < centerRight)
-	{
-		auto coordinate = room[rand() % room.size()];
-		x = coordinate.first;
-		y = coordinate.second;
-	}
+
+	auto cell = broadcells[rand() % broadcells.size()];
+	int x = cell.first;
+	int y = cell.second;
+
+	std::sort(broadcells.begin(), broadcells.end(),
+		[x, y](std::pair<int, int> cell1, std::pair<int, int> cell2)
+		{
+			int dist1 = (x - cell1.first) * (x - cell1.first) +
+				abs(y - cell1.second) * abs(y - cell1.second);
+			int dist2 = (x - cell2.first) * (x - cell2.first) +
+				abs(y - cell2.second) * abs(y - cell2.second);
+			return dist1 > dist2;
+		});
+
+	// get from 20% most far
+	cell = broadcells[rand() % (broadcells.size() / 5)];
+	x = cell.first;
+	y = cell.second;
 	start_finish.first.first = x;
 	start_finish.first.second = y;
-	x = centerLeft + 1;
-	y = centerLeft + 1;
-	while ((x > centerLeft&& x < centerRight && y > centerLeft&& y < centerRight)
-		|| (abs(x - start_finish.first.first) + abs(y - start_finish.first.second)) < 4 * floorSize / 5)
-	// length of way have to be more floorSize * 4 / 5
-	{
-		auto coordinate = room[rand() % room.size()];
-		x = coordinate.first;
-		y = coordinate.second;
-	}
-	start_finish.second.first = x;
-	start_finish.second.second = y;
+
+	std::sort(broadcells.begin(), broadcells.end(),
+		[x, y](std::pair<int, int> cell1, std::pair<int, int> cell2)
+		{
+			int dist1 = (x - cell1.first) * (x - cell1.first) +
+				abs(y - cell1.second) * abs(y - cell1.second);
+			int dist2 = (x - cell2.first) * (x - cell2.first) +
+				abs(y - cell2.second) * abs(y - cell2.second);
+			return dist1 > dist2;
+		});
+
+	cell = broadcells[rand() % (broadcells.size() / 5)];
+	start_finish.second.first = cell.first;
+	start_finish.second.second = cell.second;
 }
 
 void CellularAutomata::Step()
