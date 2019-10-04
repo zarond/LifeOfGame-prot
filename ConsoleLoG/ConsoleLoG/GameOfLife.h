@@ -19,7 +19,8 @@ public:
 	GameOfLife(const int, const int);
 	
 	bool CellStatusNextLoop(int, int) const;
-	const bool* const* const GetField() const;
+	const bool* const* GetField() const;
+	bool** GetFieldCopy() const;
 	const boolXbool GetFieldVectors() const;
 	void Loop();
 	void Loop(const int);

@@ -34,8 +34,7 @@ bool GameOfLife::isAlive(int row, int column) const
 
 bool GameOfLife::isWall(int row, int column) const
 {
-	if (row == 0 || column == 0 || row == fHeight - 1 || column == fWidth - 1) return true;
-	else return false;
+	return (row == 0 || column == 0 || row == fHeight - 1 || column == fWidth - 1);
 }
 
 bool GameOfLife::CellStatusNextLoop(int row, int column) const
@@ -110,8 +109,8 @@ void GameOfLife::Loop()
 			itIsAlive = field[i][j];
 			//
 			bool cellStatusNextLoop = (birth[aliveNeighbors] && ~itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
-			if (immortalWalls) cellStatusNextLoop = cellStatusNextLoop || isWall(i, j);
-			
+			if (immortalWalls) // it can be faster
+				cellStatusNextLoop = cellStatusNextLoop || isWall(i, j);
 			fieldCopy[i][j] = cellStatusNextLoop;
 			//
 		}
@@ -129,9 +128,23 @@ void GameOfLife::Loop(const int count)
 	}
 }
 
-const bool*const* const GameOfLife::GetField() const
+const bool*const* GameOfLife::GetField() const
 {
 	return field;
+}
+
+bool** GameOfLife::GetFieldCopy() const
+{
+	auto exportField = new bool* [fHeight];
+	for (size_t i = 0; i < fHeight; i++)
+	{
+		exportField[i] = new bool[fWidth];
+		for (size_t j = 0; j < fWidth; j++)
+		{
+			exportField[i][j] = field[i][j];
+		}
+	}
+	return exportField;
 }
 
 const boolXbool GameOfLife::GetFieldVectors() const
@@ -164,7 +177,6 @@ void GameOfLife::Show() const
 		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
 		std::cout << std::endl;
 	}
-	
 }
 
 void GameOfLife::Summon(int row, int column)

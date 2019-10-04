@@ -1,4 +1,3 @@
-#include "GameOfLife.h"
 #include "CellularAutomata.h"
 #include <iostream>
 #include <ctime>
@@ -80,23 +79,6 @@ int main()
 	//gene[4] = true;
 	//gol.SetSurviveGene(gene);
 	//gene[0] = true;
-
-	////gol.SetBirthGene(gene);
-	//Pattern pattern = Pattern(1);
-	//for (size_t j = 0; j < 10; j++)
-	//{
-	//	for (size_t i = 0; i < 15; i++)
-	//	{
-	//		pattern = Pattern(2 * i + 1);
-	//		gol.InsertPattern(100 * j, i * 10, pattern);
-
-	//		pattern = Pattern(2 * i + 2);
-	//		gol.InsertPattern(100 * j + 50,  i * 10, pattern);
-	//	}
-	//}
-
-	//pattern = Pattern(31);
-	//gol.InsertPattern(0, 0, pattern);
 
 	clock_t time;
 	time = clock();

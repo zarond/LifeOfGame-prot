@@ -1,0 +1,138 @@
+#include "CellularAutomata.h"
+#include <iostream>
+#include <list>
+
+CellularAutomata::CellularAutomata(int size)
+{
+	floorSize = size;
+	gol = new GameOfLife(floorSize, floorSize);
+	auto rule = std::vector<bool>(countGenes, true);
+	rule[0] = false;
+	rule[1] = false;
+	rule[2] = false;
+	rule[3] = false;
+	gol->SetSurviveGene(rule);
+	rule[4] = false;
+	gol->SetBirthGene(rule);
+	rule[5] = false;
+	rule[6] = false;
+	gol->SetImmortalWalls(true);
+}
+
+void CellularAutomata::Generate()
+{
+	
+	for (size_t i = 0; i < floorSize; ++i)
+	{
+		for (size_t j = 0; j < floorSize; ++j)
+		{
+			if ((double)rand() / RAND_MAX < birthChance) gol->Summon(i, j); else gol->Kill(i, j);
+			if (i == 0 || j == 0 || i == floorSize - 1 || j == floorSize - 1) gol->Summon(i, j);
+		}
+	}
+	for (int i = 0; i < 20; ++i)
+		gol->Loop();
+	gol->Show();
+}
+
+vectorOfIndex CellularAutomata::GetRoom(int x, int y)
+{
+	auto room = vectorOfIndex();
+	room.push_back(std::pair<int, int>(x, y));
+	field[x][y] = true;
+	int countAddOnStep = 1;
+	// BFS
+	while (countAddOnStep > 0)
+	{
+		int currentStep = 0;
+		for (int i = room.size() - countAddOnStep; i < room.size(); ++i)
+		{
+			x = room[i].first;
+			y = room[i].second;
+			for (int j = -1; j < 2; j += 2)
+			{
+				if (~field[x + j][y])
+				{
+					field[x + j][y] = true;
+					room.push_back(std::pair<int, int>(x + j, y));
+					++currentStep;
+				}
+				if (~field[x][y + j])
+				{
+					field[x][y + j] = true;
+					room.push_back(std::pair<int, int>(x, y + j));
+					++currentStep;
+				}
+			}
+
+		}
+		countAddOnStep = currentStep;
+	}
+	return room;
+}
+
+void CellularAutomata::ConnectNearestRoom(vectorOfIndex& room, std::vector<vectorOfIndex>& rooms)
+{
+	// finding room to connect
+	int minDistance = floorSize * floorSize;
+	int indexInRoom = 0;
+	int indexInRooms = 0;
+	int indexInNearestRoom = 0;
+
+	for (size_t i = 0; i < rooms.size(); i++)
+	{
+		for (size_t j = 0; j < room.size(); j++)
+		{
+			for (size_t k = 0; k < rooms[i].size(); k++)
+			{
+				int x1 = room[j].first;
+				int y1 = room[j].second;
+				int x2 = rooms[i][k].first;
+				int y2 = rooms[i][k].second;
+
+				int dist = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+				if (minDistance > dist)
+				{
+
+				}
+			}
+		}
+	}
+
+}
+
+void CellularAutomata::ConnectRooms()
+{
+	field = gol->GetFieldCopy();
+	auto rooms = std::vector<vectorOfIndex>();
+	for (size_t i = 1; i < floorSize - 1; i++)
+	{
+		for (size_t j = 1; j < floorSize - 1; j++)
+		{
+			if (~field[i][j])
+			{
+				rooms.push_back(GetRoom(fileld, i, j));
+				ConnectTwoRooms(room, GetRoom(fileld, i, j));
+			}
+		}
+	}
+	if (rooms.size() == 0)
+	{
+		return
+	}
+	auto room = rooms.pop_back();
+	while (rooms.size > 0)
+	{
+		ConnectNearestRoom(room, rooms);
+	}
+}
+
+void CellularAutomata::Step()
+{
+	gol->Loop();
+}
+
+void CellularAutomata::Show()
+{
+	gol->Show();
+}
