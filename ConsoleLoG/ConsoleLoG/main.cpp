@@ -16,7 +16,7 @@ int main()
 	std::cout << (static_cast<float>(clock() - time)) / 1000 << "  sec\n";
 
 
-	auto gen = CellularAutomata(40);
+	auto gen = CellularAutomata(30,119);
 	//gen.Generate();
 
 
@@ -31,6 +31,9 @@ int main()
 		gen.Generate();
 		gen.Show();
 		std::cout << (static_cast<float>(clock() - time)) / 1000 << "  sec\n";
+		std::cout << gen.GetFloorHeight() << "  " << gen.GetFloorWidth() << std::endl;
+		std::cout << gen.GetStartFinishIndex().first.first << " " << gen.GetStartFinishIndex().first.second << std::endl;
+		std::cout << gen.GetStartFinishIndex().second.first << " " << gen.GetStartFinishIndex().second.second << std::endl;
 		//gol.Loop();
 		
 		system("pause");

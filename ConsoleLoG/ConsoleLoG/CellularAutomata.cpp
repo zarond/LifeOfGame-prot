@@ -6,10 +6,11 @@
 #include <ctime>
 #include <algorithm>
 
-CellularAutomata::CellularAutomata(int size)
+CellularAutomata::CellularAutomata(int height, int width)
 {
-	floorSize = size;
-	gol = new GameOfLife(floorSize, floorSize);
+	floorWidth = width;
+	floorHeight = height;
+	gol = new GameOfLife(floorWidth, floorHeight);
 	auto rule = std::vector<bool>(countGenes, true);
 	rule[0] = false;
 	rule[1] = false;
@@ -26,12 +27,12 @@ CellularAutomata::CellularAutomata(int size)
 void CellularAutomata::Generate()
 {
 	
-	for (size_t i = 0; i < floorSize; ++i)
+	for (size_t i = 0; i < floorHeight; ++i)
 	{
-		for (size_t j = 0; j < floorSize; ++j)
+		for (size_t j = 0; j < floorWidth; ++j)
 		{
 			if ((double)rand() / RAND_MAX < birthChance) gol->Summon(i, j); else gol->Kill(i, j);
-			if (i == 0 || j == 0 || i == floorSize - 1 || j == floorSize - 1) gol->Summon(i, j);
+			if (i == 0 || j == 0 || i == floorHeight - 1 || j == floorWidth - 1) gol->Summon(i, j);
 		}
 	}
 	for (int i = 0; i < 20; ++i)
@@ -118,7 +119,7 @@ vectorOfIndex CellularAutomata::GetRoom(int x, int y)
 void CellularAutomata::ConnectNearestRoom(vectorOfIndex& room, std::vector<vectorOfIndex>& rooms)
 {
 	// finding room to connect
-	int minDistance = floorSize * floorSize;
+	int minDistance = floorHeight * floorWidth;
 	int indexInRoom = 0;
 	int indexInRooms = 0;
 	int indexInNearestRoom = 0;
@@ -162,9 +163,9 @@ void CellularAutomata::ConnectRooms()
 {
 	field = gol->GetFieldCopy();
 	auto rooms = std::vector<vectorOfIndex>();
-	for (size_t i = 1; i < floorSize - 1; i++)
+	for (size_t i = 1; i < floorHeight - 1; i++)
 	{
-		for (size_t j = 1; j < floorSize - 1; j++)
+		for (size_t j = 1; j < floorWidth - 1; j++)
 		{
 			if (!field[i][j])
 			{
@@ -195,8 +196,8 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 {
 
 	// divide field on 9 equal parts for finding (x,y) out center part
-	int centerLeft = floorSize / 3 - 1;
-	int centerRight = floorSize - centerLeft;
+	int centerLeft = floorWidth / 3 - 1;
+	int centerRight = floorWidth - centerLeft;
 	double percentLength = 1.4;
 	// finding broad cells
 	auto broadcells = vectorOfIndex();
@@ -231,8 +232,8 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 	cell = broadcells[rand() % (broadcells.size() / 5)];
 	x = cell.first;
 	y = cell.second;
-	start_finish.first.first = x;
-	start_finish.first.second = y;
+	startAndFinish.first.first = x;
+	startAndFinish.first.second = y;
 
 	std::sort(broadcells.begin(), broadcells.end(),
 		[x, y](std::pair<int, int> cell1, std::pair<int, int> cell2)
@@ -245,8 +246,8 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 		});
 
 	cell = broadcells[rand() % (broadcells.size() / 5)];
-	start_finish.second.first = cell.first;
-	start_finish.second.second = cell.second;
+	startAndFinish.second.first = cell.first;
+	startAndFinish.second.second = cell.second;
 }
 
 void CellularAutomata::Step()
@@ -257,14 +258,14 @@ void CellularAutomata::Step()
 void CellularAutomata::Show()
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (int i = 0; i < floorSize; ++i)
+	for (int i = 0; i < floorHeight; ++i)
 	{
-		for (int j = 0; j < floorSize; ++j)
+		for (int j = 0; j < floorWidth; ++j)
 		{
-			if ((i == start_finish.first.first && 
-				j == start_finish.first.second)
-				|| (i == start_finish.second.first &&
-					j == start_finish.second.second))
+			if ((i == startAndFinish.first.first && 
+				j == startAndFinish.first.second)
+				|| (i == startAndFinish.second.first &&
+					j == startAndFinish.second.second))
 				SetConsoleTextAttribute(hConsole, (WORD)((2 << 4 | 2)));
 			else if (field[i][j])
 				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
@@ -275,4 +276,33 @@ void CellularAutomata::Show()
 		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
 		std::cout << std::endl;
 	}
+}
+
+bool** CellularAutomata::GetFloorMap() const
+{
+	auto exportField = new bool* [floorHeight];
+	for (size_t i = 0; i < floorHeight; i++)
+	{
+		exportField[i] = new bool[floorWidth];
+		for (size_t j = 0; j < floorWidth; j++)
+		{
+			exportField[i][j] = field[i][j];
+		}
+	}
+	return exportField;
+}
+
+start_finish CellularAutomata::GetStartFinishIndex() const
+{
+	return startAndFinish;
+}
+
+int CellularAutomata::GetFloorWidth() const
+{
+	return floorWidth;
+}
+
+int CellularAutomata::GetFloorHeight() const
+{
+	return floorHeight;
 }

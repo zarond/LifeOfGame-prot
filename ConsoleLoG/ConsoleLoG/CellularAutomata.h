@@ -12,38 +12,22 @@ class CellularAutomata
 private:
 	GameOfLife* gol;
 	bool** field;
-	start_finish start_finish;
-	int floorSize;
+	start_finish startAndFinish;
+	int floorWidth;
+	int floorHeight;
 	void CreateLine(vectorOfIndex&, int, int, int, int);
 	vectorOfIndex GetRoom(int, int);
 	void ConnectNearestRoom(vectorOfIndex&, std::vector<vectorOfIndex>&);
 	void ConnectRooms();
 	void CreateStartFinish(vectorOfIndex&);
 public:
-	CellularAutomata(int size);
+	CellularAutomata(int height, int width);
 	void Generate();
 	void Step();
 	void Show();
+
+	bool** GetFloorMap() const;
+	start_finish GetStartFinishIndex() const;
+	int GetFloorWidth() const;
+	int GetFloorHeight() const;
 };
-
-/* 
-struct cell
-{
-	floor id
-	object/enemy
-	wallidright
-	walliddown
-
-
-
-
-}
-
-
-
-
-
-
-
-
-*/
