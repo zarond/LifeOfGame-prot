@@ -10,7 +10,18 @@ UCLASS()
 class PROTOTYPE_API AMyActor : public AActor
 {
 	GENERATED_BODY()
-	
+
+private:
+	bool **Matrix;
+	int Width;
+	int Height;
+	FVector *ArrayOfEnemies;
+	FVector* ArrayOfBlocks;
+	int NumberOfEnemies;
+	int NumberOfBlocks;
+	FVector Start;
+	FVector Finish;
+
 public:	
 	// Sets default values for this actor's properties
 	AMyActor();
@@ -22,7 +33,30 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	UFUNCTION(BlueprintCallable, Category = "Game")
-	void Test();
+	/*UFUNCTION(BlueprintCallable, Category = "Game")
+	void Test();*/
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	bool GetCell(int i, int j);
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	void GenerateLevel();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	int GetWidth();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	int GetHeight();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	int GetNumberOfEnemies();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	FVector GetEnemyPosition(int i);
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	int GetNumberOfBlocks();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	FVector GetBlockPosition(int i);
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	FVector GetStartPosition();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	FVector GetFinishPosition();
+
 
 };
