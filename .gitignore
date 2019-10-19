@@ -78,6 +78,7 @@ DerivedDataCache/
 # Ds_Store files (from Mac OS)
 *.DS_Store
 
+
 *.log
 
 *.idb
@@ -89,3 +90,4 @@ DerivedDataCache/
 *.lastbuildstate
 
 *.tlog
+
