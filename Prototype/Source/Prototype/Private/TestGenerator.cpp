@@ -169,7 +169,7 @@ TestGenerator::FVector* TestGenerator::GetStartAndFinish() {
 		do {
 			k = Width - 1;
 			l = rand() % Height;
-		} while (!(!Cells[k][l].isBlock && !Cells[k][l].isEnemy && !Cells[k][l].isStart && !Cells[k][l].isFinish && abs(oldl - l) > Height / 2));
+		} while (!(!Cells[k][l].isBlock && !Cells[k][l].isEnemy && !Cells[k][l].isStart && !Cells[k][l].isFinish && abs(oldl - l) > Height / 4));
 		Points[1].X = k;
 		Points[1].Y = l;
 		Points[1].Z = 0;
@@ -191,7 +191,7 @@ TestGenerator::FVector* TestGenerator::GetStartAndFinish() {
 		do {
 			k = rand() % Width;
 			l = 0;
-		} while (!(!Cells[k][l].isBlock && !Cells[k][l].isEnemy && !Cells[k][l].isStart && !Cells[k][l].isFinish && abs(oldk - k) > Width / 2));
+		} while (!(!Cells[k][l].isBlock && !Cells[k][l].isEnemy && !Cells[k][l].isStart && !Cells[k][l].isFinish && abs(oldk - k) > Width / 4));
 		Points[1].X = k;
 		Points[1].Y = l;
 		Points[1].Z = 0;
@@ -213,7 +213,7 @@ TestGenerator::FVector* TestGenerator::GetStartAndFinish() {
 		do {
 			k = 0;
 			l = rand() % Height;
-		} while (!(!Cells[k][l].isBlock && !Cells[k][l].isEnemy && !Cells[k][l].isStart && !Cells[k][l].isFinish && abs(oldl - l) > Height / 2));
+		} while (!(!Cells[k][l].isBlock && !Cells[k][l].isEnemy && !Cells[k][l].isStart && !Cells[k][l].isFinish && abs(oldl - l) > Height / 4));
 		Points[1].X = k;
 		Points[1].Y = l;
 		Points[1].Z = 0;
@@ -235,7 +235,7 @@ TestGenerator::FVector* TestGenerator::GetStartAndFinish() {
 		do {
 			k = rand() % Width;
 			l = Height - 1;
-		} while (!(!Cells[k][l].isBlock && !Cells[k][l].isEnemy && !Cells[k][l].isStart && !Cells[k][l].isFinish && abs(oldk - k) > Width / 2));
+		} while (!(!Cells[k][l].isBlock && !Cells[k][l].isEnemy && !Cells[k][l].isStart && !Cells[k][l].isFinish && abs(oldk - k) > Width / 4));
 		Points[1].X = k;
 		Points[1].Y = l;
 		Points[1].Z = 0;
