@@ -1,2 +1,0 @@
-D:\GIT\LifeOfGame-prot\LoG\Intermediate\Build\Win64\UE4Editor\Development\LoG\Definitions.LoG.h
-D:\GIT\LifeOfGame-prot\LoG\Source\LoG\GameOfLife.h
