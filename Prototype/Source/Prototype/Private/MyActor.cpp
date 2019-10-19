@@ -43,15 +43,17 @@ void AMyActor::GenerateLevel() {
 	Start[0] = points[0].X; Start[1] = points[0].Y; Start[2] = points[0].Z;
 	Finish[0] = points[1].X; Finish[1] = points[1].Y; Finish[2] = points[1].Z;
 	
-	/*points = Generator.GetArrayOfEnemies();
-	for (int j = 0; j < NumberOfEnemies; ++j) {
-		ArrayOfEnemies[j][0] = points[j].X;
-		ArrayOfEnemies[j][1] = points[j].Y;
-		ArrayOfEnemies[j][2] = points[j].Z;
-	}*/
+	points = Generator.GetArrayOfEnemies();
+	ArrayOfEnemies = new FVector[NumberOfEnemies];
+	for (int i = 0; i < NumberOfEnemies; ++i) {
+		ArrayOfEnemies[i][0] = points[i].X;
+		ArrayOfEnemies[i][1] = points[i].Y;
+		ArrayOfEnemies[i][2] = points[i].Z;
+	}
 
 	/*points = Generator.GetArrayOfBlocks();
-	for (int j = 0; j < NumberOfEnemies; ++j) {
+	ArrayOfBlocks = new FVector[NumberOfBlocks];
+	for (int j = 0; j < NumberOfBlocks; ++j) {
 		ArrayOfBlocks[j][0] = points[j].X;
 		ArrayOfBlocks[j][1] = points[j].Y;
 		ArrayOfBlocks[j][2] = points[j].Z;
