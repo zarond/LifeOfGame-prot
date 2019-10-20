@@ -3,6 +3,7 @@
 
 #include "MyActor.h"
 #include "TestGenerator.h"
+#include "CellularAutomata.h"
 
 // Sets default values
 AMyActor::AMyActor()
@@ -33,15 +34,26 @@ void AMyActor::Tick(float DeltaTime)
 void AMyActor::GenerateLevel() {
 	//TestGenerator Generator;
 	TestGenerator Generator(16, 32);
-	Width = Generator.GetWidth();
-	Height = Generator.GetHeight();
-	Matrix = Generator.GetBlocks();
+	CellularAutomata gen(20, 20);
+	gen.Generate();
+	Width = gen.GetFloorWidth();
+	Height = gen.GetFloorHeight();
+	Matrix = gen.GetFloorMap();
 	NumberOfEnemies = Generator.GetNumberOfEnemies();
 	NumberOfBlocks = Generator.GetNumberOfBlocks();
 
-	TestGenerator::FVector* points = Generator.GetStartAndFinish();
-	Start[0] = points[0].X; Start[1] = points[0].Y; Start[2] = points[0].Z;
-	Finish[0] = points[1].X; Finish[1] = points[1].Y; Finish[2] = points[1].Z;
+	//TestGenerator::FVector* points = Generator.GetStartAndFinish();
+	
+	//Start[0] = points[0].X; Start[1] = points[0].Y; Start[2] = points[0].Z;
+	//Finish[0] = points[1].X; Finish[1] = points[1].Y; Finish[2] = points[1].Z;
+	
+	start_finish sf = gen.GetStartFinishIndex();
+	Start[0] = sf.first.first;
+	Start[1] = sf.first.second;
+	Start[2] = 0;
+	Finish[0] = sf.second.first;
+	Finish[1] = sf.second.second;
+	Finish[2] = 0;
 	
 	points = Generator.GetArrayOfEnemies();
 	ArrayOfEnemies = new FVector[NumberOfEnemies];
