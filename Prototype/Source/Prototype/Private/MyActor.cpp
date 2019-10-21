@@ -2,7 +2,6 @@
 
 
 #include "MyActor.h"
-#include "TestGenerator.h"
 #include "CellularAutomata.h"
 
 // Sets default values
@@ -27,26 +26,24 @@ void AMyActor::Tick(float DeltaTime)
 
 }
 
-/*void AMyActor::Test() {
-	UE_LOG(LogTemp, Warning, TEXT("Global Actor Func"));
-}*/
-
-void AMyActor::GenerateLevel() {
-	//TestGenerator Generator;
-	TestGenerator Generator(16, 32);
-	CellularAutomata gen(20, 20);
+void AMyActor::GenerateLevel(int h, int w) {
+	CellularAutomata gen(h, w);
 	gen.Generate();
 	Width = gen.GetFloorWidth();
 	Height = gen.GetFloorHeight();
-	Matrix = gen.GetFloorMap();
-	NumberOfEnemies = Generator.GetNumberOfEnemies();
-	NumberOfBlocks = Generator.GetNumberOfBlocks();
+	bool** _Matrix = gen.GetFloorMap();
+	NumberOfEnemies = gen.GetNumberOfEnemies();
+	NumberOfBlocks = gen.GetNumberOfBlocks();
+	
+	Matrix = new Cell * [Height];
+	for (int i = 0; i < Height; ++i) {
+		Matrix[i] = new Cell[Width];
+		for (int j = 0; j < Width; ++j) {
+			Matrix[i][j].floorID = 1;
+			Matrix[i][j].isOccupied = _Matrix[i][j] ? 1 : 0;
+		}
+	}
 
-	//TestGenerator::FVector* points = Generator.GetStartAndFinish();
-	
-	//Start[0] = points[0].X; Start[1] = points[0].Y; Start[2] = points[0].Z;
-	//Finish[0] = points[1].X; Finish[1] = points[1].Y; Finish[2] = points[1].Z;
-	
 	start_finish sf = gen.GetStartFinishIndex();
 	Start[0] = sf.first.first;
 	Start[1] = sf.first.second;
@@ -55,25 +52,31 @@ void AMyActor::GenerateLevel() {
 	Finish[1] = sf.second.second;
 	Finish[2] = 0;
 	
-	points = Generator.GetArrayOfEnemies();
+	vectorOfIndex points = gen.GetArrayOfEnemies();
 	ArrayOfEnemies = new FVector[NumberOfEnemies];
 	for (int i = 0; i < NumberOfEnemies; ++i) {
-		ArrayOfEnemies[i][0] = points[i].X;
-		ArrayOfEnemies[i][1] = points[i].Y;
-		ArrayOfEnemies[i][2] = points[i].Z;
+		ArrayOfEnemies[i][0] = points[i].first;
+		ArrayOfEnemies[i][1] = points[i].second;
+		ArrayOfEnemies[i][2] = 0;
+		Matrix[points[i].first][points[i].second].isOccupied = 2;
 	}
 
-	/*points = Generator.GetArrayOfBlocks();
+	/*vectorOfIndex points = gen.GetArrayOfBlocks();
 	ArrayOfBlocks = new FVector[NumberOfBlocks];
-	for (int j = 0; j < NumberOfBlocks; ++j) {
-		ArrayOfBlocks[j][0] = points[j].X;
-		ArrayOfBlocks[j][1] = points[j].Y;
-		ArrayOfBlocks[j][2] = points[j].Z;
+	for (int i = 0; i < NumberOfBlocks; ++i) {
+		ArrayOfBlocks[i][0] = points[i].first;
+		ArrayOfBlocks[i][1] = points[i].second;
+		ArrayOfBlocks[i][2] = 0;
+		Matrix[points[i].first][points[i].second].isOccupied = 1;
 	}*/
 }
 
-bool AMyActor::GetCell(int i, int j) {
-	return Matrix[i][j];
+int AMyActor::GetCell_IsOccupied(int i, int j) {
+	return Matrix[i][j].isOccupied;
+}
+
+void AMyActor::SetCell_IsOccupied(int i, int j, int ch) {
+	Matrix[i][j].isOccupied = ch;
 }
 
 int AMyActor::GetWidth() {

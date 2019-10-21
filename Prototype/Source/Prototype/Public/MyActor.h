@@ -11,8 +11,14 @@ class PROTOTYPE_API AMyActor : public AActor
 {
 	GENERATED_BODY()
 
+public:
+	struct Cell {
+		unsigned char isOccupied;
+		unsigned char floorID;
+	};
+
 private:
-	bool **Matrix;
+	Cell **Matrix;
 	int Width;
 	int Height;
 	FVector *ArrayOfEnemies;
@@ -33,14 +39,14 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	/*UFUNCTION(BlueprintCallable, Category = "Game")
-	void Test();*/
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	bool GetCell(int i, int j);
+	int GetCell_IsOccupied(int i, int j);
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	void GenerateLevel();
+	void SetCell_IsOccupied(int i, int j, int ch);
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	void GenerateLevel(int h, int w);
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	int GetWidth();
 	UFUNCTION(BlueprintCallable, Category = "Game Field")

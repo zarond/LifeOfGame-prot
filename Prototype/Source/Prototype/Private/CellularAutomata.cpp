@@ -307,3 +307,61 @@ int CellularAutomata::GetFloorHeight() const
 {
 	return floorHeight;
 }
+
+////
+
+int CellularAutomata::GetNumberOfEnemies() const  {
+	return floorHeight * floorWidth / 50 + 1;
+}
+
+int CellularAutomata::GetNumberOfBlocks() const  {
+	int counter = 0;
+	for (int i = 0; i < floorHeight; ++i) {
+		for (int j = 0; j < floorWidth; ++j) {
+			counter += field[i][j] ? 1 : 0;
+		}
+	}
+	return counter;
+}
+
+vectorOfIndex CellularAutomata::GetArrayOfEnemies() const {
+	srand(time(NULL));
+
+	bool** matrix = new bool* [floorHeight];
+	for (int i = 0; i < floorHeight; ++i) {
+		matrix[i] = new bool[floorWidth];
+		for (int j = 0; j < floorWidth; ++j) {
+			matrix[i][j] = false;
+		}
+	}
+
+	int count = GetNumberOfEnemies();
+	int k, l;
+
+	auto ArrayOfEnemies = vectorOfIndex();
+	for (int counter = 0; counter < count; ++counter) {
+		k = rand() % floorHeight;
+		l = rand() % floorWidth;
+		if (!field[k][l] && !matrix[k][l]) {
+			matrix[k][l] = true;
+			ArrayOfEnemies.push_back(std::pair<int, int>(k, l));
+		}
+		else --counter;
+	}
+
+	for (int i = 0; i < floorHeight; ++i) delete[] matrix[i];
+	delete[] matrix;
+
+	return ArrayOfEnemies;
+}
+
+vectorOfIndex CellularAutomata::GetArrayOfBlocks() const {
+	int count = GetNumberOfBlocks();
+	auto arrayOfBlocks = vectorOfIndex();
+	for (int i = 0; i < floorHeight; ++i) {
+		for (int j = 0; j < floorWidth; ++j) {
+			if (field[i][j]) arrayOfBlocks.push_back(std::pair<int, int>(i, j));
+		}
+	}
+	return arrayOfBlocks;
+}
