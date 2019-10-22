@@ -1,6 +1,6 @@
 #include "GameOfLife.h"
 //#include <windows.h>
-#include "Windows/MinWindows.h"
+//#include "Windows/MinWindows.h"
 #include <iostream>
 
 
