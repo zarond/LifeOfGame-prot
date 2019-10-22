@@ -111,3 +111,8 @@ FVector AMyActor::GetFinishPosition() {
 	return Finish;
 }
 
+bool AMyActor::CheckIfBlocked(FIntVector coord) {
+	if (coord[0] < 0 || coord[0] >= Height || coord[1] < 0 || coord[1] >= Width) return false;
+	if (Matrix[coord[0]][coord[1]].isOccupied == 0) return true;
+	else return false;
+}

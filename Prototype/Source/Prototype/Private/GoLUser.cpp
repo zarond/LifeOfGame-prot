@@ -4,7 +4,12 @@
 #include "GoLUser.h"
 
 // Sets default values
-AGoLUser::AGoLUser(const int width, const int height)
+AGoLUser::AGoLUser()
+{
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+}
+/*AGoLUser::AGoLUser(const int width, const int height)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -28,9 +33,9 @@ void AGoLUser::UpdateWorld()
 	const bool* const* Field = GOL->GetField();
 	for (int i=0;i<_height;++i)
 		for (int j = 0; j < _width; ++j) {
-			Field[1][2] == false;
+			//Field[1][2] = false;
 		}
-}
+}*/
 
 // Called when the game starts or when spawned
 void AGoLUser::BeginPlay()

@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include "GameOfLife.cpp"
-
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GoLUser.generated.h"
@@ -15,15 +13,16 @@ class PROTOTYPE_API AGoLUser : public AActor
 	
 public:	
 	// Sets default values for this actor's properties
-	AGoLUser(const int width, const int height);
-	~AGoLUser();
-	void UpdateWorld();
+	AGoLUser();
+	//AGoLUser(const int width, const int height);
+	//~AGoLUser();
+	/*void UpdateWorld();
 	
 
 	GameOfLife* GOL;
 	TArray<AActor*> LavaPieces;
 	int _width;
-	int _height;
+	int _height;*/
 
 protected:
 	// Called when the game starts or when spawned
