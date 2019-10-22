@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "NavButtonsComponent.h"
 
 // Sets default values for this component's properties
@@ -14,25 +13,57 @@ UNavButtonsComponent::UNavButtonsComponent()
     
     Parent = GetOwner();
     //NavComp = Cast<UNavigationComponent>(Parent->GetComponentByClass(UNavigationComponent::StaticClass()));
-    NavComp = Parent->FindComponentByClass<UNavigationComponent>();
+	if (Parent!=NULL)	NavComp = Parent->FindComponentByClass<UNavigationComponent>();
 }
 
 void UNavButtonsComponent::UpdateButtons(){
-    Buttons.Empty();
+	for (int i = 0; i < Buttons.Num(); ++i) Buttons[i]->Destroy();
+	Buttons.Empty();
     int R = NavComp->R;
     if (NavComp->field == nullptr) return;
     for (int i=0;i<2*R+1;++i)
         for (int j=0;j<2*R+1;++j){
-            if (NavComp->field[i][j].steps!= 255) {
-                FVector Location = GetActorLocation();
-                Location.X += (i-R)*100.0f;
-                Location.Y += (j-R)*100.0f;
+            if (NavComp->field[i][j].steps <= R) {
+                FVector Location = this->Parent->GetActorLocation();
+                Location.Y += (i-R)*100.0f;
+                Location.X += (j-R)*100.0f;
+				//Location.Z += 100.0f;
                 FActorSpawnParameters SpawnInfo;
-                AActor* tmp = GetWorld()->SpawnActor(Location,FRotator::ZeroRotator);
+				FRotator rot = FRotator::ZeroRotator;
+				switch (NavComp->field[i][j].direction) {
+					case 0:
+						//rot = FRotator::ZeroRotator;
+						rot.Yaw = 0;
+						break;
+					case 1:
+						rot.Yaw = -90;
+						break;
+					case 2:
+						rot.Yaw = 180;
+						break;
+					case 3:
+						rot.Yaw = 90;
+						break;	
+				}
+				//ANavButton* tmp = GetWorld()->SpawnActor(ButtonToSpawn.Get(),Location, FRotator::ZeroRotator, SpawnInfo);
+				ANavButton* tmp = (ANavButton*) GetWorld()->SpawnActor(ButtonToSpawn, &Location, &rot, SpawnInfo);
+				if (tmp == NULL) return;
+				tmp->x = i - R;
+				tmp->y = j - R;
+				tmp->steps = NavComp->field[i][j].steps;
+				#if WITH_EDITOR
+				tmp->SetFolderPath("SpawnedActors/NavButtons");  // полезная фича
+				#endif
                 Buttons.Add(tmp);
             }
         }
+	//Buttons.Num();
 }
+
+//void UNavButtonsComponent::SetNavButton(ANavButton * Button)
+//{
+//	ButtonToSpawn = Button;
+//}
 
 
 // Called when the game starts

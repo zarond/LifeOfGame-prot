@@ -2,7 +2,9 @@
 
 #pragma once
 
+#include "Engine/World.h"
 #include "NavigationComponent.h"
+#include "NavButton.h"
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "NavButtonsComponent.generated.h"
@@ -16,13 +18,16 @@ class PROTOTYPE_API UNavButtonsComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UNavButtonsComponent();
-    TArray<AActor*> Buttons;
+    TArray<ANavButton*> Buttons;
     UNavigationComponent* NavComp;
     AActor* Parent;
-    UPROPERTY(EditAnywhere)
-    AActor* ButtonToSpawn;
+    UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<ANavButton> ButtonToSpawn;
     
+	UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
     void UpdateButtons();
+	//UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
+	//void SetNavButton(ANavButton* Button);
 
 protected:
 	// Called when the game starts
