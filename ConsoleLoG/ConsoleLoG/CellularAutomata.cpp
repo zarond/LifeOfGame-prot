@@ -24,24 +24,44 @@ CellularAutomata::CellularAutomata(int height, int width)
 	gol->SetImmortalWalls(true);
 }
 
-void CellularAutomata::Generate()
+CellularAutomata::~CellularAutomata()
+{
+	if (field != nullptr)
+	{
+		for (int i = 0; i < floorHeight; i++)
+		{
+			delete[] field[i];
+		}
+		delete[] field;
+	}
+	if (gol != nullptr)
+		delete gol;
+}
+
+GameField* CellularAutomata::Generate()
 {
 	
-	for (size_t i = 0; i < floorHeight; ++i)
-	{
-		for (size_t j = 0; j < floorWidth; ++j)
+	for (int i = 0; i < floorHeight; ++i)
+		for (int j = 0; j < floorWidth; ++j)
 		{
-			if ((double)rand() / RAND_MAX < birthChance) gol->Summon(i, j); else gol->Kill(i, j);
-			if (i == 0 || j == 0 || i == floorHeight - 1 || j == floorWidth - 1) gol->Summon(i, j);
+			if ((double)rand() / RAND_MAX < birthChance) 
+				gol->SetCell(i, j, true);
+			else 
+				gol->SetCell(i, j, false);
+			if (i == 0 || j == 0 || i == floorHeight - 1 || j == floorWidth - 1)
+				gol->SetCell(i, j, true);
 		}
-	}
+
 	for (int i = 0; i < 20; ++i)
 		gol->Loop();
 	
 	ConnectRooms();
+	auto game = new GameField(field, floorHeight, floorWidth, startAndFinish);
+	field = nullptr;
+	return game;
 }
 
-void CellularAutomata::CreateLine(vectorOfIndex& room, int x1, int y1, int x2, int y2)
+void CellularAutomata::ConnectTwoRooms(vector_cord_t& room, int x1, int y1, int x2, int y2)
 {
 	int dx = 0;
 	if (x1 != x2)
@@ -63,7 +83,7 @@ void CellularAutomata::CreateLine(vectorOfIndex& room, int x1, int y1, int x2, i
 			{
 				if (field[x1 + k][y1 + t])
 				{
-					room.push_back(std::pair<int, int>(x1 + k, y1 + t));
+					room.push_back(cord_t(x1 + k, y1 + t));
 					field[x1 + k][y1 + t] = false;
 				}
 			}
@@ -79,10 +99,10 @@ void CellularAutomata::CreateLine(vectorOfIndex& room, int x1, int y1, int x2, i
 	}	
 }
 
-vectorOfIndex CellularAutomata::GetRoom(int x, int y)
+vector_cord_t CellularAutomata::GetRoom(int x, int y)
 {
-	auto room = vectorOfIndex();
-	room.push_back(std::pair<int, int>(x, y));
+	auto room = vector_cord_t();
+	room.push_back(cord_t(x, y));
 	field[x][y] = true;
 	int countAddOnStep = 1;
 	// BFS
@@ -99,13 +119,13 @@ vectorOfIndex CellularAutomata::GetRoom(int x, int y)
 				if (!field[x + j][y])
 				{
 					field[x + j][y] = true;
-					room.push_back(std::pair<int, int>(x + j, y));
+					room.push_back(cord_t(x + j, y));
 					++currentStep;
 				}
 				if (!field[x][y + j])
 				{
 					field[x][y + j] = true;
-					room.push_back(std::pair<int, int>(x, y + j));
+					room.push_back(cord_t(x, y + j));
 					++currentStep;
 				}
 			}
@@ -116,7 +136,7 @@ vectorOfIndex CellularAutomata::GetRoom(int x, int y)
 	return room;
 }
 
-void CellularAutomata::ConnectNearestRoom(vectorOfIndex& room, std::vector<vectorOfIndex>& rooms)
+void CellularAutomata::ConnectNearestRoom(vector_cord_t& room, std::vector<vector_cord_t>& rooms)
 {
 	// finding room to connect
 	int minDistance = floorHeight * floorWidth;
@@ -124,11 +144,11 @@ void CellularAutomata::ConnectNearestRoom(vectorOfIndex& room, std::vector<vecto
 	int indexInRooms = 0;
 	int indexInNearestRoom = 0;
 
-	for (size_t i = 0; i < rooms.size(); i++)
+	for (size_t i = 0; i < rooms.size(); ++i)
 	{
-		for (size_t j = 0; j < room.size(); j++)
+		for (size_t j = 0; j < room.size(); ++j)
 		{
-			for (size_t k = 0; k < rooms[i].size(); k++)
+			for (size_t k = 0; k < rooms[i].size(); ++k)
 			{
 				int x1 = room[j].first;
 				int y1 = room[j].second;
@@ -155,17 +175,17 @@ void CellularAutomata::ConnectNearestRoom(vectorOfIndex& room, std::vector<vecto
 	room.insert(room.end(), rooms[indexInRooms].begin(), rooms[indexInRooms].end());
 	rooms.erase(rooms.cbegin() + indexInRooms);
 
-	CreateLine(room, x1, y1, x2, y2);
+	ConnectTwoRooms(room, x1, y1, x2, y2);
 
 }
 
 void CellularAutomata::ConnectRooms()
 {
 	field = gol->GetFieldCopy();
-	auto rooms = std::vector<vectorOfIndex>();
-	for (size_t i = 1; i < floorHeight - 1; i++)
+	auto rooms = std::vector<vector_cord_t>();
+	for (int i = 1; i < floorHeight - 1; i++)
 	{
-		for (size_t j = 1; j < floorWidth - 1; j++)
+		for (int j = 1; j < floorWidth - 1; j++)
 		{
 			if (!field[i][j])
 			{
@@ -178,7 +198,7 @@ void CellularAutomata::ConnectRooms()
 			}
 		}
 	}
-	field = gol->GetFieldCopy();
+	gol->GetFieldCopy(field);
 	if (rooms.size() == 0)
 	{
 		return;
@@ -192,7 +212,7 @@ void CellularAutomata::ConnectRooms()
 	CreateStartFinish(room);
 }
 
-void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
+void CellularAutomata::CreateStartFinish(vector_cord_t& room)
 {
 
 	// divide field on 9 equal parts for finding (x,y) out center part
@@ -200,8 +220,8 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 	int centerRight = floorWidth - centerLeft;
 	double percentLength = 1.4;
 	// finding broad cells
-	auto broadcells = vectorOfIndex();
-	for (size_t i = 0; i < room.size(); i++)
+	auto broadcells = vector_cord_t();
+	for (size_t i = 0; i < room.size(); ++i)
 	{
 		auto cell = room[i];
 		int x = cell.first;
@@ -212,14 +232,14 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 			broadcells.push_back(cell);
 	}
 
-	std::srand(std::time(0));
+	std::srand((unsigned int)std::time(0));
 
 	auto cell = broadcells[rand() % broadcells.size()];
 	int x = cell.first;
 	int y = cell.second;
 
 	std::sort(broadcells.begin(), broadcells.end(),
-		[x, y](std::pair<int, int> cell1, std::pair<int, int> cell2)
+		[x, y](cord_t cell1, cord_t cell2)
 		{
 			int dist1 = (x - cell1.first) * (x - cell1.first) +
 				abs(y - cell1.second) * abs(y - cell1.second);
@@ -236,7 +256,7 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 	startAndFinish.first.second = y;
 
 	std::sort(broadcells.begin(), broadcells.end(),
-		[x, y](std::pair<int, int> cell1, std::pair<int, int> cell2)
+		[x, y](cord_t cell1, cord_t cell2)
 		{
 			int dist1 = (x - cell1.first) * (x - cell1.first) +
 				abs(y - cell1.second) * abs(y - cell1.second);
@@ -248,11 +268,6 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 	cell = broadcells[rand() % (broadcells.size() / 5)];
 	startAndFinish.second.first = cell.first;
 	startAndFinish.second.second = cell.second;
-}
-
-void CellularAutomata::Step()
-{
-	gol->Loop();
 }
 
 void CellularAutomata::Show()
@@ -276,33 +291,4 @@ void CellularAutomata::Show()
 		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
 		std::cout << std::endl;
 	}
-}
-
-bool** CellularAutomata::GetFloorMap() const
-{
-	auto exportField = new bool* [floorHeight];
-	for (size_t i = 0; i < floorHeight; i++)
-	{
-		exportField[i] = new bool[floorWidth];
-		for (size_t j = 0; j < floorWidth; j++)
-		{
-			exportField[i][j] = field[i][j];
-		}
-	}
-	return exportField;
-}
-
-start_finish CellularAutomata::GetStartFinishIndex() const
-{
-	return startAndFinish;
-}
-
-int CellularAutomata::GetFloorWidth() const
-{
-	return floorWidth;
-}
-
-int CellularAutomata::GetFloorHeight() const
-{
-	return floorHeight;
 }

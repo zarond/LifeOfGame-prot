@@ -6,22 +6,22 @@ typedef std::vector<std::vector<bool>> boolXbool;
 class Pattern
 {
 private:
-	size_t id = 0;
+	int id = 0;
 	std::string name = "";
 	boolXbool pattern;
-	size_t height = 0;
-	size_t width = 0;
+	int height = 0;
+	int width = 0;
 
-	static boolXbool PreparePatrernArr(const std::string&, size_t, size_t);
+	static boolXbool PreparePatrernArr(const std::string&, int, int);
 
 	bool IsCorrectInput(const std::string&);
 public:
 	Pattern(std::string&);
 	Pattern(int);
 	
-	size_t Height()const;
-	size_t Width()const;
-	size_t ID()const;
+	int Height()const;
+	int Width()const;
+	int ID()const;
 	boolXbool GetPattern() const;
 	std::string Name() const;
 	void Rotate();

@@ -11,7 +11,7 @@ GameOfLife::GameOfLife(const int width, const int height)
 
 	field = new bool* [fHeight];
 	fieldCopy = new bool* [fHeight];
-	for (size_t i = 0; i < fHeight; i++)
+	for (int i = 0; i < fHeight; i++)
 	{
 		field[i] = new bool[fWidth] {false};
 		fieldCopy[i] = new bool[fWidth] {false};
@@ -69,7 +69,7 @@ bool GameOfLife::CellStatusNextLoop(int row, int column) const
 	if (column >= fWidth) column -= fWidth;
 	itIsAlive = field[row][column];
 	// approving with rules
-	return (birth[aliveNeighbors] && ~itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
+	return (birth[aliveNeighbors] && !itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
 }
 
 void GameOfLife::Loop()
@@ -137,10 +137,10 @@ const bool*const* GameOfLife::GetField() const
 bool** GameOfLife::GetFieldCopy() const
 {
 	auto exportField = new bool* [fHeight];
-	for (size_t i = 0; i < fHeight; i++)
+	for (int i = 0; i < fHeight; i++)
 	{
 		exportField[i] = new bool[fWidth];
-		for (size_t j = 0; j < fWidth; j++)
+		for (int j = 0; j < fWidth; j++)
 		{
 			exportField[i][j] = field[i][j];
 		}
@@ -148,12 +148,19 @@ bool** GameOfLife::GetFieldCopy() const
 	return exportField;
 }
 
+void GameOfLife::GetFieldCopy(bool** exportField) const
+{
+	for (int i = 0; i < fHeight; i++)
+		for (int j = 0; j < fWidth; j++)
+			exportField[i][j] = field[i][j];
+}
+
 const boolXbool GameOfLife::GetFieldVectors() const
 {
 	auto exportField = boolXbool(fHeight, std::vector<bool>(fWidth));
-	for (size_t i = 0; i < fHeight; i++)
+	for (int i = 0; i < fHeight; i++)
 	{
-		for (size_t j = 0; j < fWidth; j++)
+		for (int j = 0; j < fWidth; j++)
 		{
 			exportField[i][j] = field[i][j];
 		}
@@ -180,36 +187,27 @@ void GameOfLife::Show() const
 	}
 }
 
-void GameOfLife::Summon(int row, int column)
+void GameOfLife::SetCell(int row, int column, bool cell)
 {
 	if (row < 0) row += fHeight;
 	if (row >= fHeight) row -= fHeight;
 	if (column < 0) column += fWidth;
 	if (column >= fWidth) column -= fWidth;
-	field[row][column] = true;
-}
-
-void GameOfLife::Kill(int row, int column)
-{
-	if (row < 0) row += fHeight;
-	if (row >= fHeight) row -= fHeight;
-	if (column < 0) column += fWidth;
-	if (column >= fWidth) column -= fWidth;
-	field[row][column] = false;
+	field[row][column] = cell;
 }
 
 void GameOfLife::InsertPattern(const int x, const int y, const Pattern& pattern)
 {const
 	auto figure = pattern.GetPattern();
-	size_t hei = pattern.Height();
-	size_t wid = pattern.Width();
-	for (size_t i = 0; i < hei; i++)
+	int hei = pattern.Height();
+	int wid = pattern.Width();
+	for (int i = 0; i < hei; i++)
 	{
-		for (size_t j = 0; j < wid; j++)
+		for (int j = 0; j < wid; j++)
 		{
 			if (figure[i][j])
 			{
-				Summon(x + i, y + j);
+				SetCell(x + i, y + j, true);
 			}
 		}
 	}
@@ -217,7 +215,7 @@ void GameOfLife::InsertPattern(const int x, const int y, const Pattern& pattern)
 
 void GameOfLife::SetBirthGene(const std::vector<bool>& gene)
 {
-	for (size_t i = 0; i < countGenes && i < gene.size(); i++)
+	for (int i = 0; i < countGenes && i < gene.size(); i++)
 	{
 		birth[i] = gene[i];
 	}
@@ -225,7 +223,7 @@ void GameOfLife::SetBirthGene(const std::vector<bool>& gene)
 
 void GameOfLife::SetSurviveGene(const std::vector<bool>& gene)
 {
-	for (size_t i = 0; i < countGenes && i < gene.size(); i++)
+	for (int i = 0; i < countGenes && i < gene.size(); i++)
 	{
 		survive[i] = gene[i];
 	}

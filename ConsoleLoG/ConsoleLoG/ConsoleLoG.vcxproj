@@ -124,12 +124,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CellularAutomata.cpp" />
+    <ClCompile Include="GameField.cpp" />
     <ClCompile Include="GameOfLife.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pattern.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellularAutomata.h" />
+    <ClInclude Include="GameField.h" />
     <ClInclude Include="GameOfLife.h" />
     <ClInclude Include="Pattern.h" />
   </ItemGroup>

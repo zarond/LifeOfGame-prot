@@ -34,19 +34,19 @@ bool Pattern::IsCorrectInput(const std::string& str)
 }
 
 /// make 2D array for pattern
-boolXbool Pattern::PreparePatrernArr(const std::string& figure, size_t x, size_t y)
+boolXbool Pattern::PreparePatrernArr(const std::string& figure, int x, int y)
 {
 	// init vectors
 	auto pattern = boolXbool(x);
-	size_t str_iter = 0; // string iterator
-	for (size_t i = 0; i < x; i++)
+	int str_iter = 0; // string iterator
+	for (int i = 0; i < x; i++)
 	{
 		pattern[i] = std::vector<bool>(y, false);
 	}
 
-	for (size_t i = 0; i < x; i++)
+	for (int i = 0; i < x; i++)
 	{
-		for (size_t j = 0; j < y; j++)
+		for (int j = 0; j < y; j++)
 		{
 			if (figure[str_iter] == '$') // false for all to end line
 			{
@@ -63,10 +63,10 @@ boolXbool Pattern::PreparePatrernArr(const std::string& figure, size_t x, size_t
 			}
 			else // find a number
 			{
-				size_t t = 1;
+				int t = 1;
 				while (figure[str_iter + t] != 'b' && figure[str_iter + t] != 'o' && figure[str_iter + t] != '$')
 					++t;
-				size_t count = std::atoi(figure.substr(str_iter, t).c_str());
+				int count = std::atoi(figure.substr(str_iter, t).c_str());
 				str_iter += t + 1;
 				if (figure[str_iter - 1] == '$') // scip count lines
 				{
@@ -162,17 +162,17 @@ Pattern::Pattern(int _id)
 	file.close();
 }
 
-size_t Pattern::Height() const
+int Pattern::Height() const
 {
 	return height;
 }
 
-size_t Pattern::Width() const
+int Pattern::Width() const
 {
 	return width;
 }
 
-size_t Pattern::ID() const
+int Pattern::ID() const
 {
 	return id;
 }
@@ -190,11 +190,11 @@ std::string Pattern::Name() const
 void Pattern::Rotate()
 {
 	auto newPattern = boolXbool(width);
-	size_t str_iter = 0; // string iterator
-	for (size_t i = 0; i < width; i++)
+	int str_iter = 0; // string iterator
+	for (int i = 0; i < width; i++)
 	{
 		newPattern[i] = std::vector<bool>(height, false);
-		for (size_t j = 0; j < height; j++)
+		for (int j = 0; j < height; j++)
 		{
 			newPattern[i][j] = pattern[j][i];
 		}
