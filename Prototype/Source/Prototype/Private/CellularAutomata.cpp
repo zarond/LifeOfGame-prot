@@ -3,7 +3,7 @@
 #include <list>
 #include <math.h>
 //#include <windows.h>
-#include "Windows/MinWindows.h"
+//#include "Windows/MinWindows.h"
 #include <ctime>
 #include <algorithm>
 
