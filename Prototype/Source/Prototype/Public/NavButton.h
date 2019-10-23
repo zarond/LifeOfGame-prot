@@ -15,9 +15,12 @@ public:
 	// Sets default values for this actor's properties
 	ANavButton();
     
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = NavButton)
     int x;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = NavButton)
     int y;
     unsigned char dir;
+	//UPROPERTY(EditAnywhere)
     unsigned char steps;
     
 
