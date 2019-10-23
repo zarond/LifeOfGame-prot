@@ -42,8 +42,8 @@ int UNavigationComponent::energyToTraverseCell(int x,int y) {return 1;}
 bool UNavigationComponent::checkBlocked(int x,int y) {
 	//return false;
 	//return globalActor->GetCell_IsOccupied(x, y);
-	return globalActor->GetCell_IsOccupied(x, y);
-	//return globalActor->GetCell_IsOccupied(Position.x - x, Position.y - y);
+    return !globalActor->CheckIfBlocked(FIntVector(x, y, 0));
+
 }
 //-------------------------
 
