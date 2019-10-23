@@ -1,6 +1,6 @@
 #include "GameOfLife.h"
 //#include <windows.h>
-#include "Windows/MinWindows.h"
+//#include "Windows/MinWindows.h"
 #include <iostream>
 
 
@@ -199,7 +199,7 @@ void GameOfLife::Kill(int row, int column)
 	field[row][column] = false;
 }
 
-void GameOfLife::InsertPattern(const int x, const int y, const Pattern& pattern)
+void GameOfLife::InsertPattern(const int x, const int y, const Custom::Pattern& pattern)
 {const
 	auto figure = pattern.GetPattern();
 	size_t hei = pattern.Height();
