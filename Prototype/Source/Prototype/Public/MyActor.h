@@ -63,6 +63,6 @@ public:
 	FVector GetStartPosition();
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	FVector GetFinishPosition();
-
-
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	bool CheckIfBlocked(FIntVector coord);
 };
