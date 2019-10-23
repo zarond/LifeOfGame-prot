@@ -75,7 +75,7 @@ void UNavigationComponent::calculatepathsSTART(int radius){
 void UNavigationComponent::calculatepaths(int radius, int stepstaken, dir from, int x, int y){
 	if (x == 0 && y == 0) return;
     //if (checkBlocked(Position.x + x,Position.y + y)) return; // нужна функция проверяющая карту на возможность пройти. Position - относится к npc, к которому прикреплен компонент
-	if (checkBlocked(Position.y - x, Position.x - y)) return;
+	if (checkBlocked(Position.x + y, Position.y + x)) return;
 															 //if (stepstaken>radius) return; // шаги закончились
     //if (stepstaken >= field[x + radius][y + radius].steps) return;
     /*field[x + radius][y + radius].steps = stepstaken;
