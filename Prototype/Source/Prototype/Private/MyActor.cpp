@@ -32,8 +32,6 @@ void AMyActor::GenerateLevel(int h, int w) {
 	Width = gen.GetFloorWidth();
 	Height = gen.GetFloorHeight();
 	bool** _Matrix = gen.GetFloorMap();
-	NumberOfEnemies = gen.GetNumberOfEnemies();
-	NumberOfBlocks = gen.GetNumberOfBlocks();
 	
 	Matrix = new Cell * [Height];
 	for (int i = 0; i < Height; ++i) {
@@ -52,26 +50,24 @@ void AMyActor::GenerateLevel(int h, int w) {
 	Finish[1] = sf.second.second;
 	Finish[2] = 0;
 	
-	vectorOfIndex points = gen.GetArrayOfEnemies();
-	ArrayOfEnemies = new FVector[NumberOfEnemies];
-	for (int i = 0; i < NumberOfEnemies; ++i) {
-		ArrayOfEnemies[i][0] = points[i].first;
-		ArrayOfEnemies[i][1] = points[i].second;
-		ArrayOfEnemies[i][2] = 0;
-		Matrix[points[i].first][points[i].second].isOccupied = 2;
-	}
 
-	/*vectorOfIndex points = gen.GetArrayOfBlocks();
-	ArrayOfBlocks = new FVector[NumberOfBlocks];
-	for (int i = 0; i < NumberOfBlocks; ++i) {
-		ArrayOfBlocks[i][0] = points[i].first;
-		ArrayOfBlocks[i][1] = points[i].second;
-		ArrayOfBlocks[i][2] = 0;
-		Matrix[points[i].first][points[i].second].isOccupied = 1;
-	}*/
+	int number = gen.GetNumberOfEnemies();
+	vectorOfIndex points = gen.GetArrayOfEnemies();
+	ArrayOfEnemies = TArray<FIntVector>();
+	for (int i = 0; i < number; ++i) {
+		ArrayOfEnemies.Add(FIntVector(points[i].first, points[i].second, 0));
+	}
+	
+	number = gen.GetNumberOfBlocks();
+	points = gen.GetArrayOfBlocks();
+	ArrayOfBlocks = TArray<FIntVector>();
+	for (int i = 0; i < number; ++i) {
+		ArrayOfBlocks.Add(FIntVector(points[i].first, points[i].second, 0));
+	}
 }
 
-int AMyActor::GetCell_IsOccupied(int i, int j) {
+int AMyActor::GetCell_IsOccupied(int i, int j) const {
+	UE_LOG(LogTemp, Warning, TEXT("Some variable values: i: %d, j: %d"), i, j);
 	return Matrix[i][j].isOccupied;
 }
 
@@ -79,39 +75,39 @@ void AMyActor::SetCell_IsOccupied(int i, int j, int ch) {
 	Matrix[i][j].isOccupied = ch;
 }
 
-int AMyActor::GetWidth() {
+int AMyActor::GetWidth() const  {
 	return Width;
 }
 
-int AMyActor::GetHeight() {
+int AMyActor::GetHeight() const {
 	return Height;
 }
 
-int AMyActor::GetNumberOfEnemies() {
-	return NumberOfEnemies;
+int AMyActor::GetNumberOfEnemies() const {
+	return ArrayOfEnemies.Num();
 }
 
-FVector AMyActor::GetEnemyPosition(int i) {
+int AMyActor::GetNumberOfBlocks() const {
+	return ArrayOfBlocks.Num();
+}
+
+FIntVector AMyActor::GetEnemyPosition(int i) const {
 	return ArrayOfEnemies[i];
 }
 
-int AMyActor::GetNumberOfBlocks() {
-	return NumberOfBlocks;
-}
-
-FVector AMyActor::GetBlockPosition(int i) {
+FIntVector AMyActor::GetBlockPosition(int i) const  {
 	return ArrayOfBlocks[i];
 }
 
-FVector AMyActor::GetStartPosition() {
+FIntVector AMyActor::GetStartPosition() const  {
 	return Start;
 }
 
-FVector AMyActor::GetFinishPosition() {
+FIntVector AMyActor::GetFinishPosition() const  {
 	return Finish;
 }
 
-bool AMyActor::CheckIfBlocked(FIntVector coord) {
+bool AMyActor::CheckIfBlocked(FIntVector coord) const {
 	if (coord[0] < 0 || coord[0] >= Height || coord[1] < 0 || coord[1] >= Width) return false;
 	if (Matrix[coord[0]][coord[1]].isOccupied == 0) return true;
 	else return false;
