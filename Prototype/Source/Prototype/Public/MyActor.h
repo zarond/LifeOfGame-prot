@@ -60,7 +60,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	FIntVector GetStartPosition() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
+
 	FIntVector GetFinishPosition() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	bool CheckIfBlocked(FIntVector coord) const;
+
 };

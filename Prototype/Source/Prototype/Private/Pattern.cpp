@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <sstream>
 
+//using namespace Custom;
+
 std::vector<std::string> split(const std::string& s) {
 	typedef std::string::const_iterator iter;
 	std::vector<std::string> ret;
@@ -18,7 +20,7 @@ std::vector<std::string> split(const std::string& s) {
 	return ret;
 }
 
-bool Pattern::IsCorrectInput(const std::string& str)
+bool Custom::Pattern::IsCorrectInput(const std::string& str)
 {
 	std::cmatch result;
 	std::regex reg(
@@ -34,7 +36,7 @@ bool Pattern::IsCorrectInput(const std::string& str)
 }
 
 /// make 2D array for pattern
-boolXbool Pattern::PreparePatrernArr(const std::string& figure, size_t x, size_t y)
+boolXbool Custom::Pattern::PreparePatrernArr(const std::string& figure, size_t x, size_t y)
 {
 	// init vectors
 	auto pattern = boolXbool(x);
@@ -96,7 +98,7 @@ boolXbool Pattern::PreparePatrernArr(const std::string& figure, size_t x, size_t
 	return pattern;
 }
 
-Pattern::Pattern(std::string& _name)
+Custom::Pattern::Pattern(std::string& _name)
 {
 	auto file = std::ifstream("Patterns.txt");
 	std::string newPattern = "";
@@ -126,7 +128,7 @@ Pattern::Pattern(std::string& _name)
 	file.close();
 }
 
-Pattern::Pattern(int _id)
+Custom::Pattern::Pattern(int _id)
 {
 	// make string id
 	std::string str_id;
@@ -162,32 +164,32 @@ Pattern::Pattern(int _id)
 	file.close();
 }
 
-size_t Pattern::Height() const
+size_t Custom::Pattern::Height() const
 {
 	return height;
 }
 
-size_t Pattern::Width() const
+size_t Custom::Pattern::Width() const
 {
 	return width;
 }
 
-size_t Pattern::ID() const
+size_t Custom::Pattern::ID() const
 {
 	return id;
 }
 
-boolXbool Pattern::GetPattern() const
+boolXbool Custom::Pattern::GetPattern() const
 {
 	return pattern;
 }
 
-std::string Pattern::Name() const
+std::string Custom::Pattern::Name() const
 {
 	return name;
 }
 
-void Pattern::Rotate()
+void Custom::Pattern::Rotate()
 {
 	auto newPattern = boolXbool(width);
 	size_t str_iter = 0; // string iterator

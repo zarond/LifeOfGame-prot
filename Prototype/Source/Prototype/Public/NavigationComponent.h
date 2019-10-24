@@ -63,6 +63,9 @@ public:
     void SetUp(int x, int y, int newRadius, int Energy); // вызывать прсле хода - обновление массива field для последующего использования и сам рассчет возможных ходов вызывается здесь
     UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
     TArray<int> getpath(int x, int y); //получить путь к выбраной клетке
+
+	UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
+	void SetGlobalActor(AMyActor* Actor);
     
     //---------------------------------
     //заглушки ненужные
