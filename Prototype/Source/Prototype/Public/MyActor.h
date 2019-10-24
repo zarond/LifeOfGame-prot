@@ -21,12 +21,10 @@ private:
 	Cell **Matrix;
 	int Width;
 	int Height;
-	FVector *ArrayOfEnemies;
-	FVector* ArrayOfBlocks;
-	int NumberOfEnemies;
-	int NumberOfBlocks;
-	FVector Start;
-	FVector Finish;
+	TArray<FIntVector> ArrayOfEnemies;
+	TArray<FIntVector> ArrayOfBlocks;
+	FIntVector Start;
+	FIntVector Finish;
 
 public:	
 	// Sets default values for this actor's properties
@@ -42,29 +40,29 @@ public:
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	int GetCell_IsOccupied(int i, int j);
+	int GetCell_IsOccupied(int i, int j) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	void SetCell_IsOccupied(int i, int j, int ch);
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	void GenerateLevel(int h, int w);
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	int GetWidth();
+	int GetWidth() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	int GetHeight();
+	int GetHeight() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	int GetNumberOfEnemies();
+	int GetNumberOfEnemies() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	FVector GetEnemyPosition(int i);
+	int GetNumberOfBlocks() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	int GetNumberOfBlocks();
+	FIntVector GetEnemyPosition(int i) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	FVector GetBlockPosition(int i);
+	FIntVector GetBlockPosition(int i) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	FVector GetStartPosition();
+	FIntVector GetStartPosition() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	FVector GetFinishPosition();
-    UFUNCTION(BlueprintCallable, Category = "Game Field")
-    bool CheckIfBlocked(FIntVector coord);
 
+	FIntVector GetFinishPosition() const;
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	bool CheckIfBlocked(FIntVector coord) const;
 
 };

@@ -315,13 +315,7 @@ int CellularAutomata::GetNumberOfEnemies() const  {
 }
 
 int CellularAutomata::GetNumberOfBlocks() const  {
-	int counter = 0;
-	for (int i = 0; i < floorHeight; ++i) {
-		for (int j = 0; j < floorWidth; ++j) {
-			counter += field[i][j] ? 1 : 0;
-		}
-	}
-	return counter;
+	return 0;
 }
 
 vectorOfIndex CellularAutomata::GetArrayOfEnemies() const {
@@ -356,12 +350,6 @@ vectorOfIndex CellularAutomata::GetArrayOfEnemies() const {
 }
 
 vectorOfIndex CellularAutomata::GetArrayOfBlocks() const {
-	int count = GetNumberOfBlocks();
 	auto arrayOfBlocks = vectorOfIndex();
-	for (int i = 0; i < floorHeight; ++i) {
-		for (int j = 0; j < floorWidth; ++j) {
-			if (field[i][j]) arrayOfBlocks.push_back(std::pair<int, int>(i, j));
-		}
-	}
 	return arrayOfBlocks;
 }
