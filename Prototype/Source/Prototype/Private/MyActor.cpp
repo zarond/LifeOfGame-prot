@@ -67,6 +67,7 @@ void AMyActor::GenerateLevel(int h, int w) {
 }
 
 int AMyActor::GetCell_IsOccupied(int i, int j) const {
+	UE_LOG(LogTemp, Warning, TEXT("Some variable values: i: %d, j: %d"), i, j);
 	return Matrix[i][j].isOccupied;
 }
 

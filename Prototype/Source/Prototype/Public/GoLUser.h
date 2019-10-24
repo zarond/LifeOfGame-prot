@@ -16,7 +16,7 @@ private:
 	int _height;
 	TArray<bool> _birth;
 	TArray<bool> _survive;
-	TArray<UStaticMesh*> LavaPieces;
+	TArray<AActor*> LavaPieces;
 	bool** GoLField;
 	bool** VisibleGoLField;
 	const double birthChance = 0.47;
@@ -37,6 +37,10 @@ public:
 
 public:
 	~AGoLUser();
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AActor> ToSpawn;
+
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	void GenerateGoL(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range = 3, bool needClearSpace = true);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
@@ -46,7 +50,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	bool IsAlive(int x, int y) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
-	TArray<UStaticMesh*> PutLavaPiecesOnField();
-
+	TArray<AActor*> UpdateLavaPiecesOnField(int polygon_size);
 	void ClearSpace(int x, int y, int range = 3);
 };

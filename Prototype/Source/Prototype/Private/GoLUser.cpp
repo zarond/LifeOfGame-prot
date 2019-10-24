@@ -102,7 +102,7 @@ void AGoLUser::GenerateGoL(int width, int height, TArray<bool> birth, TArray<boo
 
 	VisibleGoLField = matrix;
 
-	if (needClearSpace) ClearCreaturesSpace(GlobalActor, range);
+	if (needClearSpace) ClearCreaturesSpace(GlobalActor);
 }
 
 void AGoLUser::ClearCreaturesSpace(AMyActor* GlobalActor, int range) {
@@ -198,6 +198,27 @@ void AGoLUser::ClearSpace(int x, int y, int range) {
 	}
 }
 
-TArray<UStaticMesh*> AGoLUser::PutLavaPiecesOnField() {
+TArray<AActor*> AGoLUser::UpdateLavaPiecesOnField(int polygon_size) {
+	for (int i = 0; i < LavaPieces.Num(); ++i)
+	{
+		LavaPieces[i]->Destroy();
+	}
+
+	LavaPieces.Empty();
+
+	LavaPieces = TArray<AActor*>();
+	for (int i = 0; i < _height; ++i) {
+		for (int j = 0; j < _width; ++j) {
+			if (VisibleGoLField[i][j]) {
+				FVector Location((i + 0.5) * polygon_size, (j + 0.5) * polygon_size, 0.25 * polygon_size);
+				FRotator Rotation(0.0f, 0.0f, 0.0f);
+				FActorSpawnParameters SpawnInfo;
+				SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+				AActor* piece = GetWorld()->SpawnActor<AActor>(ToSpawn, Location, Rotation, SpawnInfo);
+				LavaPieces.Add(piece);
+			}
+		}
+	}
+
 	return LavaPieces;
 }
