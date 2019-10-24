@@ -16,8 +16,9 @@ private:
 	int _height;
 	TArray<bool> _birth;
 	TArray<bool> _survive;
-	TArray<AActor*> LavaPieces;
+	TArray<UStaticMesh*> LavaPieces;
 	bool** GoLField;
+	bool** VisibleGoLField;
 	const double birthChance = 0.47;
 	const TArray<bool> defaultBirth = { false, false, false, true, false, false, false, false, false };
 	const TArray<bool> defaultSurvive = { false, false, true, true, false, false, false, false, false };
@@ -37,9 +38,15 @@ public:
 public:
 	~AGoLUser();
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
-	void GenerateGoL(int width, int height, TArray<bool> birth, TArray<bool> survive);
+	void GenerateGoL(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range = 3, bool needClearSpace = true);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
-	void UpdateGoL(TArray<bool> birth, TArray<bool> survive);
+	void ClearCreaturesSpace(AMyActor* GlobalActor, int range = 3);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
-	TArray<AActor*> PutLavaPiecesOnField();
+	void UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range = 3, bool needClearSpace = true);
+	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
+	bool IsAlive(int x, int y) const;
+	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
+	TArray<UStaticMesh*> PutLavaPiecesOnField();
+
+	void ClearSpace(int x, int y, int range = 3);
 };
