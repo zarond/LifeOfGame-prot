@@ -12,6 +12,7 @@ UNavButtonsComponent::UNavButtonsComponent()
 	// ...
     
     Parent = GetOwner();
+    if (Parent == nullptr) UE_LOG(LogTemp, Warning, TEXT("no Parent during constructor"));
     //NavComp = Cast<UNavigationComponent>(Parent->GetComponentByClass(UNavigationComponent::StaticClass()));
 	if (Parent!=NULL)	NavComp = Parent->FindComponentByClass<UNavigationComponent>();
 }
@@ -19,6 +20,7 @@ UNavButtonsComponent::UNavButtonsComponent()
 void UNavButtonsComponent::UpdateButtons(){
 	//for (int i = 0; i < Buttons.Num(); ++i) Buttons[i]->Destroy();
 	//Buttons.Empty();
+    if (NavComp == nullptr) {UE_LOG(LogTemp, Warning, TEXT("no navComp"));return;}
     int R = NavComp->R;
     if (NavComp->field == nullptr) return;
     int counter = 0;
@@ -94,7 +96,10 @@ void UNavButtonsComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	Parent = GetOwner();
+    if (Parent == nullptr) UE_LOG(LogTemp, Warning, TEXT("no Parent during begin play"));
+    //NavComp = Cast<UNavigationComponent>(Parent->GetComponentByClass(UNavigationComponent::StaticClass()));
+    if (Parent!=NULL)    NavComp = Parent->FindComponentByClass<UNavigationComponent>();
 }
 
 
@@ -103,6 +108,7 @@ void UNavButtonsComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+    
 	// ...
 }
 
