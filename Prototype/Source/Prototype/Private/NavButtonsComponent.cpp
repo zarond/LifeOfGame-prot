@@ -17,10 +17,12 @@ UNavButtonsComponent::UNavButtonsComponent()
 }
 
 void UNavButtonsComponent::UpdateButtons(){
-	for (int i = 0; i < Buttons.Num(); ++i) Buttons[i]->Destroy();
-	Buttons.Empty();
+	//for (int i = 0; i < Buttons.Num(); ++i) Buttons[i]->Destroy();
+	//Buttons.Empty();
     int R = NavComp->R;
     if (NavComp->field == nullptr) return;
+    int counter = 0;
+    bool hitlimit = false;
     for (int i=0;i<2*R+1;++i)
         for (int j=0;j<2*R+1;++j){
             if (NavComp->field[i][j].steps <= R) {
@@ -46,7 +48,20 @@ void UNavButtonsComponent::UpdateButtons(){
 						break;	
 				}
 				//ANavButton* tmp = GetWorld()->SpawnActor(ButtonToSpawn.Get(),Location, FRotator::ZeroRotator, SpawnInfo);
-				ANavButton* tmp = (ANavButton*) GetWorld()->SpawnActor(ButtonToSpawn, &Location, &rot, SpawnInfo);
+                ANavButton* tmp;
+                if ((counter < Buttons.Num()) && hitlimit == false) {
+                    tmp = Buttons[counter];
+                    tmp-> SetActorLocationAndRotation(Location, rot);
+                    tmp-> SetActorHiddenInGame(false);
+                    tmp-> SetActorEnableCollision(true);
+                    tmp-> SetActorTickEnabled(true);
+                    ++counter;
+                } else {
+                    hitlimit = true;
+                    tmp = (ANavButton*) GetWorld()->SpawnActor(ButtonToSpawn, &Location, &rot, SpawnInfo);
+                    if (tmp != NULL) Buttons.Add(tmp);
+                }
+				//ANavButton* tmp = (ANavButton*) GetWorld()->SpawnActor(ButtonToSpawn, &Location, &rot, SpawnInfo);
 				if (tmp == NULL) return;
 				tmp->x = i - R;
 				tmp->y = j - R;
@@ -54,10 +69,17 @@ void UNavButtonsComponent::UpdateButtons(){
 				#if WITH_EDITOR
 				tmp->SetFolderPath("SpawnedActors/NavButtons");  // полезная фича
 				#endif
-                Buttons.Add(tmp);
+                //Buttons.Add(tmp);
+                //++counter;
             }
         }
-	//Buttons.Num();
+    if (hitlimit) return;
+    for (int i = counter; i < Buttons.Num(); ++i) {
+        //Buttons[i]->Destroy();
+        Buttons[i]-> SetActorHiddenInGame(true);
+        Buttons[i]-> SetActorEnableCollision(false);
+        Buttons[i]-> SetActorTickEnabled(false);
+    }
 }
 
 //void UNavButtonsComponent::SetNavButton(ANavButton * Button)
