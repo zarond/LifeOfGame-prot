@@ -16,14 +16,15 @@ GameField::GameField(bool** _field, int h, int w, start_finish_t sf) :
 	height{ h },
 	width{ w },
 	supportField{ new int*[h] },
-	objects{ new FVector * [(int)obj_t::count_types] }
+	objects{ new FVector * [(int)obj_t::count_types]{nullptr} },
+	countObjects{ new int [(int)obj_t::count_types] }
 {
 	for (int i = 0; i < (int)obj_t::count_types; ++i)
 		objects[i] = nullptr;
 	objects[(int)obj_t::start_finish] = new FVector[2];
 	objects[(int)obj_t::start_finish][0] = { (float)sf.first.first, (float)sf.first.second, 0. };
 	objects[(int)obj_t::start_finish][1] = { (float)sf.second.first, (float)sf.second.second, 0. };
-
+	countObjects[(int)obj_t::start_finish] = 2;
 	for (int i = 0; i < height; i++)
 		supportField[i] = new int[width];
 	
@@ -62,23 +63,26 @@ GameField::GameField(bool** _field, int h, int w, start_finish_t sf) :
 			}
 }
 
-FVector* GameField::GetArrayOfBlocks(int& count) const
+GameField::~GameField()
 {
-	count = 0;
 	for (int i = 0; i < height; ++i)
-		for (int j = 0; j < width; ++j)
-			if (field[i][j]) ++count;
+	{
+		delete[] field[i];
+		delete[] supportField[i];
+	}
+	delete[] field;
+	delete[] supportField;
+	for (int i = 0; i < (int)obj_t::count_types; ++i)
+	{
+		delete[] objects[i];
+	}
+	delete objects;
+	delete countObjects;
+}
 
-	FVector* arr = new FVector[count];
-	int k = 0;
-	for (int i = 0; i < height; ++i)
-		for (int j = 0; j < width; ++j)
-			if (field[i][j])
-			{
-				arr[k] = { (float)i, (float)j, 0 };
-				++k;
-			}
-	return arr;
+const bool* const* GameField::GetField() const
+{
+	return field;
 }
 
 int GameField::Height() const
@@ -92,9 +96,9 @@ int GameField::Width() const
 }
 
 void GameField::AddObjects
-	(int count, Factory const* factory, std::function<bool(int)> const& f)
+	(int count, const obj_t type, std::function<bool(int)> const& f)
 {
-	if (nullptr != objects[(int)factory->type])
+	if (nullptr != objects[(int)type])
 		return;
 
 	auto vec = vector_cord_t();
@@ -105,21 +109,35 @@ void GameField::AddObjects
 	if (count > vec.size())
 		count = vec.size();
 
-	objects[(int)factory->type] = new FVector[count];
+	objects[(int)type] = new FVector[count];
 	std::srand((unsigned int)std::time(0));
 
-	for (--count = 0; count >= 0; --count)
+	for (int i = 0; i < count; ++i)
 	{
-		int i = rand() % vec.size();
+		int ind = rand() % vec.size();
 
-		objects[(int)factory->type][count] = { (float)vec[i].first, (float)vec[i].second, 0. };
-		factory->MakeObject(vec[i].first, vec[i].second);
-		vec.erase(vec.begin() + i);
+		int x = vec[ind].first;
+		int y = vec[ind].second;
+		vec.erase(vec.begin() + ind);
+		if (-1 == supportField[x][y])
+		{
+			count = std::_Min_value(count, (int)vec.size() + i);
+			continue;
+		}
+		
+		// marking cells
+		for (int j = -1; j < 2; ++j)
+			for (int k = -1; k < 2; ++k)
+				supportField[x + j][y + k] = -1;
+
+		objects[(int)type][i] = { (float)x, (float)y, 0. };
 	}
+	countObjects[(int)type] = count;
 	return;
 }
 
-FVector const* GameField::GetObjects(obj_t type) const
+FVector const* GameField::GetObjects(obj_t type, int& size) const
 {
+	size = countObjects[(int)type];
 	return objects[(int)type];
 }

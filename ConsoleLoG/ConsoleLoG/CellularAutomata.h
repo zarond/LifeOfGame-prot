@@ -15,7 +15,7 @@ public:
 	~CellularAutomata();
 
 	GameField* Generate();
-	void Show();
+	// void Show();
 private:
 	GameOfLife* gol = nullptr;
 	bool** field = nullptr;

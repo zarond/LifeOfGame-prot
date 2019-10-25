@@ -18,30 +18,23 @@ enum class obj_t
 	enemy,
 	npc,
 	chest,
+	block,
 	count_types
 };
 
-class Factory
-{
-public:
-	Factory(obj_t _type) : type{_type} {}
-
-	const obj_t type;
-	void MakeObject(int i, int j) const { return; }
-private:
-
-};
 
 class GameField
 {
 public:
 	GameField(bool**, int, int, start_finish_t);
-	FVector* GetArrayOfBlocks(int&) const;
+	~GameField();
+
+	const bool* const* GetField() const;
 	int Height() const;
 	int Width() const;
 	
-	void AddObjects(int, Factory const*, std::function<bool(int)> const&);
-	FVector const* GetObjects(obj_t type) const;
+	void AddObjects(int, const obj_t, std::function<bool(int)> const&);
+	FVector const* GetObjects(obj_t type, int&) const;
 
 private:
 	bool** field;
@@ -49,6 +42,6 @@ private:
 	int width;
 	int** supportField;
 	FVector** objects;
-
+	int* countObjects;
 };
 

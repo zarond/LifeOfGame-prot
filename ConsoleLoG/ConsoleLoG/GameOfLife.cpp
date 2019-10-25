@@ -1,5 +1,5 @@
 #include "GameOfLife.h"
-#include <windows.h>
+//#include <windows.h>
 #include <iostream>
 
 
@@ -22,6 +22,19 @@ GameOfLife::GameOfLife(const int width, const int height)
 	birth[3] = true;
 	survive[2] = true;
 	survive[3] = true;
+}
+
+GameOfLife::~GameOfLife()
+{
+	for (int i = 0; i < fHeight; ++i)
+	{
+		delete[] field[i];
+		delete[] fieldCopy[i];
+ 	}
+	delete[] field;
+	delete[] fieldCopy;
+	delete[] birth;
+	delete[] survive;
 }
 
 bool GameOfLife::isAlive(int row, int column) const
@@ -168,24 +181,24 @@ const boolXbool GameOfLife::GetFieldVectors() const
 	return exportField;
 }
 
-void GameOfLife::Show() const
-{
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (int i = 0; i < fHeight; ++i)
-	{
-		for (int j = 0; j < fWidth; ++j)
-		{
-			
-			if (field[i][j])
-				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
-			else
-				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
-				std::cout << ' ';
-		}
-		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
-		std::cout << std::endl;
-	}
-}
+//void GameOfLife::Show() const
+//{
+//	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+//	for (int i = 0; i < fHeight; ++i)
+//	{
+//		for (int j = 0; j < fWidth; ++j)
+//		{
+//			
+//			if (field[i][j])
+//				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
+//			else
+//				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
+//				std::cout << ' ';
+//		}
+//		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
+//		std::cout << std::endl;
+//	}
+//}
 
 void GameOfLife::SetCell(int row, int column, bool cell)
 {

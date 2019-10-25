@@ -2,7 +2,7 @@
 #include <iostream>
 #include <list>
 #include <math.h>
-#include <windows.h>
+//#include <windows.h>
 #include <ctime>
 #include <algorithm>
 
@@ -270,25 +270,25 @@ void CellularAutomata::CreateStartFinish(vector_cord_t& room)
 	startAndFinish.second.second = cell.second;
 }
 
-void CellularAutomata::Show()
-{
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (int i = 0; i < floorHeight; ++i)
-	{
-		for (int j = 0; j < floorWidth; ++j)
-		{
-			if ((i == startAndFinish.first.first && 
-				j == startAndFinish.first.second)
-				|| (i == startAndFinish.second.first &&
-					j == startAndFinish.second.second))
-				SetConsoleTextAttribute(hConsole, (WORD)((2 << 4 | 2)));
-			else if (field[i][j])
-				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
-			else
-				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
-			std::cout << ' ';
-		}
-		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
-		std::cout << std::endl;
-	}
-}
+//void CellularAutomata::Show()
+//{
+//	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+//	for (int i = 0; i < floorHeight; ++i)
+//	{
+//		for (int j = 0; j < floorWidth; ++j)
+//		{
+//			if ((i == startAndFinish.first.first && 
+//				j == startAndFinish.first.second)
+//				|| (i == startAndFinish.second.first &&
+//					j == startAndFinish.second.second))
+//				SetConsoleTextAttribute(hConsole, (WORD)((2 << 4 | 2)));
+//			else if (field[i][j])
+//				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
+//			else
+//				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
+//			std::cout << ' ';
+//		}
+//		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
+//		std::cout << std::endl;
+//	}
+//}
