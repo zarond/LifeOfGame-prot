@@ -25,11 +25,12 @@ private:
 	TArray<FIntVector> ArrayOfBlocks;
 	FIntVector Start;
 	FIntVector Finish;
-
+	TArray<bool> Birth;
+	TArray<bool> Survive;
 public:	
 	// Sets default values for this actor's properties
 	AMyActor();
-
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -63,4 +64,12 @@ public:
 	FIntVector GetFinishPosition() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	bool CheckIfBlocked(FIntVector coord) const;
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	TArray<bool> GetBirth();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	TArray<bool> GetSurvive();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	void SetBirth(TArray<bool> _birth);
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	void SetSurvive(TArray<bool> _survive);
 };

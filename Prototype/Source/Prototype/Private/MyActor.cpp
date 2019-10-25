@@ -112,3 +112,29 @@ bool AMyActor::CheckIfBlocked(FIntVector coord) const {
 	if (Matrix[coord[0]][coord[1]].isOccupied == 0) return true;
 	else return false;
 }
+
+TArray<bool> AMyActor::GetBirth()
+{
+	return Birth;
+}
+
+TArray<bool> AMyActor::GetSurvive()
+{
+	return Survive;
+}
+
+void AMyActor::SetBirth(TArray<bool> _birth)
+{
+	if (_birth.Num() == 9)
+	{
+		Birth = TArray<bool>(_birth);
+	}
+}
+
+void AMyActor::SetSurvive(TArray<bool> _survive)
+{
+	if (_survive.Num() == 9)
+	{
+		Survive = TArray<bool>(_survive);
+	}
+}
