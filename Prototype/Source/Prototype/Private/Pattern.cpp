@@ -10,9 +10,9 @@ std::vector<std::string> split(const std::string& s) {
 	typedef std::string::const_iterator iter;
 	std::vector<std::string> ret;
 	int i = 0;
-	while (i < s.length()) {
+	while (i < (int)s.length()) {
 		int j = i;
-		while (j < s.length() && s[j] != ' ')
+		while (j < (int)s.length() && s[j] != ' ')
 			++j;
 		ret.push_back(s.substr(i, j - i));
 		i = j + 1;
