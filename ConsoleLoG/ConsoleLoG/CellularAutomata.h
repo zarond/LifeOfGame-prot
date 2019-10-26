@@ -30,4 +30,11 @@ public:
 	start_finish GetStartFinishIndex() const;
 	int GetFloorWidth() const;
 	int GetFloorHeight() const;
+
+	////
+
+	int GetNumberOfEnemies() const;
+	int GetNumberOfBlocks() const;
+	vectorOfIndex GetArrayOfEnemies() const;
+	vectorOfIndex GetArrayOfBlocks() const;
 };
