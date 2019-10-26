@@ -33,8 +33,11 @@ AGoLUser::~AGoLUser()
 {
 	for (int i = 0; i < _height; ++i) {
 		delete[] GoLField[i];
+		delete[] VisibleGoLField[i];
 	}
+	delete GoL;
 	delete[] GoLField;
+	delete[] VisibleGoLField;
 	_birth = {};
 	_survive = {};
 	LavaPieces = {};
@@ -74,7 +77,7 @@ void AGoLUser::GenerateGoL(int width, int height, TArray<bool> birth, TArray<boo
 		sgene.push_back(_survive[i]);
 	}
 
-	GameOfLife* GoL = new GameOfLife(_width, _height);
+	GoL = new GameOfLife(_width, _height);
 	GoL->SetBirthGene(bgene);
 	GoL->SetSurviveGene(sgene);
 
@@ -86,8 +89,6 @@ void AGoLUser::GenerateGoL(int width, int height, TArray<bool> birth, TArray<boo
 	}
 
 	GoLField = GoL->GetFieldCopy();
-
-	delete GoL;
 
 
 	//Generate Visible GoL
@@ -148,22 +149,12 @@ void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* Glo
 		sgene.push_back(_survive[i]);
 	}
 
-	GameOfLife* GoL = new GameOfLife(_width, _height);
-
 	GoL->SetBirthGene(bgene);
 	GoL->SetSurviveGene(sgene);
-
-	for (int i = 0; i < _height; ++i) {
-		for (int j = 0; j < _width; ++j) {
-			if (GoLField[i][j]) GoL->Summon(i, j); else GoL->Kill(i, j);
-		}
-	}
 
 	GoL->Loop();
 
 	GoLField = GoL->GetFieldCopy();
-
-	delete GoL;
 
 
 	//Update Visible GoL
@@ -186,6 +177,10 @@ void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* Glo
 
 bool AGoLUser::IsAlive(int x, int y) const {
 	return VisibleGoLField[x][y];
+}
+
+bool AGoLUser::WillBeAlive(int x, int y) const {
+	return GoL->CellStatusNextLoop(x, y);
 }
 
 void AGoLUser::ClearSpace(int x, int y, int range) {

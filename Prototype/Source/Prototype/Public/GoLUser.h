@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "GameOfLife.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GoLUser.generated.h"
@@ -17,6 +18,7 @@ private:
 	TArray<bool> _birth;
 	TArray<bool> _survive;
 	TArray<AActor*> LavaPieces;
+	GameOfLife* GoL;
 	bool** GoLField;
 	bool** VisibleGoLField;
 	const double birthChance = 0.47;
@@ -49,6 +51,8 @@ public:
 	void UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range = 3, bool needClearSpace = true);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	bool IsAlive(int x, int y) const;
+	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
+	bool WillBeAlive(int x, int y) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	TArray<AActor*> UpdateLavaPiecesOnField(int polygon_size);
 	void ClearSpace(int x, int y, int range = 3);
