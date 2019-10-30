@@ -110,6 +110,7 @@ void UNavigationComponent::calculatepaths(int radius, int stepstaken, dir from, 
 }
 
 void UNavigationComponent::SetUp(int x, int y, int newRadius, int Energy){
+    newRadius = (newRadius>0)? newRadius : 0;
     Position.x = x;
     Position.y = y;
     resetfield(R,newRadius);
