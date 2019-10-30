@@ -10,7 +10,7 @@ UNavigationComponent::UNavigationComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
     //globalActor = (ATurnBased*)GetWorld()->GetAuthGameMode().globalActor;
@@ -39,11 +39,16 @@ void UNavigationComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 }
 //-------------------------
 int UNavigationComponent::energyToTraverseCell(int x,int y) {return 1;}
-bool UNavigationComponent::checkBlocked(int x,int y) {return false;}
+bool UNavigationComponent::checkBlocked(int x,int y) {
+	//return false;
+	//return globalActor->GetCell_IsOccupied(x, y);
+    return !globalActor->CheckIfBlocked(FIntVector(x, y, 0));
+
+}
 //-------------------------
 
 void UNavigationComponent::resetfield(int oldRadius,int newRadius){
-    if (oldRadius < newRadius){
+    if ((oldRadius < newRadius) || field==nullptr){
         if (field!=nullptr){
             for (int i=0;i<2*oldRadius+1;++i) delete[] field[i];
         }
@@ -52,8 +57,9 @@ void UNavigationComponent::resetfield(int oldRadius,int newRadius){
             for (int i=0;i<2*newRadius+1;++i) field[i] = new fieldcell[2*newRadius+1];
         } else field = nullptr;
     }
-    for (int i=0;i<newRadius;++i)
-        for (int j=0;j<newRadius;++j)
+	if (newRadius > 0)
+    for (int i=0;i< 2 * newRadius + 1;++i)
+        for (int j=0;j< 2 * newRadius + 1;++j)
             field[i][j].steps = 255;
 }
 
@@ -67,11 +73,13 @@ void UNavigationComponent::calculatepathsSTART(int radius){
 
 
 void UNavigationComponent::calculatepaths(int radius, int stepstaken, dir from, int x, int y){
-    if (checkBlocked(Position.x + x,Position.y + y)) return; // нужна функция проверяющая карту на возможность пройти. Position - относится к npc, к которому прикреплен компонент
-    if (stepstaken>radius) return; // шаги закончились
-    if (stepstaken >= field[x + radius][y + radius].steps) return;
-    field[x + radius][y + radius].steps = stepstaken;
-    field[x + radius][y + radius].direction = from;
+	if (x == 0 && y == 0) return;
+    //if (checkBlocked(Position.x + x,Position.y + y)) return; // нужна функция проверяющая карту на возможность пройти. Position - относится к npc, к которому прикреплен компонент
+	if (checkBlocked(Position.x + y, Position.y + x)) return;
+															 //if (stepstaken>radius) return; // шаги закончились
+    //if (stepstaken >= field[x + radius][y + radius].steps) return;
+    /*field[x + radius][y + radius].steps = stepstaken;
+    field[x + radius][y + radius].direction = from;*/
     unsigned char energylost = 0;
     switch (from){
         case right:
@@ -88,16 +96,21 @@ void UNavigationComponent::calculatepaths(int radius, int stepstaken, dir from, 
             break;
     }
     stepstaken += energylost;
+	if (stepstaken > radius) return;
+	if (stepstaken >= field[x + radius][y + radius].steps) return;
+	field[x + radius][y + radius].steps = stepstaken;
+	field[x + radius][y + radius].direction = from;
     // (x,y)=(0,0) отвечает за (radius,radius) - центр в field
-    if (x+1<radius)  calculatepaths(radius,stepstaken,left,x+1,y);
-    if (y+1<radius)  calculatepaths(radius,stepstaken,down,x,y+1);
-    if (x-1>-radius) calculatepaths(radius,stepstaken,right,x-1,y);
-    if (y-1>-radius) calculatepaths(radius,stepstaken,up,x,y-1);
+    if (x+1<=radius)  calculatepaths(radius,stepstaken,left,x+1,y);
+    if (y+1<=radius)  calculatepaths(radius,stepstaken,down,x,y+1);
+    if (x-1>=-radius) calculatepaths(radius,stepstaken,right,x-1,y);
+    if (y-1>=-radius) calculatepaths(radius,stepstaken,up,x,y-1);
     // здесь направление ставится противоположное, чтобы уже в следующем шаге сразу сказать ОТКУДА был сделан предыдущий
     
 }
 
 void UNavigationComponent::SetUp(int x, int y, int newRadius, int Energy){
+    newRadius = (newRadius>0)? newRadius : 0;
     Position.x = x;
     Position.y = y;
     resetfield(R,newRadius);
@@ -133,5 +146,10 @@ TArray<int> UNavigationComponent::getpath(int x, int y){
     }
     Algo::Reverse(dirArray);
     return dirArray;
+}
+
+void UNavigationComponent::SetGlobalActor(AMyActor * Actor)
+{
+	globalActor = Actor;
 }
 

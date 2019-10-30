@@ -11,21 +11,26 @@ class PROTOTYPE_API AMyActor : public AActor
 {
 	GENERATED_BODY()
 
+public:
+	struct Cell {
+		unsigned char isOccupied;
+		unsigned char floorID;
+	};
+
 private:
-	bool **Matrix;
+	Cell **Matrix;
 	int Width;
 	int Height;
-	FVector *ArrayOfEnemies;
-	FVector* ArrayOfBlocks;
-	int NumberOfEnemies;
-	int NumberOfBlocks;
-	FVector Start;
-	FVector Finish;
-
+	TArray<FIntVector> ArrayOfEnemies;
+	TArray<FIntVector> ArrayOfBlocks;
+	FIntVector Start;
+	FIntVector Finish;
+	TArray<bool> Birth;
+	TArray<bool> Survive;
 public:	
 	// Sets default values for this actor's properties
 	AMyActor();
-
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,30 +38,39 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	/*UFUNCTION(BlueprintCallable, Category = "Game")
-	void Test();*/
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	bool GetCell(int i, int j);
+	int GetCell_IsOccupied(int i, int j) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	void GenerateLevel();
+	void SetCell_IsOccupied(int i, int j, int ch);
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	int GetWidth();
+	void GenerateLevel(int h, int w);
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	int GetHeight();
+	int GetWidth() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	int GetNumberOfEnemies();
+	int GetHeight() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	FVector GetEnemyPosition(int i);
+	int GetNumberOfEnemies() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	int GetNumberOfBlocks();
+	int GetNumberOfBlocks() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	FVector GetBlockPosition(int i);
+	FIntVector GetEnemyPosition(int i) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	FVector GetStartPosition();
+	FIntVector GetBlockPosition(int i) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
-	FVector GetFinishPosition();
+	FIntVector GetStartPosition() const;
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
 
-
+	FIntVector GetFinishPosition() const;
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	bool CheckIfBlocked(FIntVector coord) const;
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	TArray<bool> GetBirth();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	TArray<bool> GetSurvive();
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	void SetBirth(TArray<bool> _birth);
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	void SetSurvive(TArray<bool> _survive);
 };

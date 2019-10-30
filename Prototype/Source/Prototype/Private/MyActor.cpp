@@ -2,7 +2,6 @@
 
 
 #include "MyActor.h"
-#include "TestGenerator.h"
 #include "CellularAutomata.h"
 
 // Sets default values
@@ -27,26 +26,22 @@ void AMyActor::Tick(float DeltaTime)
 
 }
 
-/*void AMyActor::Test() {
-	UE_LOG(LogTemp, Warning, TEXT("Global Actor Func"));
-}*/
-
-void AMyActor::GenerateLevel() {
-	//TestGenerator Generator;
-	TestGenerator Generator(16, 32);
-	CellularAutomata gen(20, 20);
+void AMyActor::GenerateLevel(int h, int w) {
+	CellularAutomata gen(h, w);
 	gen.Generate();
 	Width = gen.GetFloorWidth();
 	Height = gen.GetFloorHeight();
-	Matrix = gen.GetFloorMap();
-	NumberOfEnemies = Generator.GetNumberOfEnemies();
-	NumberOfBlocks = Generator.GetNumberOfBlocks();
+	bool** _Matrix = gen.GetFloorMap();
+	
+	Matrix = new Cell * [Height];
+	for (int i = 0; i < Height; ++i) {
+		Matrix[i] = new Cell[Width];
+		for (int j = 0; j < Width; ++j) {
+			Matrix[i][j].floorID = 1;
+			Matrix[i][j].isOccupied = _Matrix[i][j] ? 1 : 0;
+		}
+	}
 
-	//TestGenerator::FVector* points = Generator.GetStartAndFinish();
-	
-	//Start[0] = points[0].X; Start[1] = points[0].Y; Start[2] = points[0].Z;
-	//Finish[0] = points[1].X; Finish[1] = points[1].Y; Finish[2] = points[1].Z;
-	
 	start_finish sf = gen.GetStartFinishIndex();
 	Start[0] = sf.first.first;
 	Start[1] = sf.first.second;
@@ -55,54 +50,92 @@ void AMyActor::GenerateLevel() {
 	Finish[1] = sf.second.second;
 	Finish[2] = 0;
 	
-	/*points = Generator.GetArrayOfEnemies();
-	for (int j = 0; j < NumberOfEnemies; ++j) {
-		ArrayOfEnemies[j][0] = points[j].X;
-		ArrayOfEnemies[j][1] = points[j].Y;
-		ArrayOfEnemies[j][2] = points[j].Z;
-	}*/
 
-	/*points = Generator.GetArrayOfBlocks();
-	for (int j = 0; j < NumberOfEnemies; ++j) {
-		ArrayOfBlocks[j][0] = points[j].X;
-		ArrayOfBlocks[j][1] = points[j].Y;
-		ArrayOfBlocks[j][2] = points[j].Z;
-	}*/
+	int number = gen.GetNumberOfEnemies();
+	vectorOfIndex points = gen.GetArrayOfEnemies();
+	ArrayOfEnemies = TArray<FIntVector>();
+	for (int i = 0; i < number; ++i) {
+		ArrayOfEnemies.Add(FIntVector(points[i].first, points[i].second, 0));
+	}
+	
+	number = gen.GetNumberOfBlocks();
+	points = gen.GetArrayOfBlocks();
+	ArrayOfBlocks = TArray<FIntVector>();
+	for (int i = 0; i < number; ++i) {
+		ArrayOfBlocks.Add(FIntVector(points[i].first, points[i].second, 0));
+	}
 }
 
-bool AMyActor::GetCell(int i, int j) {
-	return Matrix[i][j];
+int AMyActor::GetCell_IsOccupied(int i, int j) const {
+	UE_LOG(LogTemp, Warning, TEXT("Some variable values: i: %d, j: %d"), i, j);
+	return Matrix[i][j].isOccupied;
 }
 
-int AMyActor::GetWidth() {
+void AMyActor::SetCell_IsOccupied(int i, int j, int ch) {
+	Matrix[i][j].isOccupied = ch;
+}
+
+int AMyActor::GetWidth() const  {
 	return Width;
 }
 
-int AMyActor::GetHeight() {
+int AMyActor::GetHeight() const {
 	return Height;
 }
 
-int AMyActor::GetNumberOfEnemies() {
-	return NumberOfEnemies;
+int AMyActor::GetNumberOfEnemies() const {
+	return ArrayOfEnemies.Num();
 }
 
-FVector AMyActor::GetEnemyPosition(int i) {
+int AMyActor::GetNumberOfBlocks() const {
+	return ArrayOfBlocks.Num();
+}
+
+FIntVector AMyActor::GetEnemyPosition(int i) const {
 	return ArrayOfEnemies[i];
 }
 
-int AMyActor::GetNumberOfBlocks() {
-	return NumberOfBlocks;
-}
-
-FVector AMyActor::GetBlockPosition(int i) {
+FIntVector AMyActor::GetBlockPosition(int i) const  {
 	return ArrayOfBlocks[i];
 }
 
-FVector AMyActor::GetStartPosition() {
+FIntVector AMyActor::GetStartPosition() const  {
 	return Start;
 }
 
-FVector AMyActor::GetFinishPosition() {
+FIntVector AMyActor::GetFinishPosition() const  {
 	return Finish;
 }
 
+bool AMyActor::CheckIfBlocked(FIntVector coord) const {
+	if (coord[0] < 0 || coord[0] >= Height || coord[1] < 0 || coord[1] >= Width) return false;
+	if (Matrix[coord[0]][coord[1]].isOccupied == 0) return true;
+	else return false;
+
+}
+
+TArray<bool> AMyActor::GetBirth()
+{
+	return Birth;
+}
+
+TArray<bool> AMyActor::GetSurvive()
+{
+	return Survive;
+}
+
+void AMyActor::SetBirth(TArray<bool> _birth)
+{
+	if (_birth.Num() == 9)
+	{
+		Birth = TArray<bool>(_birth);
+	}
+}
+
+void AMyActor::SetSurvive(TArray<bool> _survive)
+{
+	if (_survive.Num() == 9)
+	{
+		Survive = TArray<bool>(_survive);
+	}
+}

@@ -2,7 +2,8 @@
 #include <iostream>
 #include <list>
 #include <math.h>
-#include <windows.h>
+//#include <windows.h>
+//#include "Windows/MinWindows.h"
 #include <ctime>
 #include <algorithm>
 
@@ -255,28 +256,28 @@ void CellularAutomata::Step()
 	gol->Loop();
 }
 
-void CellularAutomata::Show()
-{
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (int i = 0; i < floorHeight; ++i)
-	{
-		for (int j = 0; j < floorWidth; ++j)
-		{
-			if ((i == startAndFinish.first.first && 
-				j == startAndFinish.first.second)
-				|| (i == startAndFinish.second.first &&
-					j == startAndFinish.second.second))
-				SetConsoleTextAttribute(hConsole, (WORD)((2 << 4 | 2)));
-			else if (field[i][j])
-				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
-			else
-				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
-			std::cout << ' ';
-		}
-		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
-		std::cout << std::endl;
-	}
-}
+//void CellularAutomata::Show()
+//{
+//	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+//	for (int i = 0; i < floorHeight; ++i)
+//	{
+//		for (int j = 0; j < floorWidth; ++j)
+//		{
+//			if ((i == startAndFinish.first.first && 
+//				j == startAndFinish.first.second)
+//				|| (i == startAndFinish.second.first &&
+//					j == startAndFinish.second.second))
+//				SetConsoleTextAttribute(hConsole, (WORD)((2 << 4 | 2)));
+//			else if (field[i][j])
+//				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
+//			else
+//				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
+//			std::cout << ' ';
+//		}
+//		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
+//		std::cout << std::endl;
+//	}
+//}
 
 bool** CellularAutomata::GetFloorMap() const
 {
@@ -305,4 +306,50 @@ int CellularAutomata::GetFloorWidth() const
 int CellularAutomata::GetFloorHeight() const
 {
 	return floorHeight;
+}
+
+////
+
+int CellularAutomata::GetNumberOfEnemies() const  {
+	return floorHeight * floorWidth / 50 + 1;
+}
+
+int CellularAutomata::GetNumberOfBlocks() const  {
+	return 0;
+}
+
+vectorOfIndex CellularAutomata::GetArrayOfEnemies() const {
+	srand(time(NULL));
+
+	bool** matrix = new bool* [floorHeight];
+	for (int i = 0; i < floorHeight; ++i) {
+		matrix[i] = new bool[floorWidth];
+		for (int j = 0; j < floorWidth; ++j) {
+			matrix[i][j] = false;
+		}
+	}
+
+	int count = GetNumberOfEnemies();
+	int k, l;
+
+	auto ArrayOfEnemies = vectorOfIndex();
+	for (int counter = 0; counter < count; ++counter) {
+		k = rand() % floorHeight;
+		l = rand() % floorWidth;
+		if (!field[k][l] && !matrix[k][l]) {
+			matrix[k][l] = true;
+			ArrayOfEnemies.push_back(std::pair<int, int>(k, l));
+		}
+		else --counter;
+	}
+
+	for (int i = 0; i < floorHeight; ++i) delete[] matrix[i];
+	delete[] matrix;
+
+	return ArrayOfEnemies;
+}
+
+vectorOfIndex CellularAutomata::GetArrayOfBlocks() const {
+	auto arrayOfBlocks = vectorOfIndex();
+	return arrayOfBlocks;
 }

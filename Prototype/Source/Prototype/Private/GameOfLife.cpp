@@ -1,6 +1,6 @@
 #include "GameOfLife.h"
 //#include <windows.h>
-#include "Windows/MinWindows.h"
+//#include "Windows/MinWindows.h"
 #include <iostream>
 
 
@@ -12,7 +12,7 @@ GameOfLife::GameOfLife(const int width, const int height)
 
 	field = new bool* [fHeight];
 	fieldCopy = new bool* [fHeight];
-	for (size_t i = 0; i < fHeight; i++)
+	for (size_t i = 0; (int)i < fHeight; i++)
 	{
 		field[i] = new bool[fWidth] {false};
 		fieldCopy[i] = new bool[fWidth] {false};
@@ -138,10 +138,10 @@ const bool*const* GameOfLife::GetField() const
 bool** GameOfLife::GetFieldCopy() const
 {
 	auto exportField = new bool* [fHeight];
-	for (size_t i = 0; i < fHeight; i++)
+	for (size_t i = 0; (int)i < fHeight; i++)
 	{
 		exportField[i] = new bool[fWidth];
-		for (size_t j = 0; j < fWidth; j++)
+		for (size_t j = 0; (int)j < fWidth; j++)
 		{
 			exportField[i][j] = field[i][j];
 		}
@@ -152,9 +152,9 @@ bool** GameOfLife::GetFieldCopy() const
 const boolXbool GameOfLife::GetFieldVectors() const
 {
 	auto exportField = boolXbool(fHeight, std::vector<bool>(fWidth));
-	for (size_t i = 0; i < fHeight; i++)
+	for (size_t i = 0; (int)i < fHeight; i++)
 	{
-		for (size_t j = 0; j < fWidth; j++)
+		for (size_t j = 0; (int)j < fWidth; j++)
 		{
 			exportField[i][j] = field[i][j];
 		}
@@ -199,7 +199,7 @@ void GameOfLife::Kill(int row, int column)
 	field[row][column] = false;
 }
 
-void GameOfLife::InsertPattern(const int x, const int y, const Pattern& pattern)
+void GameOfLife::InsertPattern(const int x, const int y, const Custom::Pattern& pattern)
 {const
 	auto figure = pattern.GetPattern();
 	size_t hei = pattern.Height();

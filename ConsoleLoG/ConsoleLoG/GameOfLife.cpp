@@ -1,5 +1,6 @@
 #include "GameOfLife.h"
-#include <windows.h>
+//#include <windows.h>
+//#include "Windows/MinWindows.h"
 #include <iostream>
 
 
@@ -69,7 +70,7 @@ bool GameOfLife::CellStatusNextLoop(int row, int column) const
 	if (column >= fWidth) column -= fWidth;
 	itIsAlive = field[row][column];
 	// approving with rules
-	return (birth[aliveNeighbors] && ~itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
+	return (birth[aliveNeighbors] && !itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
 }
 
 void GameOfLife::Loop()
@@ -109,7 +110,7 @@ void GameOfLife::Loop()
 			if (j >= fWidth) j -= fWidth;
 			itIsAlive = field[i][j];
 			//
-			bool cellStatusNextLoop = (birth[aliveNeighbors] && ~itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
+			bool cellStatusNextLoop = (birth[aliveNeighbors] && !itIsAlive) || (survive[aliveNeighbors] && itIsAlive);
 			if (immortalWalls) // it can be faster
 				cellStatusNextLoop = cellStatusNextLoop || isWall(i, j);
 			fieldCopy[i][j] = cellStatusNextLoop;
@@ -161,24 +162,24 @@ const boolXbool GameOfLife::GetFieldVectors() const
 	return exportField;
 }
 
-void GameOfLife::Show() const
-{
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	for (int i = 0; i < fHeight; ++i)
-	{
-		for (int j = 0; j < fWidth; ++j)
-		{
-			
-			if (field[i][j])
-				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
-			else
-				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
-				std::cout << ' ';
-		}
-		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
-		std::cout << std::endl;
-	}
-}
+//void GameOfLife::Show() const
+//{
+//	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+//	for (int i = 0; i < fHeight; ++i)
+//	{
+//		for (int j = 0; j < fWidth; ++j)
+//		{
+//			
+//			if (field[i][j])
+//				SetConsoleTextAttribute(hConsole, (WORD)((4 << 4 | 4)));
+//			else
+//				SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 15)));
+//				std::cout << ' ';
+//		}
+//		SetConsoleTextAttribute(hConsole, (WORD)((15 << 4 | 0)));
+//		std::cout << std::endl;
+//	}
+//}
 
 void GameOfLife::Summon(int row, int column)
 {
@@ -198,7 +199,7 @@ void GameOfLife::Kill(int row, int column)
 	field[row][column] = false;
 }
 
-void GameOfLife::InsertPattern(const int x, const int y, const Pattern& pattern)
+void GameOfLife::InsertPattern(const int x, const int y, const Custom::Pattern& pattern)
 {const
 	auto figure = pattern.GetPattern();
 	size_t hei = pattern.Height();

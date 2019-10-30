@@ -3,6 +3,8 @@
 
 #define countGenes 9
 
+//using namespace Custom;
+
 class GameOfLife
 {
 private:
@@ -27,7 +29,7 @@ public:
 	void Show() const;
 	void Summon(int, int);
 	void Kill(int, int);
-	void InsertPattern(const int, const int, const Pattern&);
+	void InsertPattern(const int, const int, const Custom::Pattern&);
 	void SetBirthGene(const std::vector<bool>&);
 	void SetSurviveGene(const std::vector<bool>&);
 	void SetImmortalWalls(bool);
