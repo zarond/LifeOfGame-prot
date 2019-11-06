@@ -32,7 +32,7 @@ void AMyActor::GenerateLevel(int h, int w) {
 	Width = gen.GetFloorWidth();
 	Height = gen.GetFloorHeight();
 	bool** _Matrix = gen.GetFloorMap();
-	
+    UE_LOG(LogTemp, Warning,TEXT("width: %i, height: %j"),Width,Height);//////////////
 	Matrix = new Cell * [Height];
 	for (int i = 0; i < Height; ++i) {
 		Matrix[i] = new Cell[Width];
@@ -67,7 +67,7 @@ void AMyActor::GenerateLevel(int h, int w) {
 }
 
 int AMyActor::GetCell_IsOccupied(int i, int j) const {
-	UE_LOG(LogTemp, Warning, TEXT("Some variable values: i: %d, j: %d"), i, j);
+	//UE_LOG(LogTemp, Warning, TEXT("Some variable values: i: %d, j: %d"), i, j);
 	return Matrix[i][j].isOccupied;
 }
 
@@ -108,9 +108,13 @@ FIntVector AMyActor::GetFinishPosition() const  {
 }
 
 bool AMyActor::CheckIfBlocked(FIntVector coord) const {
+    //coord[1];
+    //if (Height == 0 ) return false;
 	if (coord[0] < 0 || coord[0] >= Height || coord[1] < 0 || coord[1] >= Width) return false;
 	if (Matrix[coord[0]][coord[1]].isOccupied == 0) return true;
 	else return false;
+    //return true; //?
+    //return false;
 
 }
 

@@ -26,6 +26,9 @@ public:
     
 	UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
     void UpdateButtons();
+    void UpdateWalkButtons();
+    void UpdateAttackButtons();
+    void UpdateCursedButtons();
 	//UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
 	//void SetNavButton(ANavButton* Button);
 

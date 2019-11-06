@@ -10,16 +10,24 @@ UNavButtonsComponent::UNavButtonsComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
-    
+    /*
     Parent = GetOwner();
     if (Parent == nullptr) UE_LOG(LogTemp, Warning, TEXT("no Parent during constructor"));
     //NavComp = Cast<UNavigationComponent>(Parent->GetComponentByClass(UNavigationComponent::StaticClass()));
 	if (Parent!=NULL)	NavComp = Parent->FindComponentByClass<UNavigationComponent>();
+     */
 }
 
 void UNavButtonsComponent::UpdateButtons(){
-	//for (int i = 0; i < Buttons.Num(); ++i) Buttons[i]->Destroy();
-	//Buttons.Empty();
+    UpdateWalkButtons();
+}
+void UNavButtonsComponent::UpdateAttackButtons(){
+    
+}
+
+void UNavButtonsComponent::UpdateWalkButtons(){
+    //for (int i = 0; i < Buttons.Num(); ++i) Buttons[i]->Destroy();
+    //Buttons.Empty();
     if (NavComp == nullptr) {UE_LOG(LogTemp, Warning, TEXT("no navComp"));return;}
     int R = NavComp->R;
     if (NavComp->field == nullptr) return;
@@ -31,25 +39,25 @@ void UNavButtonsComponent::UpdateButtons(){
                 FVector Location = this->Parent->GetActorLocation();
                 Location.Y += (i-R)*100.0f;
                 Location.X += (j-R)*100.0f;
-				//Location.Z += 100.0f;
+                //Location.Z += 100.0f;
                 FActorSpawnParameters SpawnInfo;
-				FRotator rot = FRotator::ZeroRotator;
-				switch (NavComp->field[i][j].direction) {
-					case 0:
-						//rot = FRotator::ZeroRotator;
-						rot.Yaw = 0;
-						break;
-					case 1:
-						rot.Yaw = -90;
-						break;
-					case 2:
-						rot.Yaw = 180;
-						break;
-					case 3:
-						rot.Yaw = 90;
-						break;	
-				}
-				//ANavButton* tmp = GetWorld()->SpawnActor(ButtonToSpawn.Get(),Location, FRotator::ZeroRotator, SpawnInfo);
+                FRotator rot = FRotator::ZeroRotator;
+                switch (NavComp->field[i][j].direction) {
+                    case 0:
+                        //rot = FRotator::ZeroRotator;
+                        rot.Yaw = 0;
+                        break;
+                    case 1:
+                        rot.Yaw = -90;
+                        break;
+                    case 2:
+                        rot.Yaw = 180;
+                        break;
+                    case 3:
+                        rot.Yaw = 90;
+                        break;
+                }
+                //ANavButton* tmp = GetWorld()->SpawnActor(ButtonToSpawn.Get(),Location, FRotator::ZeroRotator, SpawnInfo);
                 ANavButton* tmp;
                 if ((counter < Buttons.Num()) && hitlimit == false) {
                     tmp = Buttons[counter];
@@ -63,14 +71,14 @@ void UNavButtonsComponent::UpdateButtons(){
                     tmp = (ANavButton*) GetWorld()->SpawnActor(ButtonToSpawn, &Location, &rot, SpawnInfo);
                     if (tmp != NULL) Buttons.Add(tmp);
                 }
-				//ANavButton* tmp = (ANavButton*) GetWorld()->SpawnActor(ButtonToSpawn, &Location, &rot, SpawnInfo);
-				if (tmp == NULL) return;
-				tmp->x = i - R;
-				tmp->y = j - R;
-				tmp->steps = NavComp->field[i][j].steps;
-				#if WITH_EDITOR
-				tmp->SetFolderPath("SpawnedActors/NavButtons");  // полезная фича
-				#endif
+                //ANavButton* tmp = (ANavButton*) GetWorld()->SpawnActor(ButtonToSpawn, &Location, &rot, SpawnInfo);
+                if (tmp == NULL) return;
+                tmp->x = i - R;
+                tmp->y = j - R;
+                tmp->steps = NavComp->field[i][j].steps;
+                #if WITH_EDITOR
+                tmp->SetFolderPath("SpawnedActors/NavButtons");  // полезная фича
+                #endif
                 //Buttons.Add(tmp);
                 //++counter;
             }
