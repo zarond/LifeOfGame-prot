@@ -68,6 +68,7 @@ void AMyActor::GenerateLevel(int h, int w) {
 
 int AMyActor::GetCell_IsOccupied(int i, int j) const {
 	//UE_LOG(LogTemp, Warning, TEXT("Some variable values: i: %d, j: %d"), i, j);
+    if (i < 0 || i >= Height || j < 0 || j >= Width) return -1;  // safety
 	return Matrix[i][j].isOccupied;
 }
 

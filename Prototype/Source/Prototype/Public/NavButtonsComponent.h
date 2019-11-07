@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "NavigationComponent.h"
 #include "NavButton.h"
+#include "FightButton.h"
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "NavButtonsComponent.generated.h"
@@ -19,10 +20,13 @@ public:
 	// Sets default values for this component's properties
 	UNavButtonsComponent();
     TArray<ANavButton*> Buttons;
+    TArray<AFightButton*> FightButtons;
     UNavigationComponent* NavComp;
     AActor* Parent;
     UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<ANavButton> ButtonToSpawn;
+    UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+    TSubclassOf<AFightButton> FightButtonToSpawn;
     
 	UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
     void UpdateButtons();

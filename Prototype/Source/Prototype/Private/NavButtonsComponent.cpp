@@ -20,9 +20,65 @@ UNavButtonsComponent::UNavButtonsComponent()
 
 void UNavButtonsComponent::UpdateButtons(){
     UpdateWalkButtons();
+    UpdateAttackButtons();
 }
 void UNavButtonsComponent::UpdateAttackButtons(){
-    
+    for (int i = 0; i < FightButtons.Num(); ++i) FightButtons[i]->Destroy();
+    FightButtons.Empty();
+    if (NavComp->R <= 0) return;
+    if (NavComp == nullptr) {UE_LOG(LogTemp, Warning, TEXT("no navComp"));return;}
+    if (NavComp->globalActor->GetCell_IsOccupied(NavComp->Position.x + 1, NavComp->Position.y) == 2){
+        FVector Location = this->Parent->GetActorLocation();
+        AFightButton* tmp;
+        FRotator rot = FRotator::ZeroRotator;
+        FActorSpawnParameters SpawnInfo;
+        Location.X += 100.0f;
+        //Location.Y += 100.0f;
+        tmp = (AFightButton*) GetWorld()->SpawnActor(FightButtonToSpawn, &Location, &rot,SpawnInfo);
+        tmp->x = NavComp->Position.x + 1;
+        tmp->y = NavComp->Position.y;
+        FightButtons.Add(tmp);
+        tmp->SetFolderPath("SpawnedActors/FightButtons");
+    }
+    if (NavComp->globalActor->GetCell_IsOccupied(NavComp->Position.x, NavComp->Position.y + 1) == 2){
+        FVector Location = this->Parent->GetActorLocation();
+        AFightButton* tmp;
+        FRotator rot = FRotator::ZeroRotator;
+        FActorSpawnParameters SpawnInfo;
+        //Location.X += 100.0f;
+        Location.Y += 100.0f;
+        tmp = (AFightButton*) GetWorld()->SpawnActor(FightButtonToSpawn, &Location, &rot,SpawnInfo);
+        tmp->x = NavComp->Position.x;
+        tmp->y = NavComp->Position.y + 1;
+        FightButtons.Add(tmp);
+        tmp->SetFolderPath("SpawnedActors/FightButtons");
+    }
+    if (NavComp->globalActor->GetCell_IsOccupied(NavComp->Position.x - 1, NavComp->Position.y) == 2){
+        FVector Location = this->Parent->GetActorLocation();
+        AFightButton* tmp;
+        FRotator rot = FRotator::ZeroRotator;
+        FActorSpawnParameters SpawnInfo;
+        Location.X -= 100.0f;
+        //Location.Y += 100.0f;
+        tmp = (AFightButton*) GetWorld()->SpawnActor(FightButtonToSpawn, &Location, &rot,SpawnInfo);
+        tmp->x = NavComp->Position.x - 1;
+        tmp->y = NavComp->Position.y;
+        FightButtons.Add(tmp);
+        tmp->SetFolderPath("SpawnedActors/FightButtons");
+    }
+    if (NavComp->globalActor->GetCell_IsOccupied(NavComp->Position.x, NavComp->Position.y - 1) == 2){
+        FVector Location = this->Parent->GetActorLocation();
+        AFightButton* tmp;
+        FRotator rot = FRotator::ZeroRotator;
+        FActorSpawnParameters SpawnInfo;
+        //Location.X += 100.0f;
+        Location.Y -= 100.0f;
+        tmp = (AFightButton*) GetWorld()->SpawnActor(FightButtonToSpawn, &Location, &rot,SpawnInfo);
+        tmp->x = NavComp->Position.x;
+        tmp->y = NavComp->Position.y - 1;
+        FightButtons.Add(tmp);
+        tmp->SetFolderPath("SpawnedActors/FightButtons");
+    }
 }
 
 void UNavButtonsComponent::UpdateWalkButtons(){
