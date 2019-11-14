@@ -23,13 +23,14 @@ public:
     TArray<AFightButton*> FightButtons;
     UNavigationComponent* NavComp;
     AActor* Parent;
+    float polygonsize;
     UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<ANavButton> ButtonToSpawn;
     UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
     TSubclassOf<AFightButton> FightButtonToSpawn;
     
 	UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
-    void UpdateButtons();
+    void UpdateButtons(float polygon);
     void UpdateWalkButtons();
     void UpdateAttackButtons();
     void UpdateCursedButtons();

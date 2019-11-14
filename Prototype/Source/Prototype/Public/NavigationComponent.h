@@ -3,6 +3,8 @@
 #pragma once
 
 #include "MyActor.h"
+#include "GoLUser.h"
+//#include "UObject/UObjectGlobals.h"
 
 
 #include "CoreMinimal.h"
@@ -25,6 +27,7 @@ public:
     UPROPERTY(EditAnywhere)
     AMyActor* globalActor; // указатель на глобального актора
     AActor* Owner; // указатель на владельца компонента
+    AGoLUser* GOLref; // указатель на GolUser в сцене
     
     enum dir {right,up,left,down};
     UPROPERTY()
@@ -34,6 +37,7 @@ public:
     struct fieldcell{
         dir direction;
         unsigned char steps;
+        unsigned char stepsOnLava;
     };
     
     //---------------------------------
@@ -52,10 +56,11 @@ public:
     
     void calculatepathsSTART(int radius); // старт расчета из точки позиции npc
     
-    void calculatepaths(int radius, int stepstaken, dir from, int x, int y);
+    void calculatepaths(int radius, int stepstaken,int stepsOnLava, dir from, int x, int y);
     // функция, рекурсивно вычисляющая все возможные ходы и сколько энергии тратится на них.
     // Записывает результат в массив fieldcell размера (2r+1)x(2r+1), в котором хранится направление того, откуда был предыдущий ход для восстановления всего пути к клетке,
-    // и кол-во шагов, за которые можно добраться до этой клетки (ограничение в 254). Центр массива отвечает за позицию игрока (или npc)
+    // и кол-во шагов, за которые можно добраться до этой клетки (ограничение в 253). Центр массива отвечает за позицию игрока (или npc)
+    // код 255 - абсолютный max, код 254 - на клетке "лава"
     
     void resetfield(int oldRadius,int newRadius);
     
@@ -65,7 +70,7 @@ public:
     TArray<int> getpath(int x, int y); //получить путь к выбраной клетке
 
 	UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
-	void SetGlobalActor(AMyActor* Actor);
+	void SetGlobalActor(AMyActor * Actor, AGoLUser * goluser);
     
     //---------------------------------
     //заглушки ненужные

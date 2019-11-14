@@ -18,7 +18,8 @@ UNavButtonsComponent::UNavButtonsComponent()
      */
 }
 
-void UNavButtonsComponent::UpdateButtons(){
+void UNavButtonsComponent::UpdateButtons(float polygon){
+    polygonsize = polygon;
     UpdateWalkButtons();
     UpdateAttackButtons();
 }
@@ -34,8 +35,8 @@ void UNavButtonsComponent::UpdateAttackButtons(){
             AFightButton* tmp;
             FRotator rot = FRotator::ZeroRotator;
             FActorSpawnParameters SpawnInfo;
-            Location.X += arr[i][0]*100.0f;
-            Location.Y += arr[i][1]*100.0f;
+            Location.X += arr[i][0]*polygonsize;
+            Location.Y += arr[i][1]*polygonsize;
             tmp = (AFightButton*) GetWorld()->SpawnActor(FightButtonToSpawn, &Location, &rot,SpawnInfo);
             tmp->x = NavComp->Position.x + arr[i][0];
             tmp->y = NavComp->Position.y + arr[i][1];
@@ -55,10 +56,10 @@ void UNavButtonsComponent::UpdateWalkButtons(){
     bool hitlimit = false;
     for (int i=0;i<2*R+1;++i)
         for (int j=0;j<2*R+1;++j){
-            if (NavComp->field[i][j].steps <= R) {
+            if (NavComp->field[i][j].steps <= R){// || NavComp->field[i][j].steps == 254 ) { ///?
                 FVector Location = this->Parent->GetActorLocation();
-                Location.Y += (i-R)*100.0f;
-                Location.X += (j-R)*100.0f;
+                Location.Y += (i-R)*polygonsize;
+                Location.X += (j-R)*polygonsize;
                 //Location.Z += 100.0f;
                 FActorSpawnParameters SpawnInfo;
                 FRotator rot = FRotator::ZeroRotator;

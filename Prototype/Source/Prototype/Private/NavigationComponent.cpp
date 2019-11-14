@@ -25,8 +25,9 @@ void UNavigationComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+    Owner = GetOwner();
+    Position.x = 0;
+    Position.y = 0;
 }
 
 
@@ -40,8 +41,6 @@ void UNavigationComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 //-------------------------
 int UNavigationComponent::energyToTraverseCell(int x,int y) {return 1;}
 bool UNavigationComponent::checkBlocked(int x,int y) {
-	//return false;
-	//return globalActor->GetCell_IsOccupied(x, y);
     return !globalActor->CheckIfBlocked(FIntVector(x, y, 0));
 
 }
@@ -59,27 +58,26 @@ void UNavigationComponent::resetfield(int oldRadius,int newRadius){
     }
 	if (newRadius > 0)
     for (int i=0;i< 2 * newRadius + 1;++i)
-        for (int j=0;j< 2 * newRadius + 1;++j)
+        for (int j=0;j< 2 * newRadius + 1;++j){
             field[i][j].steps = 255;
+            field[i][j].stepsOnLava = 255;}
 }
 
 
 void UNavigationComponent::calculatepathsSTART(int radius){
-    calculatepaths(radius,0,left,1,0);
-    calculatepaths(radius,0,down,0,1);
-    calculatepaths(radius,0,right,-1,0);
-    calculatepaths(radius,0,up,0,-1);
+    int c=0;
+    if (GOLref != nullptr && GOLref->IsAlive(Position.x,Position.y)) c=1; // вообще если в лаве застревают, то можно поставить просто return;
+    calculatepaths(radius,0,c,left,1,0);
+    calculatepaths(radius,0,c,down,0,1);
+    calculatepaths(radius,0,c,right,-1,0);
+    calculatepaths(radius,0,c,up,0,-1);
 }
 
 
-void UNavigationComponent::calculatepaths(int radius, int stepstaken, dir from, int x, int y){
+void UNavigationComponent::calculatepaths(int radius, int stepstaken,int stepsOnLava, dir from, int x, int y){
 	if (x == 0 && y == 0) return;
-    //if (checkBlocked(Position.x + x,Position.y + y)) return; // нужна функция проверяющая карту на возможность пройти. Position - относится к npc, к которому прикреплен компонент
+    // Position - относится к npc, к которому прикреплен компонент
 	if (checkBlocked(Position.x + y, Position.y + x)) return;
-															 //if (stepstaken>radius) return; // шаги закончились
-    //if (stepstaken >= field[x + radius][y + radius].steps) return;
-    /*field[x + radius][y + radius].steps = stepstaken;
-    field[x + radius][y + radius].direction = from;*/
     unsigned char energylost = 0;
     switch (from){
         case right:
@@ -96,15 +94,28 @@ void UNavigationComponent::calculatepaths(int radius, int stepstaken, dir from, 
             break;
     }
     stepstaken += energylost;
-	if (stepstaken > radius) return;
-	if (stepstaken >= field[x + radius][y + radius].steps) return;
-	field[x + radius][y + radius].steps = stepstaken;
-	field[x + radius][y + radius].direction = from;
-    // (x,y)=(0,0) отвечает за (radius,radius) - центр в field
-    if (x+1<=radius)  calculatepaths(radius,stepstaken,left,x+1,y);
-    if (y+1<=radius)  calculatepaths(radius,stepstaken,down,x,y+1);
-    if (x-1>=-radius) calculatepaths(radius,stepstaken,right,x-1,y);
-    if (y-1>=-radius) calculatepaths(radius,stepstaken,up,x,y-1);
+
+    
+    if (0<=(Position.x + y) && (Position.x + y)<globalActor->GetWidth() && 0<=(Position.y + x) && (Position.y + x)<globalActor->GetHeight()
+    && GOLref != nullptr && GOLref->IsAlive((Position.x + y),(Position.y + x))) ++stepsOnLava;
+    
+	if (stepstaken > radius) return; // шаги закончились
+    if (stepstaken > field[x + radius][y + radius].steps || stepsOnLava>field[x + radius][y + radius].stepsOnLava) return;
+    
+    field[x + radius][y + radius].steps = stepstaken;
+    field[x + radius][y + radius].direction = from;
+
+    field[x + radius][y + radius].stepsOnLava = stepsOnLava;
+
+    //if (stepsOnLava > 0) return; // если придерживаться версии что в лаве застревает сразу
+    
+    if (GOLref == nullptr) UE_LOG(LogTemp, Warning, TEXT("no GOLref"));
+
+    
+    if (x+1<=radius)  calculatepaths(radius,stepstaken,stepsOnLava,left,x+1,y);
+    if (y+1<=radius)  calculatepaths(radius,stepstaken,stepsOnLava,down,x,y+1);
+    if (x-1>=-radius) calculatepaths(radius,stepstaken,stepsOnLava,right,x-1,y);
+    if (y-1>=-radius) calculatepaths(radius,stepstaken,stepsOnLava,up,x,y-1);
     // здесь направление ставится противоположное, чтобы уже в следующем шаге сразу сказать ОТКУДА был сделан предыдущий
     
 }
@@ -147,8 +158,10 @@ TArray<int> UNavigationComponent::getpath(int x, int y){
     return dirArray;
 }
 
-void UNavigationComponent::SetGlobalActor(AMyActor * Actor)
+void UNavigationComponent::SetGlobalActor(AMyActor * Actor, AGoLUser * goluser)
 {
 	globalActor = Actor;
+    GOLref = goluser;
+    if (GOLref == nullptr) UE_LOG(LogTemp, Warning, TEXT("no GOLref"));
 }
 
