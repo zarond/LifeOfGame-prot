@@ -205,7 +205,8 @@ TArray<AActor*> AGoLUser::UpdateLavaPiecesOnField(int polygon_size) {
 	for (int i = 0; i < _height; ++i) {
 		for (int j = 0; j < _width; ++j) {
 			if (VisibleGoLField[i][j]) {
-				FVector Location((i + 0.5) * polygon_size, (j + 0.5) * polygon_size, 0.25 * polygon_size);
+				//FVector Location((i + 0.5) * polygon_size, (j + 0.5) * polygon_size, 0.25 * polygon_size);
+                FVector Location((i + 0.5) * polygon_size, (j + 0.5) * polygon_size, -0.1 * polygon_size);
 				FRotator Rotation(0.0f, 0.0f, 0.0f);
 				FActorSpawnParameters SpawnInfo;
 				SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
