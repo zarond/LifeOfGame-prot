@@ -38,6 +38,7 @@ void UNavButtonsComponent::UpdateAttackButtons(){
             Location.X += arr[i][0]*polygonsize;
             Location.Y += arr[i][1]*polygonsize;
             tmp = (AFightButton*) GetWorld()->SpawnActor(FightButtonToSpawn, &Location, &rot,SpawnInfo);
+            if (tmp == nullptr) return;
             tmp->x = NavComp->Position.x + arr[i][0];
             tmp->y = NavComp->Position.y + arr[i][1];
             FightButtons.Add(tmp);
