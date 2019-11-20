@@ -83,8 +83,8 @@ void AGoLUser::GenerateGoL(int width, int height, TArray<bool> birth, TArray<boo
 
 	for (int i = 0; i < _height; ++i) {
 		for (int j = 0; j < _width; ++j) {
-			if ((double)rand() / RAND_MAX < birthChance) GoL->Summon(i, j); else GoL->Kill(i, j);
-			if (i == 0 || j == 0 || i == _height - 1 || j == _width - 1) GoL->Summon(i, j);
+			if (i == 0 || j == 0 || i == _height - 1 || j == _width - 1 || GlobalActor->GetCell_IsOccupied(i, j) == 1) GoL->Summon(i, j);
+			else if ((double)rand() / RAND_MAX < birthChance) GoL->Summon(i, j); else GoL->Kill(i, j);
 		}
 	}
 
@@ -153,6 +153,15 @@ void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* Glo
 	GoL->SetSurviveGene(sgene);
 
 	GoL->Loop();
+
+	for (int i = 0; i < _height; ++i) {
+		for (int j = 0; j < _width; ++j) {
+			if (i == 0 || j == 0 || i == _height - 1 || j == _width - 1) {
+				if ((double)rand() / RAND_MAX < edgeBirthChance) GoL->Summon(i, j);
+			}
+			else if (GlobalActor->GetCell_IsOccupied(i, j) == 1) GoL->Summon(i, j);
+		}
+	}
 
 	GoLField = GoL->GetFieldCopy();
 

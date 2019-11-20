@@ -22,6 +22,7 @@ private:
 	bool** GoLField;
 	bool** VisibleGoLField;
 	const double birthChance = 0.47;
+	const double edgeBirthChance = 0.25;
 	const TArray<bool> defaultBirth = { false, false, false, true, false, false, false, false, false };
 	const TArray<bool> defaultSurvive = { false, false, true, true, false, false, false, false, false };
 
