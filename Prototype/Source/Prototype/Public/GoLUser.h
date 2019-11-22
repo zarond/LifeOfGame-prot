@@ -56,4 +56,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	TArray<AActor*> UpdateLavaPiecesOnField(int polygon_size);
 	void ClearSpace(int x, int y, int range = 3);
+
 };
