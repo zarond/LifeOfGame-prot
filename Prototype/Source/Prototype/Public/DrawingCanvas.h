@@ -2,7 +2,10 @@
 
 #pragma once
  
+#include "GoLUser.h"
+
 #include <memory>
+#include <algorithm> 
 #include "Engine/Texture2D.h"
 #include "Object.h"
 #include "DrawingCanvas.generated.h"
@@ -40,4 +43,8 @@ private:
  
     std::unique_ptr<FUpdateTextureRegion2D> echoUpdateTextureRegion;
     void setPixelColor(uint8*& pointer, uint8 red, uint8 green, uint8 blue, uint8 alpha);
+    void setPixelColor(uint8*& pointer, uint8 red);
+    
+    UFUNCTION(BlueprintCallable, Category = DrawingTools)
+    void DrawLife(AGoLUser* GoL);
 };
