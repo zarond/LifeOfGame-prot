@@ -144,3 +144,4 @@ void AMyActor::SetSurvive(TArray<bool> _survive)
 		Survive = TArray<bool>(_survive);
 	}
 }
+

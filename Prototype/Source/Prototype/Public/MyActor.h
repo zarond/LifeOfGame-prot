@@ -30,7 +30,6 @@ private:
 public:	
 	// Sets default values for this actor's properties
 	AMyActor();
-	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -73,4 +72,5 @@ public:
 	void SetBirth(TArray<bool> _birth);
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	void SetSurvive(TArray<bool> _survive);
+	
 };
