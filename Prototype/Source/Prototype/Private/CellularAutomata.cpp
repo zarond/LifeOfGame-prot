@@ -25,7 +25,7 @@ CellularAutomata::CellularAutomata(int height, int width)
 	gol->SetImmortalWalls(true);
 }
 
-void CellularAutomata::Generate()
+bool CellularAutomata::Generate()
 {
 	
 	for (size_t i = 0; i < floorHeight; ++i)
@@ -36,10 +36,10 @@ void CellularAutomata::Generate()
 			if (i == 0 || j == 0 || i == floorHeight - 1 || j == floorWidth - 1) gol->Summon(i, j);
 		}
 	}
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < 10; ++i)
 		gol->Loop();
 	
-	ConnectRooms();
+	return ConnectRooms();
 }
 
 void CellularAutomata::CreateLine(vectorOfIndex& room, int x1, int y1, int x2, int y2)
@@ -160,7 +160,7 @@ void CellularAutomata::ConnectNearestRoom(vectorOfIndex& room, std::vector<vecto
 
 }
 
-void CellularAutomata::ConnectRooms()
+bool CellularAutomata::ConnectRooms()
 {
 	field = gol->GetFieldCopy();
 	auto rooms = std::vector<vectorOfIndex>();
@@ -182,7 +182,7 @@ void CellularAutomata::ConnectRooms()
 	field = gol->GetFieldCopy();
 	if (rooms.size() == 0)
 	{
-		return;
+		return false;
 	}
 	auto room = rooms[rooms.size() - 1];
 	rooms.pop_back();
@@ -190,10 +190,10 @@ void CellularAutomata::ConnectRooms()
 	{
 		ConnectNearestRoom(room, rooms);
 	}
-	CreateStartFinish(room);
+	return CreateStartFinish(room);
 }
 
-void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
+bool CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 {
 
 	// divide field on 9 equal parts for finding (x,y) out center part
@@ -208,13 +208,16 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 		int x = cell.first;
 		int y = cell.second;
 		if ((field[x + 1][y] || field[x - 1][y]
-			|| field[x][y + 1] || field[x][y - 1])
-			 && (x < centerLeft || x > centerRight || y < centerLeft || y > centerRight))
+			|| field[x][y + 1] || field[x][y - 1]))
+			 //&& (x < centerLeft || x > centerRight || y < centerLeft || y > centerRight))
 			broadcells.push_back(cell);
 	}
 
 	std::srand(std::time(0));
-
+	if ( broadcells.size() == 0) 
+	{
+		return false;
+	}
 	auto cell = broadcells[rand() % broadcells.size()];
 	int x = cell.first;
 	int y = cell.second;
@@ -230,7 +233,7 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 		});
 
 	// get from 20% most far
-	cell = broadcells[rand() % (broadcells.size() / 5)];
+	cell = broadcells[rand() % broadcells.size() % 4];
 	x = cell.first;
 	y = cell.second;
 	startAndFinish.first.first = x;
@@ -246,9 +249,10 @@ void CellularAutomata::CreateStartFinish(vectorOfIndex& room)
 			return dist1 > dist2;
 		});
 
-	cell = broadcells[rand() % (broadcells.size() / 5)];
+	cell = broadcells[rand() % broadcells.size() % 4];
 	startAndFinish.second.first = cell.first;
 	startAndFinish.second.second = cell.second;
+	return true;
 }
 
 void CellularAutomata::Step()

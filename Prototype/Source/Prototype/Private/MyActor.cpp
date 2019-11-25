@@ -28,7 +28,8 @@ void AMyActor::Tick(float DeltaTime)
 
 void AMyActor::GenerateLevel(int h, int w) {
 	CellularAutomata gen(h, w);
-	gen.Generate();
+	while(!gen.Generate());
+	UE_LOG(LogTemp, Warning,TEXT("generate"));
 	Width = gen.GetFloorWidth();
 	Height = gen.GetFloorHeight();
 	bool** _Matrix = gen.GetFloorMap();
@@ -49,7 +50,7 @@ void AMyActor::GenerateLevel(int h, int w) {
 	Finish[0] = sf.second.first;
 	Finish[1] = sf.second.second;
 	Finish[2] = 0;
-	
+	UE_LOG(LogTemp, Warning,TEXT("SF"));
 
 	int number = gen.GetNumberOfEnemies();
 	vectorOfIndex points = gen.GetArrayOfEnemies();
@@ -57,13 +58,14 @@ void AMyActor::GenerateLevel(int h, int w) {
 	for (int i = 0; i < number; ++i) {
 		ArrayOfEnemies.Add(FIntVector(points[i].first, points[i].second, 0));
 	}
-	
+	UE_LOG(LogTemp, Warning,TEXT("enemies"));
 	number = gen.GetNumberOfBlocks();
 	points = gen.GetArrayOfBlocks();
 	ArrayOfBlocks = TArray<FIntVector>();
 	for (int i = 0; i < number; ++i) {
 		ArrayOfBlocks.Add(FIntVector(points[i].first, points[i].second, 0));
 	}
+	UE_LOG(LogTemp, Warning,TEXT("blocks"));
 }
 
 int AMyActor::GetCell_IsOccupied(int i, int j) const {
