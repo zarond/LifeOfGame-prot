@@ -28,7 +28,8 @@ void AMyActor::Tick(float DeltaTime)
 
 void AMyActor::GenerateLevel(int h, int w) {
 	CellularAutomata gen(h, w);
-	while(!gen.Generate());
+    //gen.Generate();
+    while(!gen.Generate()){};
 	UE_LOG(LogTemp, Warning,TEXT("generate"));
 	Width = gen.GetFloorWidth();
 	Height = gen.GetFloorHeight();
