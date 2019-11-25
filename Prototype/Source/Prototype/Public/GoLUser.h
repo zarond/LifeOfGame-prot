@@ -18,7 +18,7 @@ private:
 	TArray<bool> _birth;
 	TArray<bool> _survive;
 	TArray<AActor*> LavaPieces;
-	GameOfLife* GoL;
+	//GameOfLife* GoL; /////////////////////////////////////////////////////////////////////////////// - было так
 	bool** GoLField;
 	bool** VisibleGoLField;
 	const double birthChance = 0.47;
@@ -26,7 +26,12 @@ private:
 	const TArray<bool> defaultBirth = { false, false, false, true, false, false, false, false, false };
 	const TArray<bool> defaultSurvive = { false, false, true, true, false, false, false, false, false };
 
-public:	
+public:
+    GameOfLife* GoL; /////// было в private
+    int get_width() {return _width;}
+    int get_height() {return _height;}
+    
+    
 	// Sets default values for this actor's properties
 	AGoLUser();
 
@@ -57,4 +62,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	TArray<AActor*> UpdateLavaPiecesOnField(int polygon_size);
 	void ClearSpace(int x, int y, int range = 3);
+    
 };
