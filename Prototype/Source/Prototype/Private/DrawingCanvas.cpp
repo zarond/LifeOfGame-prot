@@ -20,6 +20,7 @@ void UDrawingCanvas::InitializeCanvas(const int32 pixelsH, const int32 pixelsV)
     dynamicCanvas->CompressionSettings = TextureCompressionSettings::TC_VectorDisplacementmap;
     dynamicCanvas->SRGB = 0;
     dynamicCanvas->AddToRoot();
+    //dynamicCanvas->Filter = TextureFilter::TF_Default;
     dynamicCanvas->Filter = TextureFilter::TF_Nearest;
     dynamicCanvas->UpdateResource();
  
@@ -52,6 +53,7 @@ void UDrawingCanvas::DrawLife(AGoLUser* GoL)
     if (GoL == nullptr) {UE_LOG(LogTemp, Warning, TEXT("no navGoLinText"));return;}
     uint8* canvasPixelPtr = canvasPixelData.get();
     const bool* const* field = GoL->GoL->GetField();
+    //const bool* const* field = GoL->GoLField;
     int _canvasWidth = std::min(GoL->get_width(),canvasWidth);
     int _canvasHeight = std::min(GoL->get_height(),canvasHeight);
     for (int i = 0; i < _canvasWidth; ++i)
@@ -59,6 +61,7 @@ void UDrawingCanvas::DrawLife(AGoLUser* GoL)
         for (int j = 0; j < _canvasHeight; ++j)
         {
             canvasPixelPtr[i*canvasHeight+j] = 255*field[j][i]; //white
+            
             //canvasPixelPtr[i*canvasWidth+j] = 0; //white
         }
     }

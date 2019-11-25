@@ -27,6 +27,7 @@ private:
 
 public:
     GameOfLife* GoL; /////// было в private
+    //bool** GoLField;   /// было в private
     int get_width() {return _width;}
     int get_height() {return _height;}
     
