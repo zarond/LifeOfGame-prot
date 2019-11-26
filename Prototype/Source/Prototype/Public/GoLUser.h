@@ -20,14 +20,14 @@ private:
 	TArray<AActor*> LavaPieces;
 	//GameOfLife* GoL; /////////////////////////////////////////////////////////////////////////////// - было так
 	bool** GoLField;
-	bool** VisibleGoLField;
+	//bool** VisibleGoLField;
 	const double birthChance = 0.47;
 	const TArray<bool> defaultBirth = { false, false, false, true, false, false, false, false, false };
 	const TArray<bool> defaultSurvive = { false, false, true, true, false, false, false, false, false };
 
 public:
     GameOfLife* GoL; /////// было в private
-    //bool** GoLField;   /// было в private
+    bool** VisibleGoLField;   /// было в private
     int get_width() {return _width;}
     int get_height() {return _height;}
     
