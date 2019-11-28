@@ -32,6 +32,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
     void UpdateButtons(float polygon);
     void UpdateWalkButtons();
+	void UpdateWalkButtons1();
     void UpdateAttackButtons();
     void UpdateCursedButtons();
 	//UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
