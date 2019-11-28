@@ -61,8 +61,8 @@ void UDrawingCanvas::DrawLife(AGoLUser* GoL)
     {
         for (int j = 0; j < _canvasHeight; ++j)
         {
-            canvasPixelPtr[i*canvasHeight+j] = 255*field[j][i]; //white
-            
+            //canvasPixelPtr[i*canvasHeight+j] = 255*field[j][i]; //white
+			canvasPixelPtr[i*canvasHeight + j] = 128 * field[j][i] + 64*GoL->WillBeAlive(j,i);
             //canvasPixelPtr[i*canvasWidth+j] = 0; //white
         }
     }
