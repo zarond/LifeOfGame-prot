@@ -15,8 +15,6 @@ class PROTOTYPE_API AGoLUser : public AActor
 private:
 	int _width;
 	int _height;
-	TArray<bool> _birth;
-	TArray<bool> _survive;
 	TArray<AActor*> LavaPieces;
 	//GameOfLife* GoL; /////////////////////////////////////////////////////////////////////////////// - было так
 	bool** GoLField;
@@ -60,7 +58,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	bool WillBeAlive(int x, int y) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
-	TArray<AActor*> UpdateLavaPiecesOnField(int polygon_size);
+	void UpdateLavaPiecesOnField(int polygon_size);
 	void ClearSpace(int x, int y, int range = 3);
     
 };

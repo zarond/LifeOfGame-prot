@@ -38,8 +38,6 @@ AGoLUser::~AGoLUser()
 	delete GoL;
 	delete[] GoLField;
 	delete[] VisibleGoLField;
-	_birth = {};
-	_survive = {};
 	LavaPieces = {};
 }
 
@@ -53,6 +51,7 @@ void AGoLUser::GenerateGoL(int width, int height, TArray<bool> birth, TArray<boo
 
 	_width = width;
 	_height = height;
+	TArray<bool> _birth, _survive;
 
 	if (birth.Num() != 9) {
 		_birth = TArray<bool>(defaultBirth);
@@ -124,6 +123,8 @@ void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* Glo
 {
 
 	//Update GoL
+
+	TArray<bool> _birth, _survive;
 
 	if (birth.Num() != 9) {
 		_birth = TArray<bool>(defaultBirth);
@@ -202,7 +203,8 @@ void AGoLUser::ClearSpace(int x, int y, int range) {
 	}
 }
 
-TArray<AActor*> AGoLUser::UpdateLavaPiecesOnField(int polygon_size) {
+void AGoLUser::UpdateLavaPiecesOnField(int polygon_size) {
+
 	for (int i = 0; i < LavaPieces.Num(); ++i)
 	{
 		LavaPieces[i]->Destroy();
@@ -210,12 +212,14 @@ TArray<AActor*> AGoLUser::UpdateLavaPiecesOnField(int polygon_size) {
 
 	LavaPieces.Empty();
 
+	//creating new lava pieces
+
 	LavaPieces = TArray<AActor*>();
 	for (int i = 0; i < _height; ++i) {
 		for (int j = 0; j < _width; ++j) {
 			if (VisibleGoLField[i][j]) {
 				//FVector Location((i + 0.5) * polygon_size, (j + 0.5) * polygon_size, 0.25 * polygon_size);
-                FVector Location((i + 0.5) * polygon_size, (j + 0.5) * polygon_size, -0.1 * polygon_size);
+                FVector Location((i + 0.5) * polygon_size, (j + 0.5) * polygon_size, -2 * polygon_size);
 				FRotator Rotation(0.0f, 0.0f, 0.0f);
 				FActorSpawnParameters SpawnInfo;
 				SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -224,8 +228,6 @@ TArray<AActor*> AGoLUser::UpdateLavaPiecesOnField(int polygon_size) {
 			}
 		}
 	}
-
-	return LavaPieces;
 }
 
 
