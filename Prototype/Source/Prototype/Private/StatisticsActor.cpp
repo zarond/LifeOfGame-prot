@@ -28,51 +28,25 @@ void AStatisticsActor::Tick(float DeltaTime)
 
 }
 
-void AStatisticsActor::StartTimer() {
-	duration = clock();
-}
-
-void AStatisticsActor::StopTimer() {
-	duration = clock() - duration;
-}
-
-std::string MsToString(unsigned int duration) {
-	std::string str = "";
-	int time;
-	
-	time = duration / 3600000;
-	str += std::to_string(time) + "h ";
-	
-	duration -= time * 3600000;
-	time = duration / 60000;
-	str += std::to_string(time) + "min ";
-	
-	duration -= time * 60000;
-	time = duration / 1000;
-	str += std::to_string(time) + "sec ";
-	
-	return str;
-}
-
 std::string ULFCreateString(std::string description, std::string value, const int len) {
 	std::string str = "|";
 	int num;
 
 	num = (len - description.length()) / 2;
 	str += std::string(num, ' ') + description;
-	num = len - num;
+	num = len - num - description.length();
 	str += std::string(num, ' ') + "|";
 	
 	num = (len - value.length()) / 2;
 	str += std::string(num, ' ') + value;
-	num = len - num;
+	num = len - num - value.length();
 	str += std::string(num, ' ') + "|";
 
 	return str;
 }
 
 void AStatisticsActor::UpdateLastFile() const {
-	const int len = 50;
+	const int len = 60;
 	const int numOfHyphen = len * 2 + 3;
 	char tmpbuf1[16], tmpbuf2[16];
 	_strtime_s(tmpbuf1, 16);
@@ -86,11 +60,11 @@ void AStatisticsActor::UpdateLastFile() const {
 	}
 
 	outFile << std::string(numOfHyphen, '-') << std::endl; //----...----, where number of '-' is numOfHyphen
-	outFile << ULFCreateString("Player by", playerName, len) << std::endl;
+	outFile << ULFCreateString("Played by", playerName, len) << std::endl;
 	outFile << std::string(numOfHyphen, '-') << std::endl;
 	outFile << ULFCreateString("Walkthrough completed at", std::string(tmpbuf2) + std::string(", ") + std::string(tmpbuf1), len) << std::endl;
 	outFile << std::string(numOfHyphen, '-') << std::endl;
-	outFile << ULFCreateString("Duration of walkthrough is", MsToString(duration), len) << std::endl;
+	outFile << ULFCreateString("Duration of walkthrough is", std::to_string(duration) + " rounds.", len) << std::endl;
 	outFile << std::string(numOfHyphen, '-') << std::endl;
 	outFile << std::endl;
 	outFile << std::string(numOfHyphen, '-') << std::endl;
@@ -103,6 +77,7 @@ void AStatisticsActor::UpdateLastFile() const {
 	outFile << ULFCreateString("Got into Lava (times):", std::to_string(gotIntoLavaTimes), len) << std::endl;
 	outFile << std::string(numOfHyphen, '-') << std::endl;
 
+	
 	outFile.close();
 }
 
@@ -112,24 +87,24 @@ std::string UBFCreateString(std::string description, std::string value, std::str
 
 	num = (len - description.length()) / 2;
 	str += std::string(num, ' ') + description;
-	num = len - num;
+	num = len - num - description.length();
 	str += std::string(num, ' ') + "|";
 
 	num = (len - value.length()) / 2;
 	str += std::string(num, ' ') + value;
-	num = len - num;
+	num = len - num - value.length();
 	str += std::string(num, ' ') + "|";
 
 	num = (len - player.length()) / 2;
 	str += std::string(num, ' ') + player;
-	num = len - num;
+	num = len - num - player.length();
 	str += std::string(num, ' ') + "|";
 
 	return str;
 }
 
 void AStatisticsActor::UpdateBestFile() const {
-	const int len = 33;
+	const int len = 60;
 	const int numOfHyphen = len * 3 + 4;
 
 	std::ifstream inFile(fileNameBest, std::ios_base::binary);
@@ -210,7 +185,7 @@ void AStatisticsActor::UpdateBestFile() const {
 }
 
 void AStatisticsActor::UpdateTotalFile() const {
-	const int len = 50;
+	const int len = 60;
 	const int numOfHyphen = len * 2 + 3;
 
 	std::ifstream inFile(fileNameTotal, std::ios_base::binary);
@@ -239,17 +214,15 @@ void AStatisticsActor::UpdateTotalFile() const {
 		outFile << std::string(numOfHyphen, '-') << std::endl;
 		outFile << ULFCreateString("Got into Lava (times):", std::to_string(gotIntoLavaTimes), len) << std::endl;
 		outFile << std::string(numOfHyphen, '-') << std::endl;
-		outFile << ULFCreateString("Games without deaths:", std::to_string(hasDied ? 0 : 1), len) << std::endl;
-		outFile << std::string(numOfHyphen, '-') << std::endl;
 
 		outFile.close();
 		return;
 	}
 
-	TArray<TArray<std::string>> strings = FromBestFileToStrings();
+	TArray<TArray<std::string>> strings = FromTotalFileToStrings();
 	inFile.close();
 
-	std::ofstream outFile(fileNameBest, std::ios_base::binary);
+	std::ofstream outFile(fileNameTotal, std::ios_base::binary);
 
 	if (!outFile) {
 		printf(std::string("Can't open file «" + fileNameTotal + "»!").c_str());
@@ -272,8 +245,6 @@ void AStatisticsActor::UpdateTotalFile() const {
 		outFile << std::string(numOfHyphen, '-') << std::endl;
 		outFile << ULFCreateString("Got into Lava (times):", std::to_string(gotIntoLavaTimes), len) << std::endl;
 		outFile << std::string(numOfHyphen, '-') << std::endl;
-		outFile << ULFCreateString("Games without deaths:", std::to_string(hasDied ? 0 : 1), len) << std::endl;
-		outFile << std::string(numOfHyphen, '-') << std::endl;
 
 		outFile.close();
 		return;
@@ -294,8 +265,6 @@ void AStatisticsActor::UpdateTotalFile() const {
 		outFile << ULFCreateString("Received damage (points):", std::to_string(receivedDamagePoints + std::stoi(strings[4][1])), len) << std::endl;
 		outFile << std::string(numOfHyphen, '-') << std::endl;
 		outFile << ULFCreateString("Got into Lava (times):", std::to_string(gotIntoLavaTimes + std::stoi(strings[5][1])), len) << std::endl;
-		outFile << std::string(numOfHyphen, '-') << std::endl;
-		outFile << ULFCreateString("Games without deaths:", std::to_string(hasDied ? std::stoi(strings[6][1]) : 1 + std::stoi(strings[6][1])), len) << std::endl;
 		outFile << std::string(numOfHyphen, '-') << std::endl;
 
 		outFile.close();
@@ -318,8 +287,6 @@ void AStatisticsActor::ClearStatisticsOnLevel() {
 
 	receivedDamagePoints = 0;
 	gotIntoLavaTimes = 0;
-
-	hasDied = false;
 }
 
 void AStatisticsActor::IncreaseKilledNPC() {
@@ -338,8 +305,8 @@ void AStatisticsActor::IncreaseGotIntoLavaTimes() {
 	++gotIntoLavaTimes;
 }
 
-void AStatisticsActor::YouDied() {
-	hasDied = true;
+void AStatisticsActor::SetDuration(int dur) {
+	duration = dur;
 }
 
 void AStatisticsActor::YouWon() {
@@ -363,10 +330,15 @@ TArray<TArray<std::string>> FromFileToStrings(std::string fileName) {
 	if (inFile.eof()) return strings;
 
 	while (!inFile.eof()) {
-		std::getline(inFile, str);
+		if (!inFile.eof()) std::getline(inFile, str);
+		else break;
 
 		if (!inFile.eof()) std::getline(inFile, str);
 		else break;
+
+		if (str.length() == 0) continue;
+
+		strs.Empty();
 
 		while (str.substr(str.find("|")).length() != 1) {
 			str = str.substr(str.find("|") + 1);
