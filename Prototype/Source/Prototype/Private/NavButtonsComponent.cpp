@@ -42,7 +42,9 @@ void UNavButtonsComponent::UpdateAttackButtons(){
             tmp->x = NavComp->Position.x + arr[i][0];
             tmp->y = NavComp->Position.y + arr[i][1];
             FightButtons.Add(tmp);
+            #if WITH_EDITOR
             tmp->SetFolderPath("SpawnedActors/FightButtons");
+            #endif
         }
     }
 }
