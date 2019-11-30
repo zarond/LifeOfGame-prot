@@ -13,9 +13,12 @@ class PROTOTYPE_API AStatisticsActor : public AActor
 	GENERATED_BODY()
 	
 private:
-	std::string fileNameLast = "level_last.dat"; //results for the last walkthrough
-	std::string fileNameBest = "level_best.dat"; //best results for all time
-	std::string fileNameTotal = "level_total.dat"; //total results for all time
+	//std::string path = "";
+	//std::string path = "%AppData%\\Game of life proj\\statistics\\";
+	std::string path = "D:\\Games\\Game of life proj\\statistics\\";
+	std::string fileNameLast = path + "level_last.dat"; //results for the last walkthrough
+	std::string fileNameBest = path + "level_best.dat"; //best results for all time
+	std::string fileNameTotal = path + "level_total.dat"; //total results for all time
 	
 	//it shouldn't be here, but it is okay for now
 	//should be less than 32 char
@@ -30,7 +33,6 @@ private:
 	int receivedDamagePoints = 0;
 	int gotIntoLavaTimes = 0;
 
-	bool hasDied = false;
 	bool hasWon = false;
 
 public:	
@@ -47,10 +49,6 @@ public:
 
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "Statistics|Duration")
-	void StartTimer();
-	UFUNCTION(BlueprintCallable, Category = "Statistics|Duration")
-	void StopTimer();
 
 	UFUNCTION(BlueprintCallable, Category = "Statistics|File")
 	void UpdateLastFile() const;
@@ -75,8 +73,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Statistics|Achivement|Receive Damage")
 	void IncreaseGotIntoLavaTimes();
 
-	UFUNCTION(BlueprintCallable, Category = "Statistics|Achivement|Passed Level Without Death")
-	void YouDied();
+	UFUNCTION(BlueprintCallable, Category = "Statistics|Duration")
+	void SetDuration(int dur);
 
 	UFUNCTION(BlueprintCallable, Category = "Statistics|Achivement|Won Game")
 	void YouWon();

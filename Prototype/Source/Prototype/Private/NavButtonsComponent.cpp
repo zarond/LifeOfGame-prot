@@ -20,7 +20,7 @@ UNavButtonsComponent::UNavButtonsComponent()
 
 void UNavButtonsComponent::UpdateButtons(float polygon){
     polygonsize = polygon;
-    UpdateWalkButtons();
+    UpdateWalkButtons1();
     UpdateAttackButtons();
 }
 void UNavButtonsComponent::UpdateAttackButtons(){
@@ -42,7 +42,9 @@ void UNavButtonsComponent::UpdateAttackButtons(){
             tmp->x = NavComp->Position.x + arr[i][0];
             tmp->y = NavComp->Position.y + arr[i][1];
             FightButtons.Add(tmp);
+            #if WITH_EDITOR
             tmp->SetFolderPath("SpawnedActors/FightButtons");
+            #endif
         }
     }
 }
@@ -112,6 +114,55 @@ void UNavButtonsComponent::UpdateWalkButtons(){
         Buttons[i]-> SetActorEnableCollision(false);
         Buttons[i]-> SetActorTickEnabled(false);
     }
+}
+
+void UNavButtonsComponent::UpdateWalkButtons1() {
+	for (int i = 0; i < Buttons.Num(); ++i) { if (Buttons[i] != nullptr) Buttons[i]->Destroy(); };
+	Buttons.Empty();
+	if (NavComp == nullptr) { UE_LOG(LogTemp, Warning, TEXT("no navComp")); return; }
+	int R = NavComp->R;
+	if (NavComp->field == nullptr) return;
+	for (int i = 0; i < 2 * R + 1; ++i)
+		for (int j = 0; j < 2 * R + 1; ++j) {
+			if (NavComp->field[i][j].steps <= R) {// || NavComp->field[i][j].steps == 254 ) { ///?
+				FVector Location = this->Parent->GetActorLocation();
+				Location.Y += (i - R)*polygonsize;
+				Location.X += (j - R)*polygonsize;
+				//Location.Z += 100.0f;
+				FActorSpawnParameters SpawnInfo;
+				FRotator rot = FRotator::ZeroRotator;
+				switch (NavComp->field[i][j].direction) {
+				case 0:
+					//rot = FRotator::ZeroRotator;
+					rot.Yaw = 0;
+					break;
+				case 1:
+					rot.Yaw = -90;
+					break;
+				case 2:
+					rot.Yaw = 180;
+					break;
+				case 3:
+					rot.Yaw = 90;
+					break;
+				}
+				//ANavButton* tmp = GetWorld()->SpawnActor(ButtonToSpawn.Get(),Location, FRotator::ZeroRotator, SpawnInfo);
+				ANavButton* tmp;
+				tmp = (ANavButton*)GetWorld()->SpawnActor(ButtonToSpawn, &Location, &rot, SpawnInfo);
+				if (tmp != NULL) Buttons.Add(tmp);
+				//ANavButton* tmp = (ANavButton*) GetWorld()->SpawnActor(ButtonToSpawn, &Location, &rot, SpawnInfo);
+				if (tmp == NULL) return;
+				tmp->x = i - R;
+				tmp->y = j - R;
+				tmp->steps = NavComp->field[i][j].steps;
+#if WITH_EDITOR
+				tmp->SetFolderPath("SpawnedActors/NavButtons");  // полезная фича
+#endif
+//Buttons.Add(tmp);
+//++counter;
+			}
+		}
+
 }
 
 //void UNavButtonsComponent::SetNavButton(ANavButton * Button)
