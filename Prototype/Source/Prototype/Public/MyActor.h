@@ -19,8 +19,7 @@ public:
 
 private:
 	Cell **Matrix;
-	int Width;
-	int Height;
+	
 	TArray<FIntVector> ArrayOfEnemies;
 	TArray<FIntVector> ArrayOfBlocks;
 	FIntVector Start;
@@ -30,6 +29,8 @@ private:
 public:	
 	// Sets default values for this actor's properties
 	AMyActor();
+	int Width;
+	int Height;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -45,6 +46,8 @@ public:
 	void SetCell_IsOccupied(int i, int j, int ch);
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	void GenerateLevel(int h, int w);
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	void GenerateTutor(int h, int w);
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	int GetWidth() const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")

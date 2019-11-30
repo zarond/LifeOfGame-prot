@@ -42,6 +42,25 @@ bool CellularAutomata::Generate()
 	return ConnectRooms();
 }
 
+bool CellularAutomata::GenerateTutor()
+{
+	
+	for (size_t i = 0; i < floorHeight; ++i)
+	{
+		for (size_t j = 0; j < floorWidth; ++j)
+		{
+			gol->Kill(i, j);
+			if (i == 0 || j == 0 || i == floorHeight - 1 || j == floorWidth - 1) gol->Summon(i, j);
+		}
+	}
+	startAndFinish.first.first = floorHeight / 2;
+	startAndFinish.first.second = 2;
+	startAndFinish.second.first = floorHeight / 2;
+	startAndFinish.second.second = floorWidth - 2;
+	field = gol->GetFieldCopy();
+	return true;
+}
+
 void CellularAutomata::CreateLine(vectorOfIndex& room, int x1, int y1, int x2, int y2)
 {
 	int dx = 0;

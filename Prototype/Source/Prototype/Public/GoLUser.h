@@ -15,7 +15,7 @@ class PROTOTYPE_API AGoLUser : public AActor
 private:
 	int _width;
 	int _height;
-	TArray<AActor*> LavaPieces;
+	TArray<AActor*> LavaPieces = {};
 	//GameOfLife* GoL; /////////////////////////////////////////////////////////////////////////////// - было так
 	bool** GoLField;
 	bool** VisibleGoLField;
@@ -50,9 +50,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	void GenerateGoL(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range = 3, bool needClearSpace = true);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
+	void GenerateGoLTutorial(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor);
+	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	void ClearCreaturesSpace(AMyActor* GlobalActor, int range = 3);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
-	void UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range = 3, bool needClearSpace = true);
+	void UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range = 3, bool needClearSpace = true, bool tutor = false);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	bool IsAlive(int x, int y) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")

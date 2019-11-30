@@ -23,6 +23,7 @@ private:
 public:
 	CellularAutomata(int height, int width);
 	bool Generate();
+	bool GenerateTutor();
 	void Step();
 	void Show();
 

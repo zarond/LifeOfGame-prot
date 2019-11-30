@@ -105,6 +105,76 @@ void AGoLUser::GenerateGoL(int width, int height, TArray<bool> birth, TArray<boo
 	if (needClearSpace) ClearCreaturesSpace(GlobalActor);
 }
 
+void AGoLUser::GenerateGoLTutorial(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor)
+{
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+	
+
+	//Generate GoL
+
+	_width = width;
+	_height = height;
+	TArray<bool> _birth, _survive;
+
+	if (birth.Num() != 9) {
+		_birth = TArray<bool>(defaultBirth);
+		printf("Number of bools in birth is incorrect. Set default value.");
+	}
+	else {
+		_birth = TArray<bool>(birth);
+	}
+
+	if (survive.Num() != 9) {
+		_survive = TArray<bool>(defaultSurvive);
+		printf("Number of bools in survive is incorrect. Set default value.");
+	}
+	else {
+		_survive = TArray<bool>(survive);
+	}
+	
+	std::vector<bool> bgene = std::vector<bool>();
+	std::vector<bool> sgene = std::vector<bool>();
+	for (int i = 0; i < 9; ++i) {
+		bgene.push_back(_birth[i]);
+		sgene.push_back(_survive[i]);
+	}
+
+	GoL = new GameOfLife(_width, _height);
+	GoL->SetBirthGene(bgene);
+	GoL->SetSurviveGene(sgene);
+
+	for (int i = 0; i < _height; ++i) {
+		for (int j = 0; j < _width; ++j) {
+			GoL->Kill(i, j);
+		}
+	}
+
+	//for (int i = (int)GlobalActor->GetHeight() - 1; i < GlobalActor->GetHeight() + 2; ++i) {
+	//	if (GlobalActor->GetCell_IsOccupied(i, GlobalActor->GetWidth() / 2) == 1) GoL->Summon(i, GlobalActor->GetWidth() / 2);
+	//}
+	for (int i = 2; i < 5; ++i) {
+		GoL->Summon(i, 8);
+	}
+	GoLField = GoL->GetFieldCopy();
+
+
+	//Generate Visible GoL
+
+	bool** matrix = new bool* [_height];
+	for (int i = 0; i < _height; ++i) {
+		matrix[i] = new bool[_width];
+		for (int j = 0; j < _width; ++j) {
+			UE_LOG(LogTemp, Warning, TEXT("Visible GoL"));
+			matrix[i][j] = GoLField[i][j] ;
+			matrix[i][j] = (matrix[i][j] && GlobalActor->GetCell_IsOccupied(i, j) != 1 && GlobalActor->GetCell_IsOccupied(i, j) != 3);
+		}
+	}
+
+	VisibleGoLField = matrix;
+
+}
+
 void AGoLUser::ClearCreaturesSpace(AMyActor* GlobalActor, int range) {
 	FIntVector vect;
 	for (int k = 0; k < GlobalActor->GetNumberOfEnemies(); ++k) {
@@ -119,7 +189,7 @@ void AGoLUser::ClearCreaturesSpace(AMyActor* GlobalActor, int range) {
 	ClearSpace(vect[0], vect[1], range);
 }
 
-void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range, bool needClearSpace)
+void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range, bool needClearSpace, bool tutor)
 {
 
 	//Update GoL
@@ -154,15 +224,15 @@ void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* Glo
 	GoL->SetSurviveGene(sgene);
 
 	GoL->Loop();
-
-	for (int i = 0; i < _height; ++i) {
-		for (int j = 0; j < _width; ++j) {
-			if (i == 0 || j == 0 || i == _height - 1 || j == _width - 1) {
-				if ((double)rand() / RAND_MAX < edgeBirthChance) GoL->Summon(i, j);
+	if (!tutor)
+		for (int i = 0; i < _height; ++i) {
+			for (int j = 0; j < _width; ++j) {
+				if (i == 0 || j == 0 || i == _height - 1 || j == _width - 1) {
+					if ((double)rand() / RAND_MAX < edgeBirthChance) GoL->Summon(i, j);
+				}
+				else if (GlobalActor->GetCell_IsOccupied(i, j) == 1) GoL->Summon(i, j);
 			}
-			else if (GlobalActor->GetCell_IsOccupied(i, j) == 1) GoL->Summon(i, j);
 		}
-	}
 
 	GoLField = GoL->GetFieldCopy();
 
@@ -204,14 +274,13 @@ void AGoLUser::ClearSpace(int x, int y, int range) {
 }
 
 void AGoLUser::UpdateLavaPiecesOnField(int polygon_size) {
-
+	
 	for (int i = 0; i < LavaPieces.Num(); ++i)
 	{
 		LavaPieces[i]->Destroy();
 	}
-
 	LavaPieces.Empty();
-
+	
 	//creating new lava pieces
 
 	LavaPieces = TArray<AActor*>();
