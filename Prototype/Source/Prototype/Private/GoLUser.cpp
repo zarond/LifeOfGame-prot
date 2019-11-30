@@ -153,8 +153,8 @@ void AGoLUser::GenerateGoLTutorial(int width, int height, TArray<bool> birth, TA
 	//for (int i = (int)GlobalActor->GetHeight() - 1; i < GlobalActor->GetHeight() + 2; ++i) {
 	//	if (GlobalActor->GetCell_IsOccupied(i, GlobalActor->GetWidth() / 2) == 1) GoL->Summon(i, GlobalActor->GetWidth() / 2);
 	//}
-	for (int i = 2; i < 5; ++i) {
-		GoL->Summon(i, 8);
+	for (int i = 1; i < 4; ++i) {
+		GoL->Summon(i, 6);
 	}
 	GoLField = GoL->GetFieldCopy();
 
