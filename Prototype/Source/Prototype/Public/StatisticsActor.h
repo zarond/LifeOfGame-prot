@@ -15,7 +15,7 @@ class PROTOTYPE_API AStatisticsActor : public AActor
 private:
 	//std::string path = "";
 	//std::string path = "%AppData%\\Game of life proj\\statistics\\";
-	std::string path = "D:\\Users\\Darth_60cx3gr\\UE4 Projects\\Prototype  of GoL\\LifeOfGame-prot\\Prototype\\";
+	std::string path = "D:\\Games\\Game of life proj\\statistics\\";
 	std::string fileNameLast = path + "level_last.dat"; //results for the last walkthrough
 	std::string fileNameBest = path + "level_best.dat"; //best results for all time
 	std::string fileNameTotal = path + "level_total.dat"; //total results for all time
