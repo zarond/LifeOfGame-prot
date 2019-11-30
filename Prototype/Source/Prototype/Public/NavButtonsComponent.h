@@ -24,9 +24,9 @@ public:
     UNavigationComponent* NavComp;
     AActor* Parent;
     float polygonsize;
-    UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<ANavButton> ButtonToSpawn;
-    UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(EditAnywhere)//, meta = (AllowPrivateAccess = "true"))
+    TSubclassOf<ANavButton> ButtonToSpawn;
+    UPROPERTY(EditAnywhere)//, meta = (AllowPrivateAccess = "true"))
     TSubclassOf<AFightButton> FightButtonToSpawn;
     
 	UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
@@ -45,6 +45,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+    
+    UFUNCTION(BlueprintCallable, Category = "NavigationCustom")
+    void SelectButtons(TSubclassOf<ANavButton> ButtonToSpaw,TSubclassOf<AFightButton> FightButtonToSpaw){
+        ButtonToSpawn = ButtonToSpaw;
+        FightButtonToSpawn = FightButtonToSpaw;
+    }
 
 		
 };
