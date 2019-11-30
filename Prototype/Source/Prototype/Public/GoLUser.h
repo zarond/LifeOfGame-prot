@@ -15,13 +15,12 @@ class PROTOTYPE_API AGoLUser : public AActor
 private:
 	int _width;
 	int _height;
-	TArray<bool> _birth;
-	TArray<bool> _survive;
 	TArray<AActor*> LavaPieces;
 	//GameOfLife* GoL; /////////////////////////////////////////////////////////////////////////////// - было так
 	bool** GoLField;
 	//bool** VisibleGoLField;
 	const double birthChance = 0.47;
+	const double edgeBirthChance = 0.25;
 	const TArray<bool> defaultBirth = { false, false, false, true, false, false, false, false, false };
 	const TArray<bool> defaultSurvive = { false, false, true, true, false, false, false, false, false };
 
@@ -60,7 +59,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	bool WillBeAlive(int x, int y) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
-	TArray<AActor*> UpdateLavaPiecesOnField(int polygon_size);
+	void UpdateLavaPiecesOnField(int polygon_size);
 	void ClearSpace(int x, int y, int range = 3);
     
 };
