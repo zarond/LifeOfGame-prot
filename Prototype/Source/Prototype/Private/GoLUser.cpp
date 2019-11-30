@@ -224,6 +224,7 @@ void AGoLUser::UpdateLavaPiecesOnField(int polygon_size) {
 				FActorSpawnParameters SpawnInfo;
 				SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 				AActor* piece = GetWorld()->SpawnActor<AActor>(ToSpawn, Location, Rotation, SpawnInfo);
+                if (piece == nullptr) break;
 				LavaPieces.Add(piece);
 			}
 		}
