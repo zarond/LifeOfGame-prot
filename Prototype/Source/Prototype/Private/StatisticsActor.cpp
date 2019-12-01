@@ -49,13 +49,13 @@ void AStatisticsActor::UpdateLastFile() const {
 	const int len = 60;
 	const int numOfHyphen = len * 2 + 3;
 	char tmpbuf1[16], tmpbuf2[16];
-	_strtime_s(tmpbuf1, 16);
-	_strdate_s(tmpbuf2, 16);
+	//_strtime_s(tmpbuf1, 16);
+	//_strdate_s(tmpbuf2, 16);
 
 	std::ofstream outFile(fileNameLast, std::ios_base::trunc | std::ios_base::binary);
 
 	if (!outFile) {
-		printf(std::string("Can't open file «" + fileNameLast + "»!").c_str());
+		//printf(std::string("Can't open file «" + fileNameLast + "!").c_str());
 		return;
 	}
 
@@ -113,7 +113,7 @@ void AStatisticsActor::UpdateBestFile() const {
 		std::ofstream outFile(fileNameBest, std::ios_base::binary);
 		
 		if (!outFile) {
-			printf(std::string("Can't open file «" + fileNameBest + "»!").c_str());
+			//printf(std::string("Can't open file «" + fileNameBest + "»!").c_str());
 			return;
 		}
 
@@ -137,7 +137,7 @@ void AStatisticsActor::UpdateBestFile() const {
 	std::ofstream outFile(fileNameBest, std::ios_base::trunc | std::ios_base::binary);
 
 	if (!outFile) {
-		printf(std::string("Can't open file «" + fileNameBest + "»!").c_str());
+		//printf(std::string("Can't open file «" + fileNameBest + "»!").c_str());
 		return;
 	}
 
@@ -194,7 +194,7 @@ void AStatisticsActor::UpdateTotalFile() const {
 		std::ofstream outFile(fileNameTotal, std::ios_base::binary);
 
 		if (!outFile) {
-			printf(std::string("Can't open file «" + fileNameTotal + "»!").c_str());
+			//printf(std::string("Can't open file «" + fileNameTotal + "»!").c_str());
 			return;
 		}
 
@@ -225,7 +225,7 @@ void AStatisticsActor::UpdateTotalFile() const {
 	std::ofstream outFile(fileNameTotal, std::ios_base::binary);
 
 	if (!outFile) {
-		printf(std::string("Can't open file «" + fileNameTotal + "»!").c_str());
+		//printf(std::string("Can't open file «" + fileNameTotal + "»!").c_str());
 		return;
 	}
 
@@ -323,7 +323,7 @@ TArray<TArray<std::string>> FromFileToStrings(std::string fileName) {
 	std::ifstream inFile(fileName, std::ios_base::binary);
 
 	if (!inFile) {
-		printf(std::string("Can't open file «" + fileName + "»!").c_str());
+		//printf(std::string("Can't open file «" + fileName + "»!").c_str());
 		return strings;
 	}
 
