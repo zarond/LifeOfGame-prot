@@ -62,8 +62,8 @@ void AStatisticsActor::UpdateLastFile() const {
 	outFile << std::string(numOfHyphen, '-') << std::endl; //----...----, where number of '-' is numOfHyphen
 	outFile << ULFCreateString("Played by", playerName, len) << std::endl;
 	outFile << std::string(numOfHyphen, '-') << std::endl;
-	outFile << ULFCreateString("Walkthrough completed at", std::string(tmpbuf2) + std::string(", ") + std::string(tmpbuf1), len) << std::endl;
-	outFile << std::string(numOfHyphen, '-') << std::endl;
+	//outFile << ULFCreateString("Walkthrough completed at", std::string(tmpbuf2) + std::string(", ") + std::string(tmpbuf1), len) << std::endl;
+	//outFile << std::string(numOfHyphen, '-') << std::endl;
 	outFile << ULFCreateString("Duration of walkthrough is", std::to_string(duration) + " rounds.", len) << std::endl;
 	outFile << std::string(numOfHyphen, '-') << std::endl;
 	outFile << std::endl;
