@@ -41,7 +41,9 @@ void UNavigationComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 //-------------------------
 int UNavigationComponent::energyToTraverseCell(int x,int y) {return 1;}
 bool UNavigationComponent::checkBlocked(int x,int y) {
+    if (!creatureIsPlayer)
     return !globalActor->CheckIfBlocked(FIntVector(x, y, 0));
+    else return !globalActor->CheckIfBlockedPlayer(FIntVector(x, y, 0));
 
 }
 //-------------------------

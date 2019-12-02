@@ -23,6 +23,8 @@ class PROTOTYPE_API UNavigationComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UNavigationComponent();
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool creatureIsPlayer = false;
     
     UPROPERTY(EditAnywhere)
     AMyActor* globalActor; // указатель на глобального актора
