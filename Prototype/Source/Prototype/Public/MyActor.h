@@ -26,6 +26,7 @@ private:
 	FIntVector Finish;
 	TArray<bool> Birth;
 	TArray<bool> Survive;
+
 public:	
 	// Sets default values for this actor's properties
 	AMyActor();
@@ -68,6 +69,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	bool CheckIfBlocked(FIntVector coord) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
+	bool CheckIfBlockedPlayer(FIntVector coord) const;
+	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	TArray<bool> GetBirth();
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	TArray<bool> GetSurvive();
@@ -76,4 +79,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Field")
 	void SetSurvive(TArray<bool> _survive);
 	
+	bool IsBoard(int x, int y) const;
+	TArray<FIntPoint> GetBoard();
 };

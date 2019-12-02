@@ -23,6 +23,7 @@ private:
 	const double edgeBirthChance = 0.25;
 	const TArray<bool> defaultBirth = { false, false, false, true, false, false, false, false, false };
 	const TArray<bool> defaultSurvive = { false, false, true, true, false, false, false, false, false };
+	bool** edgeCells;
 
 public:
     GameOfLife* GoL; /////// было в private
@@ -49,13 +50,13 @@ public:
 	TSubclassOf<class AActor> ToSpawn;
 
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
-	void GenerateGoL(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range = 3, bool needClearSpace = true);
+	void GenerateGoL(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int needClearSpace = 1);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	void GenerateGoLTutorial(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	void ClearCreaturesSpace(AMyActor* GlobalActor, int range = 3);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
-	void UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range = 3, bool needClearSpace = true, bool tutor = false);
+	void UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int needClearSpace = 0, bool tutor = false);
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
 	bool IsAlive(int x, int y) const;
 	UFUNCTION(BlueprintCallable, Category = "Game Of Life")
@@ -64,4 +65,5 @@ public:
 	void UpdateLavaPiecesOnField(int polygon_size);
 	void ClearSpace(int x, int y, int range = 3);
     
+	void GetEdges(AMyActor* GlobalActor);
 };

@@ -41,7 +41,7 @@ AGoLUser::~AGoLUser()
 	LavaPieces = {};
 }
 
-void AGoLUser::GenerateGoL(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range, bool needClearSpace)
+void AGoLUser::GenerateGoL(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int needClearSpace)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -97,12 +97,23 @@ void AGoLUser::GenerateGoL(int width, int height, TArray<bool> birth, TArray<boo
 		matrix[i] = new bool[_width];
 		for (int j = 0; j < _width; ++j) {
 			matrix[i][j] = (GoLField[i][j] && GlobalActor->GetCell_IsOccupied(i, j) != 1 && GlobalActor->GetCell_IsOccupied(i, j) != 3);
+			//matrix[i][j] = GoLField[i][j];
 		}
 	}
 
 	VisibleGoLField = matrix;
 
-	if (needClearSpace) ClearCreaturesSpace(GlobalActor);
+	if (needClearSpace) {
+		ClearCreaturesSpace(GlobalActor, needClearSpace);
+		FIntVector vect;
+		vect = GlobalActor->GetStartPosition();
+		ClearSpace(vect[0], vect[1], needClearSpace);
+
+		vect = GlobalActor->GetFinishPosition();
+		ClearSpace(vect[0], vect[1], needClearSpace);
+	}
+
+	GetEdges(GlobalActor);
 }
 
 void AGoLUser::GenerateGoLTutorial(int width, int height, TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor)
@@ -189,7 +200,7 @@ void AGoLUser::ClearCreaturesSpace(AMyActor* GlobalActor, int range) {
 	ClearSpace(vect[0], vect[1], range);
 }
 
-void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int range, bool needClearSpace, bool tutor)
+void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* GlobalActor, int needClearSpace, bool tutor)
 {
 
 	//Update GoL
@@ -227,7 +238,8 @@ void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* Glo
 	if (!tutor)
 		for (int i = 0; i < _height; ++i) {
 			for (int j = 0; j < _width; ++j) {
-				if (i == 0 || j == 0 || i == _height - 1 || j == _width - 1) {
+				if (edgeCells[i][j])
+				{
 					if ((double)rand() / RAND_MAX < edgeBirthChance) GoL->Summon(i, j);
 				}
 				else if (GlobalActor->GetCell_IsOccupied(i, j) == 1) GoL->Summon(i, j);
@@ -242,16 +254,18 @@ void AGoLUser::UpdateGoL(TArray<bool> birth, TArray<bool> survive, AMyActor* Glo
 	for (int i = 0; i < _height; ++i) {
 		for (int j = 0; j < _width; ++j) {
 			VisibleGoLField[i][j] = (GoLField[i][j] && GlobalActor->GetCell_IsOccupied(i, j) != 1 && GlobalActor->GetCell_IsOccupied(i, j) != 3);
+			//VisibleGoLField[i][j] = GoLField[i][j];
 		}
 	}
 
 	if (needClearSpace) {
+		ClearCreaturesSpace(GlobalActor, needClearSpace);
 		FIntVector vect;
 		vect = GlobalActor->GetStartPosition();
-		ClearSpace(vect[0], vect[1], range);
+		ClearSpace(vect[0], vect[1], needClearSpace);
 
 		vect = GlobalActor->GetFinishPosition();
-		ClearSpace(vect[0], vect[1], range);
+		ClearSpace(vect[0], vect[1], needClearSpace);
 	}
 }
 
@@ -267,6 +281,7 @@ void AGoLUser::ClearSpace(int x, int y, int range) {
 	for (int i = 1 - range; i < range; ++i) {
 		for (int j = 1 - range; j < range; ++j) {
 			if (x + i >= 0 && y + j >= 0 && x + i < _height && y + j < _width) {
+				GoLField[x + i][y + i] = false;
 				VisibleGoLField[x + i][y + j] = false;
 			}
 		}
@@ -300,5 +315,15 @@ void AGoLUser::UpdateLavaPiecesOnField(int polygon_size) {
 	}
 }
 
-
+void AGoLUser::GetEdges(AMyActor* GlobalActor) {
+	edgeCells = new bool* [_height];
+	for (int i = 0; i < _height; ++i) {
+		edgeCells[i] = new bool[_width];
+		for (int j = 0; j < _width; ++j) edgeCells[i][j] = false;
+	}
+	TArray<FIntPoint> points = GlobalActor->GetBoard();
+	for (int i = 0; i < points.Num(); ++i) {
+		edgeCells[points[i].X][points[i].Y] = true;
+	}
+}
 

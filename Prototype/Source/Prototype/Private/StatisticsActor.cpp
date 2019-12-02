@@ -48,7 +48,7 @@ std::string ULFCreateString(std::string description, std::string value, const in
 void AStatisticsActor::UpdateLastFile() const {
 	const int len = 60;
 	const int numOfHyphen = len * 2 + 3;
-	char tmpbuf1[16], tmpbuf2[16];
+	//char tmpbuf1[16], tmpbuf2[16];
 	//_strtime_s(tmpbuf1, 16);
 	//_strdate_s(tmpbuf2, 16);
 

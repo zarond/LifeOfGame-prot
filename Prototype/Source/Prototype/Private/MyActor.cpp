@@ -44,6 +44,8 @@ void AMyActor::GenerateLevel(int h, int w) {
 		}
 	}
 
+	GetBoard();
+
 	start_finish sf = gen.GetStartFinishIndex();
 	Start[0] = sf.first.first;
 	Start[1] = sf.first.second;
@@ -126,6 +128,28 @@ void AMyActor::SetCell_IsOccupied(int i, int j, int ch) {
 	Matrix[i][j].isOccupied = ch;
 }
 
+bool AMyActor::IsBoard(int x, int y) const {
+	return (GetCell_IsOccupied(x, y) == 1) ||
+		(GetCell_IsOccupied(x - 1, y - 1) != 1) && (GetCell_IsOccupied(x - 1, y - 1) != -1) ||
+		(GetCell_IsOccupied(x - 1, y) != 1) && (GetCell_IsOccupied(x - 1, y) != -1) ||
+		(GetCell_IsOccupied(x - 1, y + 1) != 1) && (GetCell_IsOccupied(x - 1, y + 1) != -1) ||
+		(GetCell_IsOccupied(x, y - 1) != 1) && (GetCell_IsOccupied(x, y - 1) != -1) ||
+		(GetCell_IsOccupied(x, y + 1) != 1) && (GetCell_IsOccupied(x, y + 1) != -1) ||
+		(GetCell_IsOccupied(x + 1, y - 1) != 1) && (GetCell_IsOccupied(x + 1, y - 1) != -1) ||
+		(GetCell_IsOccupied(x + 1, y) != 1) && (GetCell_IsOccupied(x + 1, y) != -1) ||
+		(GetCell_IsOccupied(x + 1, y + 1) != 1) && (GetCell_IsOccupied(x + 1, y + 1) != -1);
+}
+
+TArray<FIntPoint> AMyActor::GetBoard() {
+	TArray<FIntPoint> points;
+	for (int i = 0; i < Height; ++i) {
+		for (int j = 0; j < Width; ++j) {
+			if (IsBoard(i, j)) points.Add(FIntPoint(i, j));
+		}
+	}
+	return points;
+}
+
 int AMyActor::GetWidth() const  {
 	return Width;
 }
@@ -167,6 +191,12 @@ bool AMyActor::CheckIfBlocked(FIntVector coord) const {
     //return true; //?
     //return false;
 
+}
+
+bool AMyActor::CheckIfBlockedPlayer(FIntVector coord) const {
+	if (coord[0] < 0 || coord[0] >= Height || coord[1] < 0 || coord[1] >= Width) return false;
+	if (Matrix[coord[0]][coord[1]].isOccupied == 0 || Matrix[coord[0]][coord[1]].isOccupied == 4) return true;
+	else return false;
 }
 
 TArray<bool> AMyActor::GetBirth()
